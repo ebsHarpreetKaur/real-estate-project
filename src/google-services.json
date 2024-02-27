@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "33660688624",
+    "project_id": "mindgrowth-otp-login",
+    "storage_bucket": "mindgrowth-otp-login.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:33660688624:android:8a9afb5626f94d65e84a35",
+        "android_client_info": {
+          "package_name": "com.mindgrowth.my_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJSWCzKiD0P-xQnoWb0FP1fQw04cy2fSg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

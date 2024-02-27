@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyCeVDO-5CoGEpR8s8Jt9AMzm-Y8EmzEw2k</string>
+	<key>GCM_SENDER_ID</key>
+	<string>33660688624</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.mindgrowth.my-app</string>
+	<key>PROJECT_ID</key>
+	<string>mindgrowth-otp-login</string>
+	<key>STORAGE_BUCKET</key>
+	<string>mindgrowth-otp-login.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:33660688624:ios:76d3c103f2b74a66e84a35</string>
+	<key>CLIENT_ID</key>
+	<string>117102043255719348319.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.117102043255719348319</string>
+</dict>
+</plist>
