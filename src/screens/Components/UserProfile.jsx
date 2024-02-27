@@ -17,11 +17,11 @@ export default function UserProfile() {
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
     const { signIn } = React.useContext(AuthContext);
+    const [city, setCity] = useState('');
 
     useEffect(() => {
         (async () => {
             // SecureStore.deleteItemAsync('auth_user')
-
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
                 setErrorMsg('Permission to access location was denied');
@@ -29,6 +29,9 @@ export default function UserProfile() {
             }
 
             let location = await Location.getCurrentPositionAsync({});
+            const { latitude, longitude } = location.coords;
+            const cityName = await getCityName(latitude, longitude);
+            setCity(cityName);
             setLocation(location);
         })();
     }, []);
@@ -39,9 +42,23 @@ export default function UserProfile() {
     } else if (location) {
         text = JSON.stringify(location);
     }
+    console.log("location.........", location)
+    console.log("city.........", city)
 
-    // console.log("location.........", location)
 
+    const getCityName = async (latitude, longitude) => {
+        try {
+            const location = await Location.reverseGeocodeAsync({ latitude, longitude });
+            if (location && location.length > 0) {
+                const { city } = location[0];
+                return city;
+            }
+            return 'City not found';
+        } catch (error) {
+            console.error('Error fetching city:', error);
+            return 'Error fetching city';
+        }
+    };
 
 
     const onChangeReraNumber = text => {
@@ -57,47 +74,6 @@ export default function UserProfile() {
         }
         return /[^0-9]/.test(reraNumber);
     };
-
-    useEffect(() => {
-        SecureStore.getItemAsync('auth_user')
-            .then(userData => {
-                const parsedUserData = JSON.parse(userData);
-                // console.log("parsedUserData", parsedUserData);
-
-                if (parsedUserData?.user_rera_filled_status === false) {
-                    const lastTryDate = parsedUserData?.lastTryDate;
-                    // console.log("lastTryDate", lastTryDate);
-
-                    const lastDaysForNextTry = parsedUserData?.lastDaysForNextTry;
-                    if (!lastTryDate || !lastDaysForNextTry) {
-                        return null;
-                    } else {
-                        const date1 = new Date('2024-02-25');
-                        const date2 = new Date(today);
-
-                        const lastTryTodayDiff = date2 - date1;
-                        const millisecondsPerDay = 1000 * 60 * 60 * 24;
-                        // const differenceInDays = Math.floor(lastTryTodayDiff / millisecondsPerDay);
-                        const differenceInDays = 8;
-
-                        // console.log(`The difference between the two dates is ${differenceInDays} days.`);
-
-                        if (differenceInDays >= lastDaysForNextTry) {
-                            // console.log("lastDaysForNextTry", lastDaysForNextTry);
-                            // setUser_profile_modal_Visible(true)
-                        } else {
-                            // console.log("here", lastDaysForNextTry);
-                        }
-                    }
-
-                } else {
-                    // console.log("here...")
-                }
-            })
-            .catch(error => {
-                console.error('Error retrieving data from SecureStore:', error);
-            });
-    }, [])
 
     const handleContinue = () => {
         // console.log("continue")
@@ -118,15 +94,17 @@ export default function UserProfile() {
                 const modifiedResponse = {
                     ...res,
                     profile_complete_status: true,
+                    user_location: location,
+                    user_city: city
 
                 };
-
                 // console.log("modifiedResponse.......", modifiedResponse)
                 const user_object_string = JSON.stringify(modifiedResponse);
                 if (res) {
                     SecureStore.deleteItemAsync('auth_user')
                         .then(() => {
                             console.log('User deleted successfully');
+                            console.log("city location", city, location)
                             SecureStore.setItemAsync('auth_user', user_object_string)
                                 .then(() => {
                                     console.log('User stored successfully');

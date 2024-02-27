@@ -8,7 +8,7 @@ const AppBar = () => {
     const [current_route, setCurrent_route] = useState('')
 
     const screenName = useNavigationState((state) => {
-        console.log("state", state.routeNames)
+        // console.log("state", state.routeNames)
         // setCurrent_route(state.routeNames)                       
     })
 
@@ -33,7 +33,7 @@ const AppBar = () => {
 
                 }} />
                 {/* <Appbar.Action icon="magnify" onPress={_handleSearch} /> */}
-                <Appbar.Action icon="dots-vertical" onPress={_handleMore} />
+                {/* <Appbar.Action icon="dots-vertical" onPress={_handleMore} /> */}
             </Appbar.Header>
         </>
     );

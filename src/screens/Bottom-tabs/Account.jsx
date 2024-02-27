@@ -45,20 +45,20 @@ export default function AccountTab() {
 
         <Card style={{ backgroundColor: "#ffffff", shadowOpacity: 0 }}>
           <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-            <Card.Title title="My Network" subtitle="Followers, Following adn Friends" left={LeftContent} style={{ width: "80%" }} />
-            <MaterialCommunityIcons name="arrow-right" color='#336aea' size={25} style={{ margin: 5, marginTop: '5%' }} />
+            <Card.Title title="Change Password" subtitle="" left={LeftContent} style={{ width: "80%" }} />
+            {/* <MaterialCommunityIcons name="arrow-right" color='#336aea' size={25} style={{ margin: 5, marginTop: '5%' }} /> */}
           </View>
           <Divider />
           <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-            <Card.Title title="Settings" subtitle="Packages, orders, invoices & billing information" left={LeftContent1} style={{ width: "80%" }} />
-            <MaterialCommunityIcons name="arrow-right" color='#336aea' size={25} style={{ margin: 5, marginTop: '5%' }} />
+            <Card.Title title="Sign out" subtitle="" left={LeftContent1} style={{ width: "80%" }} />
+            {/* <MaterialCommunityIcons name="arrow-right" color='#336aea' size={25} style={{ margin: 5, marginTop: '5%' }} /> */}
           </View>
           <Divider />
 
-          <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+          {/* <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
             <Card.Title title="Orders & Packages" subtitle="Privacy and signout" left={LeftContent2} style={{ width: "80%" }} />
             <MaterialCommunityIcons name="arrow-right" color='#336aea' size={25} style={{ margin: 5, marginTop: '5%' }} />
-          </View>
+          </View> */}
           {/* <Card.Actions>
           <Button>Cancel</Button>
         </Card.Actions> */}

@@ -11,7 +11,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Chat from '../screens/Components/Chat';
 import Login from '../screens/Components/Login';
-import CategoriesTab from '../screens/Bottom-tabs/Categories';
+import PropertiesTab from '../screens/Bottom-tabs/Properties';
 import AccountTab from '../screens/Bottom-tabs/Account';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
@@ -68,10 +68,10 @@ function SignInScreen({ navigation }) {
     );
 }
 
-function CategoriesScreen({ navigation }) {
+function PropertiesScreen({ navigation }) {
     return (
         <>
-            <CategoriesTab />
+            <PropertiesTab />
         </>
     );
 }
@@ -147,7 +147,7 @@ export default function AppNavigation() {
 
         }
     );
-    console.log("state.....", state)
+    // console.log("state.....", state)
 
     React.useEffect(() => {
         // Fetch the token from storage then navigate to our appropriate place
@@ -158,8 +158,8 @@ export default function AppNavigation() {
             const user_access_token = parsedData?.token
             const user_profile_complete_status = parsedData?.profile_complete_status
 
-            console.log("parsedData", parsedData)
-            console.log("userData", userData)
+            // console.log("parsedData", parsedData)
+            // console.log("userData", userData)
 
 
             try {
@@ -227,17 +227,17 @@ export default function AppNavigation() {
                     options={{
                         tabBarLabel: 'Home',
                         tabBarIcon: ({ color, size }) => (
-                            <MaterialCommunityIcons name="home-city" color={color} size={size} />
+                            <MaterialCommunityIcons name="home-analytics" color={color} size={size} />
                         ),
                     }}
                 />
                 <Tab.Screen
-                    name="Category"
-                    component={CategoriesScreen}
+                    name="Properties"
+                    component={PropertiesScreen}
                     options={{
-                        tabBarLabel: 'Category',
+                        tabBarLabel: 'Properties',
                         tabBarIcon: ({ color, size }) => (
-                            <MaterialCommunityIcons name="view-dashboard" color={color} size={size} />
+                            <MaterialCommunityIcons name="home-city" color={color} size={size} />
                         ),
                     }}
                 />
