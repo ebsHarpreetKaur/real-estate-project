@@ -36,15 +36,15 @@ export default function PropertyDetail(props) {
           <Card.Content style={styles.contentText}>
             <Text variant="bodyMedium" style={styles.price}>{data.price}</Text>
 
-            <Text variant="titleMedium" style={styles.title}>{<MaterialIcons name="location-pin" color='#336aea' size={15} />}{data.district}</Text>
+            <Text variant="titleMedium" style={styles.title}>{<MaterialIcons name="location-pin" color='#20B2AA' size={15} />}{data.district}</Text>
             <Button style={{ fontWeight: "bold", fontSize: 20 }} onPress={() => handlePropertyAssign(data)}>Assign</Button>
 
           </Card.Content>
           <Divider />
           <Card.Content style={styles.cardContent}>
-            <Text variant="bodyMedium" style={styles.propertyDetailText}>{<MaterialCommunityIcons name="bed" color='#336aea' size={25} />}{data.bed} Bed</Text>
-            <Text variant="bodyMedium" style={styles.propertyDetailText}>{<FontAwesome name="bath" color='#336aea' size={25} />}{data.bath} Bath</Text>
-            <Text variant="bodyMedium" style={styles.propertyDetailText}>{<MaterialCommunityIcons name="car-arrow-left" color='#336aea' size={25} />}{data.parking} Parking</Text>
+            <Text variant="bodyMedium" style={styles.propertyDetailText}>{<MaterialCommunityIcons name="bed" color='#20B2AA' size={25} />}{data.bed} Bed</Text>
+            <Text variant="bodyMedium" style={styles.propertyDetailText}>{<FontAwesome name="bath" color='#20B2AA' size={25} />}{data.bath} Bath</Text>
+            <Text variant="bodyMedium" style={styles.propertyDetailText}>{<MaterialCommunityIcons name="car-arrow-left" color='#20B2AA' size={25} />}{data.parking} Parking</Text>
           </Card.Content>
           <Divider />
           <View style={{ padding: 10 }}>
@@ -83,23 +83,23 @@ export default function PropertyDetail(props) {
               {data.property_details && data.property_details.map((item, index) => (
                 <>
                   <View style={{ display: "flex", flexDirection: "row" }}>
-                    <MaterialCommunityIcons name="check-circle-outline" color='#336aea' size={25} />
+                    <MaterialCommunityIcons name="check-circle-outline" color='#20B2AA' size={25} />
                     <Text style={{ color: "black", fontSize: 18, marginLeft: 5 }}>{item.city_view}</Text>
                   </View>
                   <View style={{ display: "flex", flexDirection: "row" }}>
-                    <MaterialCommunityIcons name="check-circle-outline" color='#336aea' size={25} />
+                    <MaterialCommunityIcons name="check-circle-outline" color='#20B2AA' size={25} />
                     <Text style={{ color: "black", fontSize: 18, marginLeft: 5 }}>{item.air_conditioned}</Text>
                   </View>
                   <View style={{ display: "flex", flexDirection: "row" }}>
-                    <MaterialCommunityIcons name="check-circle-outline" color='#336aea' size={25} />
+                    <MaterialCommunityIcons name="check-circle-outline" color='#20B2AA' size={25} />
                     <Text style={{ color: "black", fontSize: 18, marginLeft: 5 }}>{item.phone}</Text>
                   </View>
                   <View style={{ display: "flex", flexDirection: "row" }}>
-                    <MaterialCommunityIcons name="check-circle-outline" color='#336aea' size={25} />
+                    <MaterialCommunityIcons name="check-circle-outline" color='#20B2AA' size={25} />
                     <Text style={{ color: "black", fontSize: 18, marginLeft: 5 }}>{item.family_villa}</Text>
                   </View>
                   <View style={{ display: "flex", flexDirection: "row" }}>
-                    <MaterialCommunityIcons name="check-circle-outline" color='#336aea' size={25} />
+                    <MaterialCommunityIcons name="check-circle-outline" color='#20B2AA' size={25} />
                     <Text style={{ color: "black", fontSize: 18, marginLeft: 5 }}>{item.internet}</Text>
                   </View>
 
@@ -116,10 +116,10 @@ export default function PropertyDetail(props) {
             <Text variant="bodyMedium" style={{ fontWeight: "bold", fontSize: 20 }}>Contact</Text>
 
             <Card.Actions >
-              <Text style={{ color: "#336aea", fontWeight: "bold", fontSize: 15, marginRight: "30%" }}>{data.dealer}</Text>
+              <Text style={{ color: "#20B2AA", fontWeight: "bold", fontSize: 15, marginRight: "30%" }}>{data.dealer}</Text>
 
-              <Text style={{ color: "#336aea", fontWeight: "bold" }}>{<MaterialCommunityIcons name="phone" color='#336aea' size={25} />}</Text>
-              <Text style={{ color: "#336aea", fontWeight: "bold" }}>{<MaterialCommunityIcons name="email" color='#336aea' size={25} />}</Text>
+              <Text style={{ color: "#20B2AA", fontWeight: "bold" }}>{<MaterialCommunityIcons name="phone" color='#20B2AA' size={25} />}</Text>
+              <Text style={{ color: "#20B2AA", fontWeight: "bold" }}>{<MaterialCommunityIcons name="email" color='#20B2AA' size={25} />}</Text>
             </Card.Actions>
           </View>
 
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
   propertyDetailText: {
     fontWeight: "bold",
     fontSize: 15,
-    color: "#336aea",
+    color: "#20B2AA",
   },
   contentText: {
     padding: 10
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
   },
   dealText: {
     position: "absolute",
-    backgroundColor: "#336aea",
+    backgroundColor: "#20B2AA",
     textAlign: "center",
     color: "white",
     padding: 5,

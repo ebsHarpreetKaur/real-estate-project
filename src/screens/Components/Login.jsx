@@ -98,7 +98,8 @@ const styles = StyleSheet.create({
         width: 300,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#336aea",
+        backgroundColor: "#20B2AA",
+
         shadowColor: "rgba(0,0,0,0.4)",
         shadowOffset: {
             width: 1,
@@ -112,7 +113,7 @@ const styles = StyleSheet.create({
     buttonText: {
         color: "white",
         fontSize: 14,
-        backgroundColor: "#336aea"
+        backgroundColor: "#20B2AA"
     },
 
     welcome: {

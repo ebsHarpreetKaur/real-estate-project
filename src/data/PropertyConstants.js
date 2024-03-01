@@ -21,23 +21,23 @@ const property = [
     ],
     "images": [
       {
-        "id":1,
+        "id": 1,
         "image": "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
       },
       {
-        "id":2,
+        "id": 2,
         "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLZ1geLXV-OKfnA3wZy-J6Ky16_tCevE_BWCl0K6PFbw&s"
       },
       {
-        "id":3,
+        "id": 3,
         "image": "https://wallpapers.com/images/hd/real-estate-modern-white-house-dcxpp5xsw4e7wqgc.jpg"
       },
       {
-        "id":4,
+        "id": 4,
         "image": "https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwcm9maWxlLWxpa2VkfDE4fHx8ZW58MHx8fHx8&w=1000&q=80"
       },
       {
-        "id":5,
+        "id": 5,
         "image": "https://img.staticmb.com/mbcontent/images/crop/uploads/2023/12/biggest-house-in-the-world_0_1200.jpg"
       }
     ],
@@ -45,7 +45,7 @@ const property = [
     "dealer_contact": "+28 347-928-2372",
     "district": "Centro",
     "price": "R$ 2.600.000",
-    "photo": "https://res.cloudinary.com/dvcywi3uf/image/upload/v1520011556/chatbot-imoveis/casa-centro.jpg"
+    "photo": "https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwcm9maWxlLWxpa2VkfDE4fHx8ZW58MHx8fHx8&w=1000&q=80"
   },
   {
     "id": 2,
@@ -69,30 +69,30 @@ const property = [
     ],
     "images": [
       {
-        "id":1,
+        "id": 1,
         "image": "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
       },
       {
-        "id":2,
+        "id": 2,
         "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLZ1geLXV-OKfnA3wZy-J6Ky16_tCevE_BWCl0K6PFbw&s"
       },
       {
-        "id":3,
+        "id": 3,
         "image": "https://wallpapers.com/images/hd/real-estate-modern-white-house-dcxpp5xsw4e7wqgc.jpg"
       },
       {
-        "id":4,
+        "id": 4,
         "image": "https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwcm9maWxlLWxpa2VkfDE4fHx8ZW58MHx8fHx8&w=1000&q=80"
       },
       {
-        "id":5,
+        "id": 5,
         "image": "https://img.staticmb.com/mbcontent/images/crop/uploads/2023/12/biggest-house-in-the-world_0_1200.jpg"
       }],
     "dealer": "rtgrt ckein bsbbbbbb",
     "dealer_contact": "+34 347-928-2372",
     "district": "Costa e Silva",
     "price": "R$ 280.000",
-    "photo": "https://res.cloudinary.com/dvcywi3uf/image/upload/v1520014276/chatbot-imoveis/casa-costa-silva.jpg"
+    "photo": "https://wallpapers.com/images/hd/real-estate-modern-white-house-dcxpp5xsw4e7wqgc.jpg"
   },
   {
     "id": 3,
@@ -116,30 +116,30 @@ const property = [
     ],
     "images": [
       {
-        "id":1,
+        "id": 1,
         "image": "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
       },
       {
-        "id":2,
+        "id": 2,
         "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLZ1geLXV-OKfnA3wZy-J6Ky16_tCevE_BWCl0K6PFbw&s"
       },
       {
-        "id":3,
+        "id": 3,
         "image": "https://wallpapers.com/images/hd/real-estate-modern-white-house-dcxpp5xsw4e7wqgc.jpg"
       },
       {
-        "id":4,
+        "id": 4,
         "image": "https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwcm9maWxlLWxpa2VkfDE4fHx8ZW58MHx8fHx8&w=1000&q=80"
       },
       {
-        "id":5,
+        "id": 5,
         "image": "https://img.staticmb.com/mbcontent/images/crop/uploads/2023/12/biggest-house-in-the-world_0_1200.jpg"
       }],
     "dealer": "cacrtrele ser jweiam",
     "dealer_contact": "+767 347-928-2372",
     "district": "América",
     "price": "R$ 460.000",
-    "photo": "https://res.cloudinary.com/dvcywi3uf/image/upload/v1520014434/chatbot-imoveis/ap-america.jpg"
+    "photo": "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
   },
   {
     "id": 4,
@@ -163,23 +163,23 @@ const property = [
     ],
     "images": [
       {
-        "id":1,
+        "id": 1,
         "image": "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
       },
       {
-        "id":2,
+        "id": 2,
         "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLZ1geLXV-OKfnA3wZy-J6Ky16_tCevE_BWCl0K6PFbw&s"
       },
       {
-        "id":3,
+        "id": 3,
         "image": "https://wallpapers.com/images/hd/real-estate-modern-white-house-dcxpp5xsw4e7wqgc.jpg"
       },
       {
-        "id":4,
+        "id": 4,
         "image": "https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwcm9maWxlLWxpa2VkfDE4fHx8ZW58MHx8fHx8&w=1000&q=80"
       },
       {
-        "id":5,
+        "id": 5,
         "image": "https://img.staticmb.com/mbcontent/images/crop/uploads/2023/12/biggest-house-in-the-world_0_1200.jpg"
       }
     ],
@@ -187,7 +187,7 @@ const property = [
     "dealer_contact": "+67 347-928-2372",
     "district": "Centro",
     "price": "R$ 1.200",
-    "photo": "https://res.cloudinary.com/dvcywi3uf/image/upload/v1520014434/chatbot-imoveis/ap-america.jpg"
+    "photo": "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
   }
 ]
 

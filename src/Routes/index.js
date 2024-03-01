@@ -9,7 +9,6 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import Otp from '../screens/Stacks/Otp';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Chat from '../screens/Components/Chat';
 import Login from '../screens/Components/Login';
 import PropertiesTab from '../screens/Bottom-tabs/Properties';
 import AccountTab from '../screens/Bottom-tabs/Account';
@@ -22,7 +21,9 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import ChatTab from '../screens/Bottom-tabs/Chat';
 import AssignProperty from '../screens/Components/AssignProperty';
-import UserProfile from '../screens/Components/UserProfile';
+import CheckAuthCredentials from './../screens/Components/Check-AuthCredentials';
+import UserProfile from '../screens/Stacks/UserProfile';
+import ChatDetail from '../screens/Stacks/ChatDetail';
 
 
 
@@ -298,7 +299,6 @@ export default function AppNavigation() {
             //     // options={{ headerShown: false }}
             //     />
             //     <Stack.Screen name="Otp" component={Otp} />
-            //     <Stack.Screen name="Chat" component={Chat} />
             //     <Stack.Screen name="Login" component={Login} />
             //     <Stack.Screen name="PropertyDetail" component={PropertyDetail} />
 
@@ -322,7 +322,7 @@ export default function AppNavigation() {
                             state.is_profile_completed === false || null ?
                                 (
                                     <>
-                                        <Stack.Screen name="UserProfile" component={UserProfile} />
+                                        <Stack.Screen name="CheckAuthCredentials" component={CheckAuthCredentials} />
 
                                     </>
                                 )
@@ -335,10 +335,11 @@ export default function AppNavigation() {
                                             component={Root}
                                         // options={{ headerShown: false }}
                                         />
-                                        <Stack.Screen name="Chat" component={Chat} />
-
                                         <Stack.Screen name="AssignProperty" component={AssignProperty} />
+                                        <Stack.Screen name="ChatDetail" component={ChatDetail} />
                                         <Stack.Screen name="PropertyDetail" component={PropertyDetail} />
+                                        <Stack.Screen name="UserProfile" component={UserProfile} />
+
                                     </>
                                 )}
                 </Stack.Navigator>

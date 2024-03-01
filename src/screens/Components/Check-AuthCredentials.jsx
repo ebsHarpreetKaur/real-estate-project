@@ -10,7 +10,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import * as Location from 'expo-location';
 import AuthContext from '../../api/context/Context';
 
-export default function UserProfile() {
+export default function CheckAuthCredentials() {
     const navigation = useNavigation()
     const [user_location, setUserLocation] = useState('');
     const [reraNumber, setReraNumber] = useState('');
@@ -76,57 +76,65 @@ export default function UserProfile() {
     };
 
     const handleContinue = () => {
-        // console.log("continue")
-        // navigation.navigate(" ", { screen: 'Home' });
-        fetch('https://dummyjson.com/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
+        if (!reraNumber) {
+            alert("please enter rera number")
+        } else {
+            // console.log("continue")
+            // navigation.navigate(" ", { screen: 'Home' });
+            fetch('https://dummyjson.com/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
 
-                username: 'kminchelle',
-                password: '0lelplR',
-                // expiresInMins: 60, // optional
+                    username: 'kminchelle',
+                    password: '0lelplR',
+                    // expiresInMins: 60, // optional
+                })
             })
-        })
-            .then(res => res.json())
-            .then(res => {
-                // console.log(res,"res........")
-                const modifiedResponse = {
-                    ...res,
-                    profile_complete_status: true,
-                    user_location: location,
-                    user_city: city
+                .then(res => res.json())
+                .then(res => {
+                    // console.log(res,"res........")
+                    const modifiedResponse = {
+                        ...res,
+                        profile_complete_status: true,
+                        user_location: location,
+                        user_city: city,
+                        rera_number: reraNumber
 
-                };
-                // console.log("modifiedResponse.......", modifiedResponse)
-                const user_object_string = JSON.stringify(modifiedResponse);
-                if (res) {
-                    SecureStore.deleteItemAsync('auth_user')
-                        .then(() => {
-                            console.log('User deleted successfully');
-                            console.log("city location", city, location)
-                            SecureStore.setItemAsync('auth_user', user_object_string)
-                                .then(() => {
-                                    console.log('User stored successfully');
-                                    signIn({ 'auth_user': modifiedResponse })
+                    };
+                    // console.log("modifiedResponse.......", modifiedResponse)
+                    const user_object_string = JSON.stringify(modifiedResponse);
+                    if (res) {
+                        SecureStore.deleteItemAsync('auth_user')
+                            .then(() => {
+                                console.log('User deleted successfully');
+                                console.log("city location", city, location)
+                                if (city !== null || city !== '' && location !== null || location !== '') {
+                                    SecureStore.setItemAsync('auth_user', user_object_string)
+                                        .then(() => {
+                                            console.log('User stored successfully');
+                                            signIn({ 'auth_user': modifiedResponse })
 
-                                    navigation.navigate(" ", { screen: 'Home' });
+                                            navigation.navigate(" ", { screen: 'Home' });
 
-                                })
-                                .catch(error => {
-                                    console.error('Error storing object:', error);
-                                });
+                                        })
+                                        .catch(error => {
+                                            console.error('Error storing object:', error);
+                                        });
+
+                                }
 
 
+                            })
+                            .catch(error => {
+                                console.error('Error storing object:', error);
+                            });
 
-                        })
-                        .catch(error => {
-                            console.error('Error storing object:', error);
-                        });
+                    }
 
-                }
+                });
+        }
 
-            });
 
     }
 
@@ -192,7 +200,7 @@ const styles = StyleSheet.create({
         width: 300,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#336aea",
+        backgroundColor: "#20B2AA",
         shadowColor: "rgba(0,0,0,0.4)",
         shadowOffset: {
             width: 1,
@@ -206,14 +214,14 @@ const styles = StyleSheet.create({
     buttonText: {
         color: "white",
         fontSize: 18,
-        backgroundColor: "#336aea"
+        backgroundColor: "#20B2AA"
     },
 
     wrapper: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        // backgroundColor: "#336aea",
+        // backgroundColor: "#20B2AA",
         backgroundColor: "#ffffff",
 
     },

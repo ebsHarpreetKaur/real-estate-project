@@ -42,22 +42,21 @@ export default function AccountTab() {
       }}>Sign out</Button>
       <ScrollView style={{ padding: 5, backgroundColor: "#ffffff" }}>
 
-
         <Card style={{ backgroundColor: "#ffffff", shadowOpacity: 0 }}>
           <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
             <Card.Title title="Change Password" subtitle="" left={LeftContent} style={{ width: "80%" }} />
-            {/* <MaterialCommunityIcons name="arrow-right" color='#336aea' size={25} style={{ margin: 5, marginTop: '5%' }} /> */}
+            <MaterialCommunityIcons name="arrow-right" color='#20B2AA' size={25} style={{ margin: 5, marginTop: '5%' }} />
           </View>
           <Divider />
-          <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+          {/* <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
             <Card.Title title="Sign out" subtitle="" left={LeftContent1} style={{ width: "80%" }} />
-            {/* <MaterialCommunityIcons name="arrow-right" color='#336aea' size={25} style={{ margin: 5, marginTop: '5%' }} /> */}
-          </View>
+            <MaterialCommunityIcons name="arrow-right" color='#20B2AA' size={25} style={{ margin: 5, marginTop: '5%' }} />
+          </View> */}
           <Divider />
 
           {/* <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
             <Card.Title title="Orders & Packages" subtitle="Privacy and signout" left={LeftContent2} style={{ width: "80%" }} />
-            <MaterialCommunityIcons name="arrow-right" color='#336aea' size={25} style={{ margin: 5, marginTop: '5%' }} />
+            <MaterialCommunityIcons name="arrow-right" color='#20B2AA' size={25} style={{ margin: 5, marginTop: '5%' }} />
           </View> */}
           {/* <Card.Actions>
           <Button>Cancel</Button>

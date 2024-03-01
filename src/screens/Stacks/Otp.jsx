@@ -3,8 +3,6 @@ import { SafeAreaView, StyleSheet, Button, Text, StatusBar } from "react-native"
 import { useNavigation } from '@react-navigation/native';
 import { checkVerification } from "../../api/context/verify";
 import OTPInputView from "@twotalltotems/react-native-otp-input";
-import AppBar from "../Components/AppBar";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
 import AuthContext from "../../api/context/Context";
 import { today } from "../../api/context/auth";
@@ -84,7 +82,6 @@ const Otp = ({ route }) => {
         backgroundColor="#61dafb"
 
       /> */}
-      <AppBar />
       <SafeAreaView style={styles.wrapper}>
         <Text style={styles.prompt}>Enter the code we sent you</Text>
         <Text style={styles.message}>
