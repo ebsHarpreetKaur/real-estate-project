@@ -92,28 +92,21 @@ const styles = StyleSheet.create({
         alignItems: "center",
         backgroundColor: "#ffffff",
     },
+    
     button: {
-        marginTop: 20,
-        height: 50,
-        width: 300,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#20B2AA",
-
-        shadowColor: "rgba(0,0,0,0.4)",
-        shadowOffset: {
-            width: 1,
-            height: 5,
-        },
-        shadowOpacity: 0.34,
-        shadowRadius: 6.27,
-        elevation: 10,
+        // backgroundColor: '#0d0d0d',
+        backgroundColor: '#20B2AA',
+        padding: 18,
+        borderRadius: 12,
+        marginTop: 48,
+        marginBottom: 36,
+        width:"80%"
     },
-
     buttonText: {
-        color: "white",
-        fontSize: 14,
-        backgroundColor: "#20B2AA"
+        fontSize: 16,
+        fontWeight: '600',
+        color: 'white',
+        textAlign: 'center',
     },
 
     welcome: {

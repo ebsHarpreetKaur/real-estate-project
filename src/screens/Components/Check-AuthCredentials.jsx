@@ -167,10 +167,6 @@ export default function CheckAuthCredentials() {
                             right={<TextInput.Icon icon={() => <Icon name="document-text-outline" size={20} color="black" />} />}
                         // keyboardType="numeric"
                         />
-                        <HelperText type="error" visible={hasErrors()}>
-                            {!reraNumber ? "This field is required" : "Please enter numbers only!"}
-                        </HelperText>
-
                         <TouchableOpacity
                             style={styles.button}
                             onPress={() => {
@@ -179,7 +175,7 @@ export default function CheckAuthCredentials() {
 
                             }}
                         >
-                            <Text style={styles.buttonText}>Continue <MaterialCommunityIcons name="arrow-right" color={"#ffffff"} size={17} /></Text>
+                            <Text style={styles.buttonText}>Continue</Text>
 
                         </TouchableOpacity>
                     </View>
@@ -196,7 +192,7 @@ export default function CheckAuthCredentials() {
 const styles = StyleSheet.create({
     button: {
         marginTop: 20,
-        height: 50,
+        // height: 60,
         width: 300,
         justifyContent: "center",
         alignItems: "center",
@@ -209,12 +205,14 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.34,
         shadowRadius: 6.27,
         elevation: 10,
+        borderRadius:12,
+        padding:18
     },
-
     buttonText: {
-        color: "white",
-        fontSize: 18,
-        backgroundColor: "#20B2AA"
+        fontSize: 16,
+        fontWeight: '600',
+        color: 'white',
+        textAlign: 'center',
     },
 
     wrapper: {

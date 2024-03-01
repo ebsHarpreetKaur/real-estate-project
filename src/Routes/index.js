@@ -24,6 +24,7 @@ import AssignProperty from '../screens/Components/AssignProperty';
 import CheckAuthCredentials from './../screens/Components/Check-AuthCredentials';
 import UserProfile from '../screens/Stacks/UserProfile';
 import ChatDetail from '../screens/Stacks/ChatDetail';
+import WelcomeScreen from '../screens/Components/Welcome';
 
 
 
@@ -311,9 +312,11 @@ export default function AppNavigation() {
                         headerShown: false,
                     }}
                 >
+
                     {
                         state.userToken === null || state.userToken === ' ' || state.userToken === undefined ? (
                             <>
+                                <Stack.Screen name="Welcome" component={WelcomeScreen} />
                                 <Stack.Screen name="SignIn" component={SignInScreen} />
                                 <Stack.Screen name="Otp" component={Otp} />
                             </>

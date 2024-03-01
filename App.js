@@ -1,8 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, AppState } from 'react-native';
 import AppNavigation from './src/Routes';
 import { MD3LightTheme as DefaultTheme, PaperProvider } from 'react-native-paper';
-
 
 const theme = {
   ...DefaultTheme,

@@ -32,6 +32,7 @@ import { TextInput } from 'react-native';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
+import axios from 'axios';
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -59,21 +60,52 @@ export default function HomeTab() {
     const [modalVisible, setModalVisible] = useState(false)
     const [userSelected, setUserSelected] = useState([])
     const [auth_user, setAuth_user] = useState([])
+    const [Dealer_data, setDealer_data] = useState([])
+
 
     React.useEffect(() => {
-        const auth_user_data = async () => {
-            let userData;
-            userData = await SecureStore.getItemAsync('auth_user');
-            const parsedData = JSON.parse(userData);
-            setAuth_user(parsedData)
-            // console.log("parsedData", parsedData)
-            console.log("auth_user..........", auth_user)
-
-
-        };
-
         auth_user_data();
+        get_dealer_list();
     }, []);
+
+    const auth_user_data = async () => {
+        let userData;
+        userData = await SecureStore.getItemAsync('auth_user');
+        const parsedData = JSON.parse(userData);
+        setAuth_user(parsedData)
+        // console.log("parsedData", parsedData)
+        // console.log("auth_user..........", auth_user)
+    };
+
+    const get_dealer_list = async () => {
+
+        axios.get('http://127.0.0.1:8000/api/users', { timeout: 1000 }, {
+            headers: {
+                "Accept": 'application/json',
+                'content-type': 'application/json',
+            },
+        })
+            .then(function (response) {
+                console.log("response", response);
+            })
+            .catch(function (error) {
+                console.log("error", error);
+            })
+
+
+        // await fetch('http://127.0.0.1:8000/api/users', {
+        //     method: 'GET',
+        //     headers: { 'Content-Type': 'application/json' },
+
+        // })
+        //     .then(res => res.json())
+        //     .then(res => {
+        //         console.log(res, "res........")
+        //     });
+
+    }
+
+
 
 
     const selectUser = user => {
@@ -100,16 +132,20 @@ export default function HomeTab() {
 
 
     async function schedulePushNotification() {
+
         const recipientToken = "ExponentPushToken[InIylRDThGBGkF6ffikNIN]";
         await Notifications.scheduleNotificationAsync({
-            content: {
-                title: `Unify`,
-                body: `👤${auth_user.firstName} shown interest in your property.`,
-                data: { data: 'goes here' },
-            },
             to: recipientToken,
-            sound: 'default',
-            trigger: { seconds: 2 },
+            title: 'New message',
+            body: 'You have a new message',
+            // content: {
+            //     title: `Unify`,
+            //     body: `👤${auth_user.firstName} shown interest in your property.`,
+            //     data: { data: 'goes here' },
+            // },
+            // to: recipientToken,
+            // sound: 'default',
+            // trigger: { seconds: 2 },
         });
     }
 
@@ -139,10 +175,12 @@ export default function HomeTab() {
             // Learn more about projectId:
             // https://docs.expo.dev/push-notifications/push-notifications-setup/#configure-projectid
             // token = (await Notifications.getExpoPushTokenAsync({ projectId: 'your-project-id' })).data;
-            token = await Notifications.getExpoPushTokenAsync({
-                projectId: Constants.expoConfig.extra.eas.projectId,
-            });
-            console.log("notification token", token);
+            // token = await Notifications.getExpoPushTokenAsync({
+            //     projectId: Constants.expoConfig.extra.eas.projectId,
+            // });
+            const { data: token } = await Notifications.getExpoPushTokenAsync();
+
+            // console.log("notification token", token);
         } else {
             alert('Must use physical device for Push Notifications');
         }
