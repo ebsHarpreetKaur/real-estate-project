@@ -227,9 +227,10 @@ export default function AppNavigation() {
                     name="Home"
                     component={HomeScreen}
                     options={{
-                        tabBarLabel: 'Home',
+                        tabBarLabel: 'Dealers',
+                        tabBarActiveTintColor: "#20B2AA",
                         tabBarIcon: ({ color, size }) => (
-                            <MaterialCommunityIcons name="home-analytics" color={color} size={size} />
+                            <MaterialCommunityIcons name="home-analytics" color="#20B2AA" size={size} />
                         ),
                     }}
                 />
@@ -238,8 +239,9 @@ export default function AppNavigation() {
                     component={PropertiesScreen}
                     options={{
                         tabBarLabel: 'Properties',
+                        tabBarActiveTintColor: "#20B2AA",
                         tabBarIcon: ({ color, size }) => (
-                            <MaterialCommunityIcons name="home-city" color={color} size={size} />
+                            <MaterialCommunityIcons name="home-city" color="#20B2AA" size={size} />
                         ),
                     }}
                 />
@@ -249,8 +251,9 @@ export default function AppNavigation() {
                     component={ChatScreen}
                     options={{
                         tabBarLabel: 'Chat',
+                        tabBarActiveTintColor: "#20B2AA",
                         tabBarIcon: ({ color, size }) => (
-                            <MaterialCommunityIcons name="chat" color={color} size={size} />
+                            <MaterialCommunityIcons name="chat" color="#20B2AA" size={size} />
                         ),
                     }}
                 />
@@ -259,8 +262,9 @@ export default function AppNavigation() {
                     component={NotificationScreen}
                     options={{
                         tabBarLabel: 'Notifications',
+                        tabBarActiveTintColor: "#20B2AA",
                         tabBarIcon: ({ color, size }) => (
-                            <MaterialCommunityIcons name="bell" color={color} size={size} />
+                            <MaterialCommunityIcons name="bell" color="#20B2AA" size={size} />
                         ),
                     }}
                 />
@@ -269,8 +273,10 @@ export default function AppNavigation() {
                     component={AccountScreen}
                     options={{
                         tabBarLabel: 'Account',
+                        tabBarActiveTintColor: "#20B2AA",
+                        // tabBarInactiveBackgroundColor:"#",
                         tabBarIcon: ({ color, size }) => (
-                            <MaterialCommunityIcons name="account" color={color} size={30} />
+                            <MaterialCommunityIcons name="account" color="#20B2AA" size={30} />
                         ),
                     }}
                 />
@@ -315,9 +321,11 @@ export default function AppNavigation() {
                     {
                         state.userToken === null || state.userToken === ' ' || state.userToken === undefined ? (
                             <>
-                                <Stack.Screen name="Welcome" component={WelcomeScreen} />
-                                <Stack.Screen name="SignIn" component={SignInScreen} />
+                                {/* <Stack.Screen name="Welcome" component={WelcomeScreen} />
+                                <Stack.Screen name="SignIn" component={SignInScreen} /> */}
+                                <Stack.Screen name="Login" component={SignInScreen} />
                                 <Stack.Screen name="Otp" component={Otp} />
+
                             </>
 
                         ) :
@@ -329,20 +337,20 @@ export default function AppNavigation() {
                             //         </>
                             //     )
                             //     :
-                                (
-                                    <>
-                                        <Stack.Screen
-                                            name=" "
-                                            component={Root}
-                                        // options={{ headerShown: false }}
-                                        />
-                                        <Stack.Screen name="AssignProperty" component={AssignProperty} />
-                                        <Stack.Screen name="ChatDetail" component={ChatDetail} />
-                                        <Stack.Screen name="PropertyDetail" component={PropertyDetail} />
-                                        <Stack.Screen name="UserProfile" component={UserProfile} />
+                            (
+                                <>
+                                    <Stack.Screen
+                                        name=" "
+                                        component={Root}
+                                    // options={{ headerShown: false }}
+                                    />
+                                    <Stack.Screen name="AssignProperty" component={AssignProperty} />
+                                    <Stack.Screen name="ChatDetail" component={ChatDetail} />
+                                    <Stack.Screen name="PropertyDetail" component={PropertyDetail} />
+                                    <Stack.Screen name="UserProfile" component={UserProfile} />
 
-                                    </>
-                                )}
+                                </>
+                            )}
                 </Stack.Navigator>
             </AuthContext.Provider>
 

@@ -201,6 +201,7 @@ import {
     Modal,
     TouchableWithoutFeedback,
     Keyboard,
+    TextInput
 } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import * as SecureStore from 'expo-secure-store';
@@ -208,13 +209,17 @@ import property from '../../data/PropertyConstants';
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { SimpleLineIcons } from '@expo/vector-icons';
-import { Searchbar, Menu, Avatar, Button, Card, Text, Divider, TextInput, } from 'react-native-paper';
+import { Searchbar, Menu, Avatar, Button, Card, Text, Divider, } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Feather from 'react-native-vector-icons/Feather';
 import AppBar from '../Components/AppBar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import PropertyDetail from '../Stacks/PropertyDetail';
+import Entypo from 'react-native-vector-icons/Entypo';
+
 const LeftContent = props => <Avatar.Icon {...props} icon="gift" />
 
 
@@ -312,8 +317,29 @@ export default function PropertiesTab() {
             />
 
             <AppBar />
-
             <View style={styles.headerMenu}>
+                <View style={styles.inputContainer}>
+                    <Image
+                        style={[styles.icon, styles.inputIcon]}
+                        source={{ uri: 'https://img.icons8.com/color/70/000000/search.png' }}
+                    />
+                    <TextInput
+                        style={styles.inputs}
+                        placeholder="Search..."
+                        underlineColorAndroid="transparent"
+                        value={searchQuery}
+                        onChangeText={text => {
+                            onSearch(text)
+                        }}
+                    />
+                </View>
+
+                <Ionicons
+
+                    onPress={() => {
+                    }} name="filter-sharp" color='#DEDEDE' size={15} style={{ fontSize: 35, margin: 5, marginTop: "4%" }} />
+            </View>
+            {/* <View style={styles.headerMenu}>
                 <Searchbar
                     placeholder="Search"
                     onChangeText={text => {
@@ -356,7 +382,7 @@ export default function PropertiesTab() {
                     // disabled
                     />
                 </Menu>
-            </View>
+            </View> */}
 
             <SafeAreaView style={styles.container}>
                 <FlatList
@@ -459,5 +485,25 @@ const styles = StyleSheet.create({
         padding: 5,
         margin: 10,
     },
-
+    inputs: {
+        height: 45,
+        marginLeft: 16,
+        borderBottomColor: '#FFFFFF',
+        flex: 1,
+    },
+    inputIcon: {
+        marginLeft: 15,
+        justifyContent: 'center',
+    },
+    inputContainer: {
+        borderBottomColor: '#F5FCFF',
+        backgroundColor: '#FFFFFF',
+        borderRadius: 30,
+        borderBottomWidth: 1,
+        height: 45,
+        flexDirection: 'row',
+        alignItems: 'center',
+        flex: 1,
+        margin: 10,
+    },
 });

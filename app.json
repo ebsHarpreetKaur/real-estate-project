@@ -4,13 +4,16 @@
     "slug": "unify-react-native-realestate-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/newlogo.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.gif",
+      "image": "./assets/logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
-    
+    },
+    "notification": {
+      "androidMode": "default",
+      "icon": "./assets/newlogo.png"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -23,7 +26,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/logo.png",
+        "foregroundImage": "./assets/newlogo.png",
         "backgroundColor": "#ffffff"
       },
       "useNextNotificationsApi": true,

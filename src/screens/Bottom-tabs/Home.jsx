@@ -33,6 +33,7 @@ import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 import axios from 'axios';
+import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -109,6 +110,7 @@ export default function HomeTab() {
 
 
     const selectUser = user => {
+        console.log("user", user)
         setUserSelected(user)
         setModalVisible(true)
     }
@@ -132,20 +134,26 @@ export default function HomeTab() {
 
 
     async function schedulePushNotification() {
+        Toast.show({
+            type: ALERT_TYPE.SUCCESS,
+            title: 'Success',
+            textBody: 'Message sent successfully!',
+        })
+        setModalVisible(false)
 
         const recipientToken = "ExponentPushToken[InIylRDThGBGkF6ffikNIN]";
         await Notifications.scheduleNotificationAsync({
-            to: recipientToken,
-            title: 'New message',
-            body: 'You have a new message',
-            // content: {
-            //     title: `Unify`,
-            //     body: `👤${auth_user.firstName} shown interest in your property.`,
-            //     data: { data: 'goes here' },
-            // },
             // to: recipientToken,
-            // sound: 'default',
-            // trigger: { seconds: 2 },
+            // title: 'New message',
+            // body: 'You have a new message',
+            content: {
+                title: `Unify`,
+                body: `👤${auth_user.username} shown interest in your property.`,
+                data: { data: 'goes here' },
+            },
+            to: recipientToken,
+            sound: 'default',
+            trigger: { seconds: 2 },
         });
     }
 
@@ -233,17 +241,16 @@ export default function HomeTab() {
                             <TouchableOpacity style={styles.eoi_button} onPress={async () => {
                                 selectUser(item);
                             }}>
-                                <Text style={styles.eoi_Text}>send EOI</Text>
+                                <Text style={styles.eoi_Text}>EOI</Text>
                             </TouchableOpacity>
 
-                            <MaterialCommunityIcons name="arrow-right" color='#DEDEDE' size={23} style={{ marginTop: 10, marginRight: "2%" }} onPress={() => handle_dealer_profile_view(item)} />
+                            {/* <MaterialCommunityIcons name="arrow-right" color='#DEDEDE' size={23} style={{ marginTop: 10, marginRight: "2%" }} onPress={() => handle_dealer_profile_view(item)} /> */}
                         </View>
                         <View style={styles.msgContainer}>
                             <Text style={styles.msgTxt}><MaterialIcons onPress={() => {
                                 handle_change_location()
                             }} name="location-pin" color='#DEDEDE' size={12} />{item.user_city}</Text>
                         </View>
-
                     </View>
 
                 </View>
@@ -257,6 +264,7 @@ export default function HomeTab() {
                 animated={true}
                 backgroundColor="#61dafb"
             />
+            {/* <AlertNotificationRoot> */}
 
             <AppBar />
 
@@ -268,7 +276,7 @@ export default function HomeTab() {
                     />
                     <TextInput
                         style={styles.inputs}
-                        placeholder="Search..."
+                        placeholder="Enter location..."
                         underlineColorAndroid="transparent"
                         value={searchQuery}
                         onChangeText={text => {
@@ -313,9 +321,9 @@ export default function HomeTab() {
                 {/* <View style={styles.popup}> */}
                 <View style={styles.popupContent}>
                     <View style={styles.card}>
-                        <Text>To:</Text>
-                        <TextInput style={styles.to_button} placeholder="To:" />
-                        <Text>Message:</Text>
+                        <TextInput style={styles.to_button} placeholder="" editable={false}
+                            selectTextOnFocus={false} value={userSelected?.fullname}/>
+                        <Text style={{ marginRight: "75%" }}>message:</Text>
                         <TextInput style={styles.message_input} placeholder="message"
                             editable
                             multiline
@@ -324,7 +332,6 @@ export default function HomeTab() {
 
                         <TouchableOpacity style={styles.sendnotifiButton} onPress={async () => {
                             await schedulePushNotification();
-                            setModalVisible(false)
                         }}>
                             <Text style={styles.sendnotifiText}>Send</Text>
                         </TouchableOpacity>
@@ -350,6 +357,7 @@ export default function HomeTab() {
             </Modal>
 
 
+            {/* </AlertNotificationRoot> */}
 
             {/* ---------------------------------------------------------------------------------------------------------- */}
 
@@ -406,16 +414,17 @@ const styles = StyleSheet.create({
         padding: 10,
         marginVertical: 10,
         width: '100%',
+        color:"#DEDEDE"
     },
     eoi_button: {
         backgroundColor: '#20B2AA',
         borderRadius: 5,
         padding: 5,
-        marginTop: 10,
+        marginTop: 6,
         width: 72,
         height: 30,
         alignItems: 'center',
-        marginRight: 18
+        marginRight: 1
     },
     eoi_Text: {
         color: '#fff',
@@ -531,7 +540,7 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         fontWeight: '600',
         color: '#222',
-        fontSize: 18,
+        fontSize: 17,
         width: 170,
     },
     mblTxt: {

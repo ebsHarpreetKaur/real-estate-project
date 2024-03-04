@@ -17,6 +17,7 @@ import { sendSmsVerification } from "../../api/context/verify";
 import { useNavigation } from "@react-navigation/native";
 import { Button } from "react-native-paper";
 import { Image, TouchableWithoutFeedback } from "react-native";
+import { ALERT_TYPE, Toast, Dialog } from 'react-native-alert-notification';
 
 const Login = () => {
     const navigation = useNavigation();
@@ -24,6 +25,20 @@ const Login = () => {
     const [formattedValue, setFormattedValue] = useState("");
     const phoneInput = useRef(null);
 
+    const handleOTPscreen = () => {
+
+        Dialog.show({
+            type: ALERT_TYPE.SUCCESS,
+            title: 'success',
+            textBody: 'OTP sent successfully',
+            button: 'close',
+        })
+        // navigation.navigate('Otp');
+        navigation.navigate("Otp", {
+            params: { phoneNumber: formattedValue },
+        });
+
+    }
     return (
         <>
             <StatusBar
@@ -63,14 +78,11 @@ const Login = () => {
                     <TouchableOpacity
                         style={styles.button}
                         onPress={() => {
-                            // sendSmsVerification(formattedValue).then((sent) => {
-                            // SecureStore.deleteItemAsync('auth_user') 
+                            sendSmsVerification(formattedValue).then((sent) => {
+                                // SecureStore.deleteItemAsync('auth_user') 
+                                handleOTPscreen()
 
-                            navigation.navigate('Otp');
-                            //     navigation.navigate("Otp", {
-                            //         params: { phoneNumber: formattedValue },
-                            //     });
-                            // });
+                            });
                         }}
                     >
                         <Text style={styles.buttonText}>Sign in</Text>

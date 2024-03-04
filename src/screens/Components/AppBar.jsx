@@ -56,14 +56,17 @@ const AppBar = () => {
                 <Appbar.Action icon="magnify" onPress={_handleSearch} /> */}
                 {/* <Appbar.Action icon="dots-vertical" onPress={_handleMore} /> */}
             </Appbar.Header>
-
+            
             <View style={styles.userCard}>
                 <View>
-                    <Image source={{ uri: auth_user !== null || '' ? auth_user.image : 'https://www.shutterstock.com/shutterstock/photos/1760295569/display_1500/stock-vector-profile-picture-avatar-icon-vector-1760295569.jpg' }} style={styles.userPhoto} />
+                <Image source={{ uri: 'https://media.istockphoto.com/id/186841959/photo/beautiful-modern-indian-woman.jpg?s=612x612&w=0&k=20&c=zFH5vouHzfXYrrFhtEulQCa9fDoJDt1X3kH0u4kOS9c=' }} style={styles.userPhoto} />
+                    {/* <Image source={{ uri: auth_user !== null || '' ? auth_user.image : 'https://www.shutterstock.com/shutterstock/photos/1760295569/display_1500/stock-vector-profile-picture-avatar-icon-vector-1760295569.jpg' }} style={styles.userPhoto} /> */}
                 </View>
                 <View style={styles.userInfo}>
-                    <Text style={styles.userName}>{auth_user !== null || '' ? auth_user.username : null}</Text>
-                    <Text style={styles.userFollowers}>{auth_user !== null || '' ? auth_user.email : null}</Text>
+                    {/* <Text style={styles.userName}>{auth_user !== null || '' ? auth_user.username : null}</Text> */}
+                    <Text style={styles.userName}>Bhawna Ahuja</Text>
+
+                    {/* <Text style={styles.userFollowers}>{auth_user !== null || '' ? auth_user.email : null}</Text> */}
                 </View>
                 <TouchableOpacity >
                     <MaterialCommunityIcons name="menu" style={styles.editButtonText} size={23} onPress={() => <></>} />

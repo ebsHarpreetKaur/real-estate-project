@@ -1,8 +1,8 @@
 const users = [
     {
         "id": "1",
-        "fullname": "John Doe",
-        "image": "https://media.istockphoto.com/id/825082848/photo/smiling-businessman-at-office.jpg?s=612x612&w=0&k=20&c=wJcvBKllY-GIpCi-gCtAB0lHp56dyqK57zaBW0OhGcw=",
+        "fullname": "Ritik Pandey",
+        "image": "https://media.istockphoto.com/id/921036010/photo/real-estate-agent-in-global-corporation-is-negotiating-the-deal.jpg?s=612x612&w=0&k=20&c=sSuzMmiwPO2DE4C4m5xItSX3TJOuKCKuMsRTYx5D-Zo=",
         "user_location": [
             {
                 "coords": {
@@ -17,7 +17,7 @@ const users = [
                 "timestamp": 1709037095653.2131
             }
         ],
-        "user_city": "Subs Norway City A",
+        "user_city": "Chandigarh",
         "rera_number": "RERA-98765-PQR",
         "properties": [
             {
@@ -42,8 +42,8 @@ const users = [
     },
     {
         "id": "2",
-        "fullname": "Jane Smith",
-        "image": "https://media.istockphoto.com/id/1244900905/photo/happy-real-estate-agent-giving-to-a-couple-keys-of-their-new-home.jpg?s=612x612&w=0&k=20&c=HqjdOZzRvLWfjvSYyO_t5fkFnjmiUEQTV10iHk_pUbA=",
+        "fullname": "Vishesh",
+        "image": "https://media.istockphoto.com/id/524259493/photo/indian-male-student.jpg?s=612x612&w=0&k=20&c=CKcc7wHKkzYfp4UTjNYXzXszW9R3pd4GP3-34q4gqM4=",
         "user_location": [
             {
                 "coords": {
@@ -57,7 +57,7 @@ const users = [
                 "timestamp": 1709037095653.2131
             }
         ],
-        "user_city": "Suburb, City C",
+        "user_city": "Mohali",
         "rera_number": "RERA-98765-PQR",
         "properties": [
             {
@@ -83,8 +83,8 @@ const users = [
     },
     {
         "id": "3",
-        "fullname": "Michael Johnson",
-        "image": "https://media.istockphoto.com/id/1345853667/photo/agent-businessman-with-keys-to-a-new-home-smiling-on-the-background-of-a-new-apartment-house.jpg?s=612x612&w=0&k=20&c=Qly7WGPElJGHxNpl8ENylCwoUweveXMNC0leTdKvrp4=",
+        "fullname": "D Rajender Reddy",
+        "image": "https://media.istockphoto.com/id/1295213888/photo/senior-man-sitting-at-park-bench.jpg?s=612x612&w=0&k=20&c=WjnoY8IJLsDr7YJNHq28WfkWZ-j2UfQWfPCU58GyEfo=",
         "user_location": [
             {
                 "coords": {
@@ -99,8 +99,8 @@ const users = [
                 "timestamp": 1709037095653.2131
             }
         ],
-        "user_city": "Mohali",
-        "rera_number": "RERA-98765-PQR",
+        "user_city": "Panchkula",
+        "rera_number": "5466666",
         "properties": [
             {
                 "property_id": "301",
@@ -122,8 +122,8 @@ const users = [
     },
     {
         "id": "4",
-        "fullname": "Emily Johnson",
-        "image": "https://media.istockphoto.com/id/1134350144/photo/happy-real-estate-agent-showing-a-property.jpg?s=612x612&w=0&k=20&c=qQkZqY0uI1o7Ih9ZKFsXw5EGX4o-bT0tb0ggJljmp50=",
+        "fullname": "Kottalam R Nadar",
+        "image": "https://media.istockphoto.com/id/1333001232/photo/portrait-of-indian-man-face-outdoors-looking-at-camera.jpg?s=612x612&w=0&k=20&c=Ne-OChwAEFF5U7yxOwUUqA8ELrJ1WCYho4RkW9v360I=",
         "user_location": [
             {
                 "coords": {
@@ -160,8 +160,8 @@ const users = [
     },
     {
         "id": "5",
-        "fullname": "William Brown",
-        "image": "https://media.istockphoto.com/id/1388642146/photo/call-center-workers.jpg?s=612x612&w=0&k=20&c=OQ-BhHBcXxYxK2zz4JUQXR6SJ1NucnaVjHWu8ylksNI=",
+        "fullname": "Chhabra Real Estate",
+        "image": "https://media.istockphoto.com/id/1395717976/photo/successful-business-indian-man-and-woman-in-discussion-about-real-estate.jpg?s=612x612&w=0&k=20&c=vkbijVA2FhxBnzBYFDnDiB7DHwGqvZJqytBqHCwobG4=",
         "user_location": [
             {
                 "coords": {
@@ -175,7 +175,7 @@ const users = [
                 "timestamp": 1709037095653.2131
             }
         ],
-        "user_city": "Beachfront, City B",
+        "user_city": "Panchkula",
         "rera_number": "RERA-54321-XYZ",
         "properties": [
             {
@@ -198,8 +198,8 @@ const users = [
     },
     {
         "id": "6",
-        "fullname": "Olivia Martinez",
-        "image": "https://media.istockphoto.com/id/1362265242/photo/portrait-of-a-smiling-young-businesswoman.jpg?s=612x612&w=0&k=20&c=AvNqcwVLavdf9we0V6UNoFzfm7IPpmB5qCBvT6g6kJg=",
+        "fullname": "Avadesh Sharma",
+        "image": "https://media.istockphoto.com/id/1383918872/photo/old-man-using-mobile-phone-at-park.jpg?s=612x612&w=0&k=20&c=PUVYQ6QbsJZYX2Dw46wsYXungCZaMpenYKlLZOVdFvA=",
         "user_location": [
             {
                 "coords": {
@@ -213,7 +213,7 @@ const users = [
                 "timestamp": 1709037095653.2131
             }
         ],
-        "user_city": "City Center, City C",
+        "user_city": "Mohali",
         "rera_number": "RERA-67890-PQR",
         "properties": [
             {
@@ -235,47 +235,9 @@ const users = [
         ]
     },
     {
-        "id": "7",
-        "fullname": "Sophia Taylor",
-        "image": "https://media.istockphoto.com/id/1389993878/photo/happy-real-estate-agent-showing-a-property.jpg?s=612x612&w=0&k=20&c=1td_y6UAaLdj7UB_cYyMmC93x2CHTvMU9ZDqHjxZdy8=",
-        "user_location": [
-            {
-                "coords": {
-                    "speed": -1, "longitude": 76.69112317715411,
-                    "latitude": 30.71134927265382,
-                    "accuracy": 16.965582688710988,
-                    "heading": -1,
-                    "altitude": 318.2151985168457,
-                    "altitudeAccuracy": 7.0764055252075195
-                },
-                "timestamp": 1709037095653.2131
-            }
-        ],
-        "user_city": "Suburb, City D",
-        "rera_number": "RERA-13579-XYZ",
-        "properties": [
-            {
-                "property_id": "701",
-                "property_name": "Family-Friendly Home with Garden",
-                "price": "$800,000",
-                "bedrooms": 4,
-                "bathrooms": 3,
-                "area_sqft": 2200
-            },
-            {
-                "property_id": "702",
-                "property_name": "Charming Cottage in the Woods",
-                "price": "$400,000",
-                "bedrooms": 3,
-                "bathrooms": 2,
-                "area_sqft": 1500
-            }
-        ]
-    },
-    {
         "id": "8",
-        "fullname": "Liam Johnson",
-        "image": "https://media.istockphoto.com/id/909675728/photo/businessman.jpg?s=612x612&w=0&k=20&c=AFoV-1P3FanXt4YKc37WsgPIiZvifm90_zDB1ZLVT4c=",
+        "fullname": "Gaurav Sood",
+        "image": "https://media.istockphoto.com/id/1281563726/photo/real-estate-agent-with-client-at-village-stock-photo.jpg?s=612x612&w=0&k=20&c=RNAg7vyuW1IKF9kvrhuov4KtPsMg36nXzcjPa-PqKyk=",
         "user_location": [
             {
                 "coords": {
@@ -289,7 +251,7 @@ const users = [
                 "timestamp": 1709037095653.2131
             }
         ],
-        "user_city": "Riverside, City E",
+        "user_city": "Panchkula",
         "rera_number": "RERA-24680-ABC",
         "properties": [
             {
@@ -312,8 +274,8 @@ const users = [
     },
     {
         "id": "9",
-        "fullname": "Emma Wilson",
-        "image": "https://media.istockphoto.com/id/1364269973/photo/call-center-agent-with-headset-working-on-support-hotline-in-modern-office.jpg?s=612x612&w=0&k=20&c=iCblISdZ3DGN1EAo_EUy8bSXuQT9bAJfHAN1H1NsmYQ=",
+        "fullname": "Mohd. Asif",
+        "image": "https://media.istockphoto.com/id/909675728/photo/businessman.jpg?s=612x612&w=0&k=20&c=AFoV-1P3FanXt4YKc37WsgPIiZvifm90_zDB1ZLVT4c=",
         "user_location": [
             {
                 "coords": {
@@ -327,7 +289,7 @@ const users = [
                 "timestamp": 1709037095653.2131
             }
         ],
-        "user_city": "Mountain View, City F",
+        "user_city": "Mohali",
         "rera_number": "RERA-11223-XYZ",
         "properties": [
             {
@@ -350,8 +312,8 @@ const users = [
     },
     {
         "id": "10",
-        "fullname": "James Anderson",
-        "image": "https://media.istockphoto.com/id/1056257342/photo/portrait-of-joyful-professional.jpg?s=612x612&w=0&k=20&c=D9H23OM1-heW-xjvmQftBp_YMbZh-n9KFnCb2hE3SHo=",
+        "fullname": "Anil Kumar Subhashchand Dubey",
+        "image": "https://media.istockphoto.com/id/1368412189/photo/cab-driver-receiving-check-from-banker-in-front-of-car-concept-of-car-loan-financial-support.jpg?s=612x612&w=0&k=20&c=BClTNfBsz0mClL-trQuL7foBXLf370sIJZ2rfEXHFkM=",
         "user_location": [
             {
                 "coords": {
@@ -365,7 +327,7 @@ const users = [
                 "timestamp": 1709037095653.2131
             }
         ],
-        "user_city": "Hillside, City G",
+        "user_city": "Mohali",
         "rera_number": "RERA-98765-XYZ",
         "properties": [
             {
