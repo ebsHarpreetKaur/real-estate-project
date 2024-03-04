@@ -312,7 +312,6 @@ export default function AppNavigation() {
                         headerShown: false,
                     }}
                 >
-
                     {
                         state.userToken === null || state.userToken === ' ' || state.userToken === undefined ? (
                             <>
@@ -322,15 +321,14 @@ export default function AppNavigation() {
                             </>
 
                         ) :
-                            state.is_profile_completed === false || null ?
-                                (
-                                    <>
-                                        <Stack.Screen name="CheckAuthCredentials" component={CheckAuthCredentials} />
+                            // state.is_profile_completed === false || null ?
+                            //     (
+                            //         <>
+                            //             <Stack.Screen name="CheckAuthCredentials" component={CheckAuthCredentials} />
 
-                                    </>
-                                )
-
-                                :
+                            //         </>
+                            //     )
+                            //     :
                                 (
                                     <>
                                         <Stack.Screen

@@ -75,7 +75,7 @@ export default ChatDetail = () => {
             id: Math.floor(Math.random() * 99999999999999999 + 1),
             sent: false,
             msg: newMessage,
-            image: 'https://www.bootdey.com/img/Content/avatar/avatar6.png',
+            image: 'https://media.istockphoto.com/id/1362265242/photo/portrait-of-a-smiling-young-businesswoman.jpg?s=612x612&w=0&k=20&c=AvNqcwVLavdf9we0V6UNoFzfm7IPpmB5qCBvT6g6kJg=',
         })
         setNewMessage('')
         setMessages(messagesList)
@@ -88,7 +88,7 @@ export default ChatDetail = () => {
                 id: Math.floor(Math.random() * 99999999999999999 + 1),
                 sent: true,
                 msg: newMessage,
-                image: 'https://www.bootdey.com/img/Content/avatar/avatar1.png',
+                image: 'https://media.istockphoto.com/id/1134350144/photo/happy-real-estate-agent-showing-a-property.jpg?s=612x612&w=0&k=20&c=qQkZqY0uI1o7Ih9ZKFsXw5EGX4o-bT0tb0ggJljmp50=',
             })
             setMessages(messagesList)
             setTimeout(() => {
@@ -123,7 +123,7 @@ export default ChatDetail = () => {
         <>
             <AppBar />
 
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, backgroundColor:"#fff"}}>
                 <KeyboardAvoidingView behavior="padding" style={styles.keyboard}>
                     <FlatList
                         style={styles.list}
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
     rightBlock: {
         width: 220,
         borderRadius: 5,
-        backgroundColor: '#97c163',
+        backgroundColor: '#20B2AA',
         padding: 10,
         shadowColor: '#3d3d3d',
         shadowRadius: 2,
@@ -249,11 +249,11 @@ const styles = StyleSheet.create({
     msgTxt: {
         fontSize: 15,
         color: '#555',
-        fontWeight: '600',
+        // fontWeight: '600',
     },
     rightTxt: {
         fontSize: 15,
-        color: '#202020',
-        fontWeight: '600',
+        color: '#fff',
+        // fontWeight: '600',
     },
 })
