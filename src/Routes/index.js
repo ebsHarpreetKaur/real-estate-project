@@ -280,9 +280,6 @@ export default function AppNavigation() {
                         ),
                     }}
                 />
-
-
-
                 {/* <Tab.Screen
                     name="Login"
                     component={Login}

@@ -143,6 +143,7 @@ export default ChatTab = () => {
     navigation.navigate('ChatDetail', { data: item })
 
   }
+
   const renderItem = ({ item }) => {
     var callIcon = 'https://img.icons8.com/color/48/000000/phone.png'
     if (item.video == true) {
@@ -150,7 +151,6 @@ export default ChatTab = () => {
     }
     return (
       <>
-
         <TouchableOpacity onPress={() => handle_chat_with_user(item)} >
           <View style={styles.row}>
             <Image source={{ uri: item.image }} style={styles.pic} />
