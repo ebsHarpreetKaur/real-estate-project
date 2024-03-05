@@ -7,9 +7,9 @@
     "icon": "./assets/newlogo.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/logo.png",
+      "image": "./assets/A_SMART_MOVE__1_-removebg-preview.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#CDFADB"
     },
     "notification": {
       "androidMode": "default",
@@ -34,7 +34,8 @@
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION",
         "android.permission.FOREGROUND_SERVICE"
-      ]
+      ],
+      "package": "com.ebullientsoft.unifyreactnativerealestateapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
