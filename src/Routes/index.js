@@ -25,6 +25,7 @@ import CheckAuthCredentials from './../screens/Components/Check-AuthCredentials'
 import UserProfile from '../screens/Stacks/UserProfile';
 import ChatDetail from '../screens/Stacks/ChatDetail';
 import WelcomeScreen from '../screens/Components/Welcome';
+import EditProfileView from '../screens/Components/EditProfile';
 
 
 
@@ -323,6 +324,7 @@ export default function AppNavigation() {
                                 <Stack.Screen name="Login" component={SignInScreen} />
                                 <Stack.Screen name="Otp" component={Otp} />
 
+
                             </>
 
                         ) :
@@ -345,6 +347,7 @@ export default function AppNavigation() {
                                     <Stack.Screen name="ChatDetail" component={ChatDetail} />
                                     <Stack.Screen name="PropertyDetail" component={PropertyDetail} />
                                     <Stack.Screen name="UserProfile" component={UserProfile} />
+                                    <Stack.Screen name="EditProfile" component={EditProfileView} />
 
                                 </>
                             )}

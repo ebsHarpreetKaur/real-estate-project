@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
         marginTop: 60,
     },
     userCard: {
+        backgroundColor: '#fff',
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: 20,
