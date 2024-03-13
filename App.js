@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, AppState } from 'react-native';
 import AppNavigation from './src/Routes';
 import { MD3LightTheme as DefaultTheme, PaperProvider } from 'react-native-paper';
 import { AlertNotificationRoot } from 'react-native-alert-notification';
+import 'expo-dev-client';
 
 const theme = {
   ...DefaultTheme,

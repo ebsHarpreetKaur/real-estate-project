@@ -24,7 +24,6 @@ const LeftContent2 = props => <Avatar.Icon {...props} icon="package-variant-clos
 
 const ProfileView = () => {
   const navigation = useNavigation()
-  const { signOut } = React.useContext(AuthContext);
 
   const auth_user = SecureStore.getItem('auth_user')
   const parsedData = JSON.parse(auth_user);
@@ -34,7 +33,6 @@ const ProfileView = () => {
   const handleSignOut = () => {
     const auth_user = SecureStore.getItem('auth_user')
     SecureStore.deleteItemAsync('auth_user')
-    signOut()
 
   }
   const data = [

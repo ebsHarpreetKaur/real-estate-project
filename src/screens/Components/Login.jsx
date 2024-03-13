@@ -78,11 +78,11 @@ const Login = () => {
                     <TouchableOpacity
                         style={styles.button}
                         onPress={() => {
-                            sendSmsVerification(formattedValue).then((sent) => {
-                                // SecureStore.deleteItemAsync('auth_user') 
-                                handleOTPscreen()
+                            // sendSmsVerification(formattedValue).then((sent) => {
+                            // SecureStore.deleteItemAsync('auth_user') 
+                            handleOTPscreen()
 
-                            });
+                            // });
                         }}
                     >
                         <Text style={styles.buttonText}>Sign in</Text>

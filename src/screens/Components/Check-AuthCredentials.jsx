@@ -1,4 +1,4 @@
-import { Keyboard, Pressable, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { Button, Keyboard, Pressable, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import AppBar from './AppBar';
 import * as SecureStore from 'expo-secure-store';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
@@ -8,16 +8,21 @@ import { today } from '../../api/context/auth';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Location from 'expo-location';
-import AuthContext from '../../api/context/Context';
+import RazorpayCheckout from 'react-native-razorpay';
 
-export default function CheckAuthCredentials() {
+export default function CheckAuthCredentials(data) {
+    const user_data = data?.route?.params?.user[0]
+    // console.log("user..........", data?.route?.params?.user[0])
     const navigation = useNavigation()
     const [user_location, setUserLocation] = useState('');
     const [reraNumber, setReraNumber] = useState('');
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
-    const { signIn } = React.useContext(AuthContext);
     const [city, setCity] = useState('');
+
+
+
+
 
     useEffect(() => {
         (async () => {
@@ -65,8 +70,6 @@ export default function CheckAuthCredentials() {
         setReraNumber(text)
     };
 
-    const onChangeLocation = text => {
-    };
 
     const hasErrors = () => {
         if (!reraNumber) {
@@ -75,67 +78,32 @@ export default function CheckAuthCredentials() {
         return /[^0-9]/.test(reraNumber);
     };
 
-    const handleContinue = () => {
-        if (!reraNumber) {
-            alert("please enter rera number")
-        } else {
-            // console.log("continue")
-            // navigation.navigate(" ", { screen: 'Home' });
-            fetch('https://dummyjson.com/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-
-                    username: 'kminchelle',
-                    password: '0lelplR',
-                    // expiresInMins: 60, // optional
-                })
-            })
-                .then(res => res.json())
-                .then(res => {
-                    // console.log(res,"res........")
-                    const modifiedResponse = {
-                        ...res,
-                        profile_complete_status: true,
-                        user_location: location,
-                        user_city: city,
-                        rera_number: reraNumber
-
-                    };
-                    // console.log("modifiedResponse.......", modifiedResponse)
-                    const user_object_string = JSON.stringify(modifiedResponse);
-                    if (res) {
-                        SecureStore.deleteItemAsync('auth_user')
-                            .then(() => {
-                                console.log('User deleted successfully');
-                                console.log("city location", city, location)
-                                if (city !== null || city !== '' && location !== null || location !== '') {
-                                    SecureStore.setItemAsync('auth_user', user_object_string)
-                                        .then(() => {
-                                            console.log('User stored successfully');
-                                            signIn({ 'auth_user': modifiedResponse })
-
-                                            navigation.navigate(" ", { screen: 'Home' });
-
-                                        })
-                                        .catch(error => {
-                                            console.error('Error storing object:', error);
-                                        });
-
-                                }
-
-
-                            })
-                            .catch(error => {
-                                console.error('Error storing object:', error);
-                            });
-
-                    }
-
-                });
+    const handlePayNow = () => {
+        var options = {
+            description: 'Credits towards consultation',
+            image: 'https://i.imgur.com/3g7nmJC.jpg',
+            currency: 'INR',
+            key: 'rzp_test_JrPSA1HqBRf4v8',
+            amount: '5000',
+            name: 'Acme Corp',
+            order_id: '',
+            prefill: {
+                email: '...',
+                contact: '9191919191',
+                name: 'Gaurav Kumar'
+            },
+            theme: { color: '#20B2AA' }
         }
+        RazorpayCheckout.open(options).then((data) => {
+            // handle success
+            console.log("data", data)
 
-
+            alert(`Success: ${data.razorpay_payment_id}`);
+        }).catch((error) => {
+            console.log("Err", error)
+            // handle failure
+            alert(`Error: ${error.code} | ${error.description}`);
+        });
     }
 
 
@@ -158,26 +126,16 @@ export default function CheckAuthCredentials() {
                             right={<TextInput.Icon icon={() => <Icon name="document-text-outline" size={20} color="black" />} />}
                         /> */}
 
-                        <TextInput
-                            style={{ height: 40, margin: 5, marginBottom: 20, backgroundColor: "#ffffff", padding: 5 }}
-                            label="RERA number"
-                            value={reraNumber}
-                            onChangeText={newText => onChangeReraNumber(newText)}
-                            defaultValue={reraNumber}
-                            right={<TextInput.Icon icon={() => <Icon name="document-text-outline" size={20} color="black" />} />}
-                        // keyboardType="numeric"
+                        <Text>You have a pending payment of Rs. 500</Text>
+                        <Button
+                            style={{ color: "#20B2AA" }}
+                            title="pay"
+                            onPress={() =>
+                                // SecureStore.deleteItemAsync('auth_user') 
+
+                                handlePayNow()
+                            }
                         />
-                        <TouchableOpacity
-                            style={styles.button}
-                            onPress={() => {
-                                handleContinue()
-                                // SecureStore.deleteItemAsync('auth_user')
-
-                            }}
-                        >
-                            <Text style={styles.buttonText}>Continue</Text>
-
-                        </TouchableOpacity>
                     </View>
 
                 </SafeAreaView>
@@ -205,8 +163,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.34,
         shadowRadius: 6.27,
         elevation: 10,
-        borderRadius:12,
-        padding:18
+        borderRadius: 12,
+        padding: 18
     },
     buttonText: {
         fontSize: 16,

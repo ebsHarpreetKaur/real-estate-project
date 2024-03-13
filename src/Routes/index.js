@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as SecureStore from 'expo-secure-store';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -91,131 +91,77 @@ function NotificationScreen({ navigation }) {
 
 
 export default function AppNavigation() {
-    const [isLogin, setisLogin] = useState(false);
-    // useEffect(() => {
-    //     AuthUser()
-    // }, [])
-    // const AuthUser = async () => {
-    //     try {
-    //         isSignedIn()
-    //             .then(res => {
-    //                 if (res) {
-    //                     res;
-    //                     console.log(res, 'res')
-    //                     if (res) {
-    //                         setisLogin(res)
-    //                     } else {
-    //                         console.log('waiting...')
-    //                     }
-    //                 }
-    //             })
-    //     } catch (e) {
-    //         console.log("error while getting async storage value", e)
-    //     }
-    // };
+    const [auth_user, setAuth_user] = useState([]);
 
-    const [state, dispatch] = React.useReducer(
-        (prevState, action) => {
-            switch (action.type) {
-                case 'RESTORE_TOKEN':
-                    return {
-                        ...prevState,
-                        userToken: action.token,
-                        is_profile_completed: action.is_profile_completed_status,
-                        isLoading: false,
-                    };
-                case 'SIGN_IN':
-                    return {
-                        ...prevState,
-                        isSignout: false,
-                        userToken: action.token,
-                        is_profile_completed: action.is_profile_completed_status,
-
-                    };
-                case 'SIGN_OUT':
-                    return {
-                        ...prevState,
-                        isSignout: true,
-                        userToken: null,
-                        is_profile_completed: false,
-
-                    };
-            }
-        },
+    // React.useEffect(() => {
+    //     const auth_user_data = async () => {
+    const user = [
         {
-            isLoading: true,
-            isSignout: false,
-            userToken: null,
-            is_profile_completed: false,
-
+            "message": "User registered successfully",
+            "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzEwMzI1MjAxLCJleHAiOjE3MTAzMjg4MDEsIm5iZiI6MTcxMDMyNTIwMSwianRpIjoieG5OcjhMQlRUWHJQUzVXMyIsInN1YiI6IjY1ZjE3ZGQxN2RlZTQxMDI2YjBiZDFhMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.-ya53v1qqW5-ml4JvULdDSxM-YMFSxzaZqoO46446yg",
+            "user": {
+                "mobile": 4675336343,
+                "otp_status": true,
+                "user_location": [
+                    {
+                        "coords": {
+                            "speed": -1,
+                            "longitude": 76.69112317715411,
+                            "latitude": 30.71134927265382,
+                            "accuracy": 16.965582688710988,
+                            "heading": -1,
+                            "altitude": 318.2151985168457,
+                            "altitudeAccuracy": 7.0764055252075195
+                        },
+                        "timestamp": 1709037095653.2131
+                    }
+                ],
+                "status": true,
+                "email": "g@gmail.co",
+                "user_pincode": 3953553,
+                "name": "hhs",
+                "payment_res": [
+                    {
+                        "amount": 100,
+                        "currency": "USD",
+                        "card_number": "4111111111111111",
+                        "card_exp_month": "12",
+                        "card_exp_year": "2025",
+                        "card_cvv": "123",
+                        "billing_address": {
+                            "line1": "123 Billing St",
+                            "line2": null,
+                            "city": "Billing City",
+                            "state": "CA",
+                            "postal_code": "12345",
+                            "country": "US"
+                        },
+                        "customer_name": "John Doe",
+                        "customer_email": "john.doe@example.com",
+                        "customer_phone": "+1234567890",
+                        "description": "Payment for order #12345",
+                        "metadata": {
+                            "order_id": "12345",
+                            "customer_id": "67890"
+                        }
+                    }
+                ],
+                "payment_status": false,
+                "updated_at": "2024-03-13T10:20:01.745000Z",
+                "created_at": "2024-03-13T10:20:01.745000Z",
+                "_id": "65f17dd17dee41026b0bd1a2"
+            },
+            "token_type": "Bearer",
+            "expires_in": 3600
         }
-    );
-    // console.log("state.....", state)
+    ]
+    //         setAuth_user(user[0])
+    //     };
 
-    React.useEffect(() => {
-        // Fetch the token from storage then navigate to our appropriate place
-        const bootstrapAsync = async () => {
-            let userData;
-            userData = await SecureStore.getItemAsync('auth_user');
-            const parsedData = JSON.parse(userData);
-            const user_access_token = parsedData?.token
-            const user_profile_complete_status = parsedData?.profile_complete_status
+    //     auth_user_data();
+    // }, []);
 
-            // console.log("parsedData", parsedData)
-            // console.log("userData", userData)
-
-
-            try {
-
-
-
-            } catch (e) {
-                // Restoring token failed
-            }
-
-            // After restoring token, we may need to validate it in production apps
-
-            // This will switch to the App screen or Auth screen and this loading
-            // screen will be unmounted and thrown away.
-            dispatch({ type: 'RESTORE_TOKEN', token: user_access_token, is_profile_completed_status: user_profile_complete_status });
-        };
-
-        bootstrapAsync();
-    }, []);
-
-    const authContext = React.useMemo(
-        () => ({
-            signIn: async (data) => {
-                user_access_token = data?.auth_user?.token
-                user_profile_complete_status = data?.auth_user?.profile_complete_status
-
-                console.log("data..........", data?.auth_user?.profile_complete_status)
-
-
-                // In a production app, we need to send some data (usually username, password) to server and get a token
-                // We will also need to handle errors if sign in failed
-                // After getting token, we need to persist the token using `SecureStore`
-                // In the example, we'll use a dummy token
-
-                dispatch({ type: 'SIGN_IN', token: user_access_token, is_profile_completed_status: user_profile_complete_status });
-            },
-            signOut: () => {
-                // auth_user = SecureStore.getItem('auth_user')
-                // console.log(auth_user, "signout user")
-
-                dispatch({ type: 'SIGN_OUT' })
-            },
-            signUp: async (data) => {
-                // In a production app, we need to send user data to server and get a token
-                // We will also need to handle errors if sign up failed
-                // After getting token, we need to persist the token using `SecureStore`
-                // In the example, we'll use a dummy token
-
-                dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
-            },
-        }),
-        []
-    );
+    console.log("auth_user", user)
 
     function Root() {
         return (
@@ -224,17 +170,7 @@ export default function AppNavigation() {
                     headerShown: false,
                 }}
             >
-                <Tab.Screen
-                    name="Home"
-                    component={HomeScreen}
-                    options={{
-                        tabBarLabel: 'Dealers',
-                        tabBarActiveTintColor: "#20B2AA",
-                        tabBarIcon: ({ color, size }) => (
-                            <MaterialCommunityIcons name="home-analytics" color="#20B2AA" size={size} />
-                        ),
-                    }}
-                />
+
                 <Tab.Screen
                     name="Properties"
                     component={PropertiesScreen}
@@ -246,7 +182,17 @@ export default function AppNavigation() {
                         ),
                     }}
                 />
-
+                <Tab.Screen
+                    name="Home"
+                    component={HomeScreen}
+                    options={{
+                        tabBarLabel: 'Dealers',
+                        tabBarActiveTintColor: "#20B2AA",
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="home-analytics" color="#20B2AA" size={size} />
+                        ),
+                    }}
+                />
                 <Tab.Screen
                     name="Chat"
                     component={ChatScreen}
@@ -310,14 +256,20 @@ export default function AppNavigation() {
 
             // </Stack.Navigator>
 
-            <AuthContext.Provider value={authContext}>
-                <Stack.Navigator
-                    screenOptions={{
-                        headerShown: false,
-                    }}
-                >
-                    {
-                        state.userToken === null || state.userToken === ' ' || state.userToken === undefined ? (
+            <Stack.Navigator
+                screenOptions={{
+                    headerShown: false,
+                }}
+            >
+                {
+                    user.length === 0 ? (
+                        <>
+                            <ActivityIndicator />
+
+                        </>
+
+                    ) :
+                        user[0].access_token === null || user[0].access_token === '' || user[0].access_token === undefined ? (
                             <>
                                 {/* <Stack.Screen name="Welcome" component={WelcomeScreen} />
                                 <Stack.Screen name="SignIn" component={SignInScreen} /> */}
@@ -328,31 +280,30 @@ export default function AppNavigation() {
                             </>
 
                         ) :
-                            // state.is_profile_completed === false || null ?
-                            //     (
-                            //         <>
-                            //             <Stack.Screen name="CheckAuthCredentials" component={CheckAuthCredentials} />
+                        user[0].user.payment_status === false || null ?
+                                (
+                                    <>
+                                        <Stack.Screen name="CheckAuthCredentials" component={CheckAuthCredentials} initialParams={{ user: user }} />
 
-                            //         </>
-                            //     )
-                            //     :
-                            (
-                                <>
-                                    <Stack.Screen
-                                        name=" "
-                                        component={Root}
-                                    // options={{ headerShown: false }}
-                                    />
-                                    <Stack.Screen name="AssignProperty" component={AssignProperty} />
-                                    <Stack.Screen name="ChatDetail" component={ChatDetail} />
-                                    <Stack.Screen name="PropertyDetail" component={PropertyDetail} />
-                                    <Stack.Screen name="UserProfile" component={UserProfile} />
-                                    <Stack.Screen name="EditProfile" component={EditProfileView} />
+                                    </>
+                                )
+                                :
+                                (
+                                    <>
+                                        <Stack.Screen
+                                            name=" "
+                                            component={Root}
+                                        // options={{ headerShown: false }}
+                                        />
+                                        <Stack.Screen name="AssignProperty" component={AssignProperty} />
+                                        <Stack.Screen name="ChatDetail" component={ChatDetail} />
+                                        <Stack.Screen name="PropertyDetail" component={PropertyDetail} />
+                                        <Stack.Screen name="UserProfile" component={UserProfile} />
+                                        <Stack.Screen name="EditProfile" component={EditProfileView} />
 
-                                </>
-                            )}
-                </Stack.Navigator>
-            </AuthContext.Provider>
+                                    </>
+                                )}
+            </Stack.Navigator>
 
         );
     }

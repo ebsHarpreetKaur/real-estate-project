@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Project",
-    "slug": "unify-react-native-realestate-app",
+    "slug": "react-native-real-estate",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/newlogo.png",
@@ -56,9 +56,9 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "67b7d989-3f42-47a2-83ec-617a9543c9a6"
+        "projectId": "777b348b-9cbf-49e8-9642-23c11e417b0b"
       }
     },
-    "owner": "ebullientsoft"
+    "owner": "harpreet24"
   }
 }
