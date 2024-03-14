@@ -39,6 +39,11 @@ const Login = () => {
         });
 
     }
+
+
+
+
+
     return (
         <>
             <StatusBar
@@ -109,7 +114,7 @@ const styles = StyleSheet.create({
         // backgroundColor: '#0d0d0d',
         backgroundColor: '#20B2AA',
         padding: 18,
-        borderRadius: 12,
+        borderRadius: 30,
         marginTop: 48,
         marginBottom: 36,
         width: "80%"

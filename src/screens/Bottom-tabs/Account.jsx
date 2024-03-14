@@ -22,7 +22,7 @@ const LeftContent1 = props => <Avatar.Icon {...props} icon="power-settings" />
 
 const LeftContent2 = props => <Avatar.Icon {...props} icon="package-variant-closed" />
 
-const ProfileView = () => {
+const AccountTab = () => {
   const navigation = useNavigation()
 
   const auth_user = SecureStore.getItem('auth_user')
@@ -454,4 +454,4 @@ const styles = {
 
 };
 
-export default ProfileView;
+export default AccountTab;

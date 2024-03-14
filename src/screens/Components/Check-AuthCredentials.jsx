@@ -9,6 +9,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Location from 'expo-location';
 import RazorpayCheckout from 'react-native-razorpay';
+import { ALERT_TYPE, Toast, Dialog } from 'react-native-alert-notification';
+import { encode } from 'base-64';
 
 export default function CheckAuthCredentials(data) {
     const user_data = data?.route?.params?.user[0]
@@ -19,8 +21,6 @@ export default function CheckAuthCredentials(data) {
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
     const [city, setCity] = useState('');
-
-
 
 
 
@@ -79,31 +79,75 @@ export default function CheckAuthCredentials(data) {
     };
 
     const handlePayNow = () => {
-        var options = {
+          var options = {
             description: 'Credits towards consultation',
             image: 'https://i.imgur.com/3g7nmJC.jpg',
             currency: 'INR',
             key: 'rzp_test_JrPSA1HqBRf4v8',
-            amount: '5000',
-            name: 'Acme Corp',
+            amount: parseFloat(options.amount) / 100,  //paise
+            name: 'Unify',
             order_id: '',
             prefill: {
                 email: '...',
                 contact: '9191919191',
-                name: 'Gaurav Kumar'
+                name: 'Harpreet'
             },
             theme: { color: '#20B2AA' }
         }
+   
         RazorpayCheckout.open(options).then((data) => {
-            // handle success
-            console.log("data", data)
-
-            alert(`Success: ${data.razorpay_payment_id}`);
+            // Payment successful
+            console.log("Payment success:", data);
+        
+            // Capture the payment
+            fetch(`https://api.razorpay.com/v1/payments/${data.razorpay_payment_id}/capture`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Basic ' + encode('rzp_test_JrPSA1HqBRf4v8:NT8BITofXhihkTmiZxe471FZ'),
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    amount: options.amount, 
+                    currency: options.currency 
+                })
+            }).then(response => response.json())
+            .then(captureData => {
+                console.log("Capture details:", captureData);
+        
+                Dialog.show({
+                    type: ALERT_TYPE.SUCCESS,
+                    title:  `Payment id : ${data.razorpay_payment_id}`,
+                    textBody: 'Payment captured successfully',
+                    button: 'close',
+                });
+            })
+            .catch(error => {
+                console.error("Error capturing payment:", error);
+                alert('Error capturing payment');
+            });
         }).catch((error) => {
-            console.log("Err", error)
-            // handle failure
+            // Payment failed
+            console.error("Payment error:", error);
             alert(`Error: ${error.code} | ${error.description}`);
         });
+        
+
+      
+        // RazorpayCheckout.open(options).then((data) => {
+        //     Dialog.show({
+        //         type: ALERT_TYPE.SUCCESS,
+        //         title:  `Payment id : ${data.razorpay_payment_id}`,
+        //         textBody: 'Payment done successfully',
+        //         button: 'close',
+        //     });
+
+        //     console.log("data", data)
+
+        //     // alert(`Success: ${data.razorpay_payment_id}`);
+        // }).catch((error) => {
+        //     console.log("Err", error)
+        //     alert(`Error: ${error.code} | ${error.description}`);
+        // });
     }
 
 
@@ -127,15 +171,18 @@ export default function CheckAuthCredentials(data) {
                         /> */}
 
                         <Text>You have a pending payment of Rs. 500</Text>
-                        <Button
-                            style={{ color: "#20B2AA" }}
-                            title="pay"
-                            onPress={() =>
-                                // SecureStore.deleteItemAsync('auth_user') 
+                        <TouchableOpacity
+                            style={styles.buttonPaynow}
+                            onPress={() => {
 
+                                // SecureStore.deleteItemAsync('auth_user') 
                                 handlePayNow()
-                            }
-                        />
+
+                            }}
+                        >
+                            <Text style={styles.buttonPayText}>Pay now</Text>
+                        </TouchableOpacity>
+
                     </View>
 
                 </SafeAreaView>
@@ -165,6 +212,21 @@ const styles = StyleSheet.create({
         elevation: 10,
         borderRadius: 12,
         padding: 18
+    },
+    buttonPaynow: {
+        // backgroundColor: '#0d0d0d',
+        backgroundColor: '#20B2AA',
+        padding: 12,
+        borderRadius: 30,
+        marginTop: 20,
+        // marginBottom: 36,
+        width: "40"
+    },
+    buttonPayText: {
+        fontSize: 15,
+        fontWeight: '500',
+        color: 'white',
+        textAlign: 'center',
     },
     buttonText: {
         fontSize: 16,

@@ -262,9 +262,10 @@ export default function AppNavigation() {
                 }}
             >
                 {
-                    user.length === 0 ? (
+                    user.length === 0 ? null(
                         <>
-                            <ActivityIndicator />
+                            <Stack.Screen name="Login" component={SignInScreen} />
+                            <Stack.Screen name="Otp" component={Otp} />
 
                         </>
 
@@ -276,11 +277,10 @@ export default function AppNavigation() {
                                 <Stack.Screen name="Login" component={SignInScreen} />
                                 <Stack.Screen name="Otp" component={Otp} />
 
-
                             </>
 
                         ) :
-                        user[0].user.payment_status === false || null ?
+                            user[0].user.payment_status === false || null ?
                                 (
                                     <>
                                         <Stack.Screen name="CheckAuthCredentials" component={CheckAuthCredentials} initialParams={{ user: user }} />
