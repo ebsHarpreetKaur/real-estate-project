@@ -25,14 +25,15 @@ const LeftContent2 = props => <Avatar.Icon {...props} icon="package-variant-clos
 const AccountTab = () => {
   const navigation = useNavigation()
 
-  const auth_user = SecureStore.getItem('auth_user')
-  const parsedData = JSON.parse(auth_user);
+  // const auth_user = SecureStore.getItem('auth_user')
+  // const parsedData = JSON.parse(auth_user);
 
-  console.log("auth_user", parsedData)
+  // console.log("auth_user", parsedData)
 
   const handleSignOut = () => {
-    const auth_user = SecureStore.getItem('auth_user')
-    SecureStore.deleteItemAsync('auth_user')
+    // const auth_user = SecureStore.getItem('auth_user')
+    // SecureStore.deleteItemAsync('auth_user')
+    navigation.navigate("Login")
 
   }
   const data = [
@@ -105,9 +106,9 @@ const AccountTab = () => {
   const [posts, setPosts] = useState(data)
 
   const handleEditProfile = () => {
-    navigation.navigate("EditProfile", {
-      data: parsedData
-    })
+    // navigation.navigate("EditProfile", {
+    //   data: parsedData
+    // })
   }
 
   return (
@@ -126,11 +127,11 @@ const AccountTab = () => {
             source={{ uri: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvcGVydHl8ZW58MHx8MHx8fDA%3D' }}
           />
           <View style={styles.profileContainer}>
-            <Image
+            {/* <Image
               style={styles.profilePhoto}
               source={{ uri: parsedData.image }}
             />
-            <Text style={styles.nameText}>{parsedData.firstName}</Text>
+            <Text style={styles.nameText}>{parsedData.firstName}</Text> */}
           </View>
         </View>
 

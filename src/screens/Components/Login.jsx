@@ -18,15 +18,17 @@ import { useNavigation } from "@react-navigation/native";
 import { Button } from "react-native-paper";
 import { Image, TouchableWithoutFeedback } from "react-native";
 import { ALERT_TYPE, Toast, Dialog } from 'react-native-alert-notification';
+import { ActivityIndicator } from "react-native";
 
 const Login = () => {
     const navigation = useNavigation();
     const [value, setValue] = useState("");
     const [formattedValue, setFormattedValue] = useState("");
     const phoneInput = useRef(null);
+    const [isloading, setisLoading] = useState(false)
 
     const handleOTPscreen = () => {
-
+        setisLoading(true)
         Dialog.show({
             type: ALERT_TYPE.SUCCESS,
             title: 'success',
@@ -37,7 +39,7 @@ const Login = () => {
         navigation.navigate("Otp", {
             params: { phoneNumber: formattedValue },
         });
-
+        // setisLoading(false)
     }
 
 
@@ -46,59 +48,80 @@ const Login = () => {
 
     return (
         <>
-            <StatusBar
-                animated={true}
-                backgroundColor="#61dafb"
-
-            />
-
-            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-                <SafeAreaView style={styles.wrapper}>
-                    <View>
-                        <Text style={styles.welcome}>Sign in</Text>
+            {
+                isloading === true
+                    ?
+                    <View style={[styles.container_activity_indicator, styles.horizontal]}>
+                        <ActivityIndicator size="large" color="#20B2AA" />
                     </View>
-                    <Button
-                        icon={({ size, color }) => (
-                            <Image
-                                source={require('../../../assets/login.jpg')}
-                                style={{ width: 400, height: 300 }}
-                            />
-                        )}
-                    ></Button>
-                    <PhoneInput
-                        ref={phoneInput}
-                        defaultValue={value}
-                        defaultCode="IN"
-                        layout="first"
-                        onChangeText={(text) => {
-                            setValue(text);
-                        }}
-                        onChangeFormattedText={(text) => {
-                            setFormattedValue(text);
-                        }}
-                        countryPickerProps={{ withAlphaFilter: true }}
-                        withShadow
-                    // autoFocus
-                    />
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => {
-                            // sendSmsVerification(formattedValue).then((sent) => {
-                            // SecureStore.deleteItemAsync('auth_user') 
-                            handleOTPscreen()
 
-                            // });
-                        }}
-                    >
-                        <Text style={styles.buttonText}>Sign in</Text>
-                    </TouchableOpacity>
-                </SafeAreaView>
-            </TouchableWithoutFeedback>
+                    :
+                    <>
+                        <StatusBar
+                            animated={true}
+                            backgroundColor="#61dafb"
+
+                        />
+
+                        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+                            <SafeAreaView style={styles.wrapper}>
+                                <View>
+                                    <Text style={styles.welcome}>Sign in</Text>
+                                </View>
+                                <Button
+                                    icon={({ size, color }) => (
+                                        <Image
+                                            source={require('../../../assets/login.jpg')}
+                                            style={{ width: 400, height: 300 }}
+                                        />
+                                    )}
+                                ></Button>
+                                <PhoneInput
+                                    ref={phoneInput}
+                                    defaultValue={value}
+                                    defaultCode="IN"
+                                    layout="first"
+                                    onChangeText={(text) => {
+                                        setValue(text);
+                                    }}
+                                    onChangeFormattedText={(text) => {
+                                        setFormattedValue(text);
+                                    }}
+                                    countryPickerProps={{ withAlphaFilter: true }}
+                                    withShadow
+                                // autoFocus
+                                />
+                                <TouchableOpacity
+                                    style={styles.button}
+                                    onPress={() => {
+                                        // sendSmsVerification(formattedValue).then((sent) => {
+                                        // SecureStore.deleteItemAsync('auth_user') 
+                                        handleOTPscreen()
+
+                                        // });
+                                    }}
+                                >
+                                    <Text style={styles.buttonText}>Sign in</Text>
+                                </TouchableOpacity>
+                            </SafeAreaView>
+                        </TouchableWithoutFeedback>
+                    </>
+
+            }
         </>
     );
 };
 
 const styles = StyleSheet.create({
+    container_activity_indicator: {
+        flex: 1,
+        justifyContent: 'center',
+      },
+      horizontal: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        padding: 10,
+      },
     container: {
         flex: 1,
         backgroundColor: "#ffffff",

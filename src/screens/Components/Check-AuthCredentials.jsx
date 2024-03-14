@@ -79,12 +79,13 @@ export default function CheckAuthCredentials(data) {
     };
 
     const handlePayNow = () => {
-          var options = {
+        var options = {
             description: 'Credits towards consultation',
             image: 'https://i.imgur.com/3g7nmJC.jpg',
             currency: 'INR',
             key: 'rzp_test_JrPSA1HqBRf4v8',
-            amount: parseFloat(options.amount) / 100,  //paise
+            // amount: parseFloat(options.amount) / 100,  //paise
+            amount: '100',  //paise
             name: 'Unify',
             order_id: '',
             prefill: {
@@ -94,11 +95,11 @@ export default function CheckAuthCredentials(data) {
             },
             theme: { color: '#20B2AA' }
         }
-   
+
         RazorpayCheckout.open(options).then((data) => {
             // Payment successful
             console.log("Payment success:", data);
-        
+
             // Capture the payment
             fetch(`https://api.razorpay.com/v1/payments/${data.razorpay_payment_id}/capture`, {
                 method: 'POST',
@@ -107,32 +108,33 @@ export default function CheckAuthCredentials(data) {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    amount: options.amount, 
-                    currency: options.currency 
+                    amount: options.amount,
+                    currency: options.currency
                 })
             }).then(response => response.json())
-            .then(captureData => {
-                console.log("Capture details:", captureData);
-        
-                Dialog.show({
-                    type: ALERT_TYPE.SUCCESS,
-                    title:  `Payment id : ${data.razorpay_payment_id}`,
-                    textBody: 'Payment captured successfully',
-                    button: 'close',
+                .then(captureData => {
+                    console.log("Capture details:", captureData);
+
+                    Dialog.show({
+                        type: ALERT_TYPE.SUCCESS,
+                        title: `Payment id : ${data.razorpay_payment_id}`,
+                        textBody: 'Payment captured successfully',
+                        button: 'close',
+                    });
+                    navigation.navigate("Home")
+                })
+                .catch(error => {
+                    console.error("Error capturing payment:", error);
+                    alert('Error capturing payment');
                 });
-            })
-            .catch(error => {
-                console.error("Error capturing payment:", error);
-                alert('Error capturing payment');
-            });
         }).catch((error) => {
             // Payment failed
             console.error("Payment error:", error);
             alert(`Error: ${error.code} | ${error.description}`);
         });
-        
 
-      
+
+
         // RazorpayCheckout.open(options).then((data) => {
         //     Dialog.show({
         //         type: ALERT_TYPE.SUCCESS,

@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { SafeAreaView, StyleSheet, Button, Text, StatusBar, Alert, ActivityIndicator } from "react-native";
+import { SafeAreaView, StyleSheet, Button, Text, StatusBar, Alert, ActivityIndicator, View } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { checkVerification } from "../../api/context/verify";
 import OTPInputView from "@twotalltotems/react-native-otp-input";
@@ -16,8 +16,9 @@ const Otp = ({ route }) => {
   const phoneNumber = route?.params?.params?.phoneNumber;
   const [invalidCode, setInvalidCode] = useState(false);
   console.log("Number", phoneNumber)
+  const [isloading, setisLoading] = useState(false)
 
-  const { signIn } = React.useContext(AuthContext);
+  // const { signIn } = React.useContext(AuthContext);
 
   const [user, setUser] = useState(null);
 
@@ -29,13 +30,15 @@ const Otp = ({ route }) => {
         const response = await axios.get(`http://127.0.0.1:8000/api/user/mobile/${phoneNumber}`);
         console.log("res.....", response)
         setUserData(response.data);
+        // if (!response.data) {
+        //   setisLoading(true)
+        // }
       } catch (error) {
         console.error('Error fetching payment:', error);
       }
     };
     fetch_payment_status();
   }, [phoneNumber]);
-
 
 
   const handleCodeVerification = useCallback(
@@ -55,11 +58,12 @@ const Otp = ({ route }) => {
           static_payment_status === false
         ) {
           Dialog.show({
-            type: ALERT_TYPE.SUCCESS,
+            type: ALERT_TYPE.WARNING,
             title: 'warning',
             textBody: 'Please complete your payment.',
             button: 'close',
           })
+          navigation.navigate("CheckAuthCredentials")
           const modifiedResponse = {
             phoneNumber: phoneNumber,
             user: user_data,
@@ -68,7 +72,7 @@ const Otp = ({ route }) => {
           }
           const user_object_string = JSON.stringify(modifiedResponse);
 
-          signIn({ 'auth_user': user_object_string })
+          // signIn({ 'auth_user': user_object_string })
 
         } else {
           fetch('http://127.0.0.1:8000/api/user/login', {
@@ -106,12 +110,12 @@ const Otp = ({ route }) => {
                       title: 'Success',
                       textBody: 'Login successfully',
                     })
-                    signIn({ 'auth_user': modifiedResponse })
+                    // signIn({ 'auth_user': modifiedResponse })
 
                     navigation.navigate("Otp", {
                       params: { phoneNumber: formattedValue },
-                  });
-          
+                    });
+
 
                     // success && 
                     // navigation.navigate(" ", { screen: 'Home' });
@@ -136,46 +140,67 @@ const Otp = ({ route }) => {
 
   return (
     <>
-      {/* <StatusBar
+      {
+        isloading === true
+          ?
+          <View style={[styles.container_activity_indicator, styles.horizontal]}>
+            <ActivityIndicator size="large" color="#20B2AA" />
+          </View>
+
+          :
+          <>
+            {/* <StatusBar
         animated={true}
         backgroundColor="#61dafb"
 
       /> */}
 
+            <AlertNotificationRoot>
 
-      <AlertNotificationRoot>
+              <SafeAreaView style={styles.wrapper}>
+                <Text style={styles.prompt}>Enter the code we sent you</Text>
+                <Text style={styles.message}>
+                  {`Your phone (${phoneNumber}) will be used to protect your account each time you log in.`}
+                </Text>
 
-        <SafeAreaView style={styles.wrapper}>
-          <Text style={styles.prompt}>Enter the code we sent you</Text>
-          <Text style={styles.message}>
-            {`Your phone (${phoneNumber}) will be used to protect your account each time you log in.`}
-          </Text>
 
-         
 
-          <Button
-            style={{ color: "#20B2AA" }}
-            title="Edit Phone Number"
-            onPress={() => navigation.navigate("Login")}
-          />
-          <OTPInputView
-            style={{ width: "80%", height: 200 }}
-            pinCount={6}
-            autoFocusOnLoad
-            codeInputFieldStyle={styles.underlineStyleBase}
-            codeInputHighlightStyle={styles.underlineStyleHighLighted}
-            onCodeFilled={handleCodeVerification}
-          />
-          {invalidCode && <Text style={styles.error}>Incorrect code.</Text>}
-        </SafeAreaView>
-      </AlertNotificationRoot>
+                <Button
+                  style={{ color: "#20B2AA" }}
+                  title="Edit Phone Number"
+                  onPress={() => navigation.navigate("Login")}
+                />
+                <OTPInputView
+                  style={{ width: "80%", height: 200 }}
+                  pinCount={6}
+                  autoFocusOnLoad
+                  codeInputFieldStyle={styles.underlineStyleBase}
+                  codeInputHighlightStyle={styles.underlineStyleHighLighted}
+                  onCodeFilled={handleCodeVerification}
+                />
+                {invalidCode && <Text style={styles.error}>Incorrect code.</Text>}
+              </SafeAreaView>
+            </AlertNotificationRoot>
 
+          </>
+
+      }
     </>
+
 
   );
 };
 
 const styles = StyleSheet.create({
+  container_activity_indicator: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  horizontal: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10,
+  },
   wrapper: {
     flex: 1,
     justifyContent: "center",

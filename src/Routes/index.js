@@ -95,73 +95,88 @@ export default function AppNavigation() {
 
     // React.useEffect(() => {
     //     const auth_user_data = async () => {
-    const user = [
-        {
-            "message": "User registered successfully",
-            "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzEwMzI1MjAxLCJleHAiOjE3MTAzMjg4MDEsIm5iZiI6MTcxMDMyNTIwMSwianRpIjoieG5OcjhMQlRUWHJQUzVXMyIsInN1YiI6IjY1ZjE3ZGQxN2RlZTQxMDI2YjBiZDFhMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.-ya53v1qqW5-ml4JvULdDSxM-YMFSxzaZqoO46446yg",
-            "user": {
-                "mobile": 4675336343,
-                "otp_status": true,
-                "user_location": [
-                    {
-                        "coords": {
-                            "speed": -1,
-                            "longitude": 76.69112317715411,
-                            "latitude": 30.71134927265382,
-                            "accuracy": 16.965582688710988,
-                            "heading": -1,
-                            "altitude": 318.2151985168457,
-                            "altitudeAccuracy": 7.0764055252075195
-                        },
-                        "timestamp": 1709037095653.2131
-                    }
-                ],
-                "status": true,
-                "email": "g@gmail.co",
-                "user_pincode": 3953553,
-                "name": "hhs",
-                "payment_res": [
-                    {
-                        "amount": 100,
-                        "currency": "USD",
-                        "card_number": "4111111111111111",
-                        "card_exp_month": "12",
-                        "card_exp_year": "2025",
-                        "card_cvv": "123",
-                        "billing_address": {
-                            "line1": "123 Billing St",
-                            "line2": null,
-                            "city": "Billing City",
-                            "state": "CA",
-                            "postal_code": "12345",
-                            "country": "US"
-                        },
-                        "customer_name": "John Doe",
-                        "customer_email": "john.doe@example.com",
-                        "customer_phone": "+1234567890",
-                        "description": "Payment for order #12345",
-                        "metadata": {
-                            "order_id": "12345",
-                            "customer_id": "67890"
-                        }
-                    }
-                ],
-                "payment_status": false,
-                "updated_at": "2024-03-13T10:20:01.745000Z",
-                "created_at": "2024-03-13T10:20:01.745000Z",
-                "_id": "65f17dd17dee41026b0bd1a2"
-            },
-            "token_type": "Bearer",
-            "expires_in": 3600
-        }
-    ]
+    // const user = [
+    //     {
+    //         "message": "User registered successfully",
+    //         "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzEwMzI1MjAxLCJleHAiOjE3MTAzMjg4MDEsIm5iZiI6MTcxMDMyNTIwMSwianRpIjoieG5OcjhMQlRUWHJQUzVXMyIsInN1YiI6IjY1ZjE3ZGQxN2RlZTQxMDI2YjBiZDFhMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.-ya53v1qqW5-ml4JvULdDSxM-YMFSxzaZqoO46446yg",
+    //         // "access_token": "",
+    //         "user": {
+    //             "mobile": 4675336343,
+    //             "otp_status": true,
+    //             "user_location": [
+    //                 {
+    //                     "coords": {
+    //                         "speed": -1,
+    //                         "longitude": 76.69112317715411,
+    //                         "latitude": 30.71134927265382,
+    //                         "accuracy": 16.965582688710988,
+    //                         "heading": -1,
+    //                         "altitude": 318.2151985168457,
+    //                         "altitudeAccuracy": 7.0764055252075195
+    //                     },
+    //                     "timestamp": 1709037095653.2131
+    //                 }
+    //             ],
+    //             "status": true,
+    //             "email": "g@gmail.co",
+    //             "user_pincode": 3953553,
+    //             "name": "hhs",
+    //             "payment_res": [
+    //                 {
+    //                     "acquirer_data":
+    //                      {
+    //                         "rrn": "769255470364", 
+    //                         "upi_transaction_id": "B15ED4C29A80128921A45D11D56D082C"
+    //                     }, 
+    //                     "amount": 100, 
+    //                     "amount_refunded": 0, 
+    //                     "bank": null, 
+    //                     "captured": true, 
+    //                     "card_id": null, 
+    //                     "contact": "+919191919191", 
+    //                     "created_at": 1710414058, 
+    //                     "currency": "INR", 
+    //                     "description": "Credits towards consultation", 
+    //                     "email": "void@razorpay.com", 
+    //                     "entity": "payment", 
+    //                     "error_code": null, 
+    //                     "error_description": null, 
+    //                     "error_reason": null, 
+    //                     "error_source": null, 
+    //                     "error_step": null, 
+    //                     "fee": 2, 
+    //                     "id": "pay_NmD9sdUkyhhk45", 
+    //                     "international": false, 
+    //                     "invoice_id": null, 
+    //                     "method": "upi", 
+    //                     "notes": [], 
+    //                     "order_id": null, 
+    //                     "refund_status": null, 
+    //                     "reward": null, 
+    //                     "status": "captured", 
+    //                     "tax": 0, 
+    //                     "upi": {"vpa": "success@razorpay"}, 
+    //                     "vpa": "success@razorpay", 
+    //                     "wallet": null 
+    //                 }
+    //             ],
+    //             "payment_status": false,
+    //             "updated_at": "2024-03-13T10:20:01.745000Z",
+    //             "created_at": "2024-03-13T10:20:01.745000Z",
+    //             "_id": "65f17dd17dee41026b0bd1a2"
+    //         },
+    //         "token_type": "Bearer",
+    //         "expires_in": 3600
+    //     }
+    // ]
+    const user = []
     //         setAuth_user(user[0])
     //     };
 
     //     auth_user_data();
     // }, []);
 
-    console.log("auth_user", user)
+    console.log("auth_user", user.length)
 
     function Root() {
         return (
@@ -262,10 +277,12 @@ export default function AppNavigation() {
                 }}
             >
                 {
-                    user.length === 0 ? null(
+                    user.length === 0 || null || undefined ? (
                         <>
                             <Stack.Screen name="Login" component={SignInScreen} />
                             <Stack.Screen name="Otp" component={Otp} />
+                            <Stack.Screen name="CheckAuthCredentials" component={CheckAuthCredentials} initialParams={{ user: user }} />
+
 
                         </>
 
@@ -276,6 +293,7 @@ export default function AppNavigation() {
                                 <Stack.Screen name="SignIn" component={SignInScreen} /> */}
                                 <Stack.Screen name="Login" component={SignInScreen} />
                                 <Stack.Screen name="Otp" component={Otp} />
+                                <Stack.Screen name="CheckAuthCredentials" component={CheckAuthCredentials} initialParams={{ user: user }} />
 
                             </>
 
@@ -288,21 +306,22 @@ export default function AppNavigation() {
                                     </>
                                 )
                                 :
-                                (
-                                    <>
-                                        <Stack.Screen
-                                            name=" "
-                                            component={Root}
-                                        // options={{ headerShown: false }}
-                                        />
-                                        <Stack.Screen name="AssignProperty" component={AssignProperty} />
-                                        <Stack.Screen name="ChatDetail" component={ChatDetail} />
-                                        <Stack.Screen name="PropertyDetail" component={PropertyDetail} />
-                                        <Stack.Screen name="UserProfile" component={UserProfile} />
-                                        <Stack.Screen name="EditProfile" component={EditProfileView} />
+                            (
+                            <>
+                                <Stack.Screen
+                                    name=" "
+                                    component={Root}
+                                // options={{ headerShown: false }}
+                                />
+                                <Stack.Screen name="AssignProperty" component={AssignProperty} />
+                                <Stack.Screen name="ChatDetail" component={ChatDetail} />
+                                <Stack.Screen name="PropertyDetail" component={PropertyDetail} />
+                                <Stack.Screen name="UserProfile" component={UserProfile} />
+                                <Stack.Screen name="EditProfile" component={EditProfileView} />
 
-                                    </>
-                                )}
+                            </>
+                    )
+                }
             </Stack.Navigator>
 
         );
