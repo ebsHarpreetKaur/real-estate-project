@@ -28,17 +28,19 @@ const Login = () => {
     const [isloading, setisLoading] = useState(false)
 
     const handleOTPscreen = () => {
-        setisLoading(true)
-        Dialog.show({
+        // setisLoading(true)
+
+        // navigation.navigate('Otp');
+
+        Toast.show({
             type: ALERT_TYPE.SUCCESS,
             title: 'success',
             textBody: 'OTP sent successfully',
-            button: 'close',
         })
-        // navigation.navigate('Otp');
         navigation.navigate("Otp", {
             params: { phoneNumber: formattedValue },
         });
+
         // setisLoading(false)
     }
 
@@ -94,11 +96,19 @@ const Login = () => {
                                 <TouchableOpacity
                                     style={styles.button}
                                     onPress={() => {
-                                        // sendSmsVerification(formattedValue).then((sent) => {
-                                        // SecureStore.deleteItemAsync('auth_user') 
-                                        handleOTPscreen()
+                                        if (!value) {
+                                            Toast.show({
+                                                type: ALERT_TYPE.WARNING,
+                                                title: 'warning',
+                                                textBody: 'Phone number required',
+                                            })
+                                        } else {
+                                            // sendSmsVerification(formattedValue).then((sent) => {
+                                                // SecureStore.deleteItemAsync('auth_user') 
+                                                handleOTPscreen()
 
-                                        // });
+                                            // });
+                                        }
                                     }}
                                 >
                                     <Text style={styles.buttonText}>Sign in</Text>
@@ -116,12 +126,12 @@ const styles = StyleSheet.create({
     container_activity_indicator: {
         flex: 1,
         justifyContent: 'center',
-      },
-      horizontal: {
+    },
+    horizontal: {
         flexDirection: 'row',
         justifyContent: 'space-around',
         padding: 10,
-      },
+    },
     container: {
         flex: 1,
         backgroundColor: "#ffffff",

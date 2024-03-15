@@ -115,11 +115,10 @@ export default function CheckAuthCredentials(data) {
                 .then(captureData => {
                     console.log("Capture details:", captureData);
 
-                    Dialog.show({
+                    Toast.show({
                         type: ALERT_TYPE.SUCCESS,
                         title: `Payment id : ${data.razorpay_payment_id}`,
                         textBody: 'Payment captured successfully',
-                        button: 'close',
                     });
                     navigation.navigate("Home")
                 })

@@ -32,7 +32,7 @@ const AccountTab = () => {
 
   const handleSignOut = () => {
     // const auth_user = SecureStore.getItem('auth_user')
-    // SecureStore.deleteItemAsync('auth_user')
+    SecureStore.deleteItemAsync('auth_user')
     navigation.navigate("Login")
 
   }
