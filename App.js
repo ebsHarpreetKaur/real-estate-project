@@ -6,7 +6,6 @@ import { AlertNotificationRoot } from 'react-native-alert-notification';
 import 'expo-dev-client';
 
 
-// just testing
 const theme = {
   ...DefaultTheme,
   colors: {
