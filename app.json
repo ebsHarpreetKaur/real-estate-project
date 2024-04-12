@@ -1,19 +1,19 @@
 {
   "expo": {
-    "name": "Project",
-    "slug": "react-native-real-estate",
+    "name": "Unify",
+    "slug": "real-estate-rn",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/newlogo.png",
+    "icon": "./assets/splash/logo.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/A_SMART_MOVE__2_-removebg-preview.png",
+      "image": "./assets/splash/logo-withoutbg.png",
       "resizeMode": "contain",
-      "backgroundColor": "#CDFADB"
+      "backgroundColor": "#00538C"
     },
     "notification": {
       "androidMode": "default",
-      "icon": "./assets/newlogo.png"
+      "icon": "./assets/splash/logo.png"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -26,7 +26,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/newlogo.png",
+        "foregroundImage": "./assets/splash/logo-withoutbg.png",
         "backgroundColor": "#ffffff"
       },
       "useNextNotificationsApi": true,
@@ -56,9 +56,9 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "777b348b-9cbf-49e8-9642-23c11e417b0b"
+        "projectId": "a1cbb590-b5bb-40a6-9bcc-1b8a1a886e95"
       }
     },
-    "owner": "harpreet24"
+    "owner": "erharpreetkaur"
   }
 }

@@ -5,11 +5,13 @@ const property = [
     "deal": "sale",
     "type": "house",
     "bed": "4",
+    "area_sqmt":150,
     "bath": "2",
     "parking": "2",
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna     aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     "assigned_buyer": "",
     "isAvailable": "true",
+    "time": "2023-11-03",
     "property_details": [
       {
         "city_view": "City views",
@@ -44,7 +46,7 @@ const property = [
     "dealer": "cacle sere dfvd",
     "dealer_contact": "+28 347-928-2372",
     "district": "Centro",
-    "price": "R$ 2.600.000",
+    "price": "$ 2.600.000",
     "photo": "https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwcm9maWxlLWxpa2VkfDE4fHx8ZW58MHx8fHx8&w=1000&q=80"
   },
   {
@@ -53,11 +55,13 @@ const property = [
     "deal": "rent",
     "type": "house",
     "bed": "3",
+    "area_sqmt":200,
     "bath": "2",
     "parking": "2",
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     "assigned_buyer": "",
     "isAvailable": "true",
+    "time": "2023-11-03",
     "property_details": [
       {
         "city_view": "City views",
@@ -91,7 +95,7 @@ const property = [
     "dealer": "rtgrt ckein bsbbbbbb",
     "dealer_contact": "+34 347-928-2372",
     "district": "Costa e Silva",
-    "price": "R$ 280.000",
+    "price": "$ 280.000",
     "photo": "https://wallpapers.com/images/hd/real-estate-modern-white-house-dcxpp5xsw4e7wqgc.jpg"
   },
   {
@@ -100,11 +104,13 @@ const property = [
     "deal": "sale",
     "type": "ap",
     "bed": "2",
+    "area_sqmt":150,
     "bath": "2",
     "parking": "2",
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     "assigned_buyer": "",
     "isAvailable": "true",
+    "time": "2023-11-03",
     "property_details": [
       {
         "city_view": "City views",
@@ -138,7 +144,7 @@ const property = [
     "dealer": "cacrtrele ser jweiam",
     "dealer_contact": "+767 347-928-2372",
     "district": "América",
-    "price": "R$ 460.000",
+    "price": "$ 460.000",
     "photo": "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
   },
   {
@@ -147,11 +153,13 @@ const property = [
     "deal": "rent",
     "type": "ap",
     "bed": "2",
+    "area_sqmt":300,
     "bath": "2",
     "parking": "2",
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     "assigned_buyer": "",
     "isAvailable": "true",
+    "time": "2023-11-03",
     "property_details": [
       {
         "city_view": "City views",
@@ -186,7 +194,7 @@ const property = [
     "dealer": "trer dvsv jweiam",
     "dealer_contact": "+67 347-928-2372",
     "district": "Centro",
-    "price": "R$ 1.200",
+    "price": "$ 1.200",
     "photo": "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
   }
 ]

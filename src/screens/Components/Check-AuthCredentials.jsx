@@ -11,6 +11,7 @@ import * as Location from 'expo-location';
 import RazorpayCheckout from 'react-native-razorpay';
 import { ALERT_TYPE, Toast, Dialog } from 'react-native-alert-notification';
 import { encode } from 'base-64';
+import { theme_color } from '../../../config';
 
 export default function CheckAuthCredentials(data) {
     const user_data = data?.route?.params?.user[0]
@@ -86,14 +87,14 @@ export default function CheckAuthCredentials(data) {
             key: 'rzp_test_JrPSA1HqBRf4v8',
             // amount: parseFloat(options.amount) / 100,  //paise
             amount: '100',  //paise
-            name: 'Unify',
+            name: 'Hubuzz Technology',
             order_id: '',
             prefill: {
                 email: '...',
                 contact: '9191919191',
                 name: 'Harpreet'
             },
-            theme: { color: '#20B2AA' }
+            theme: { color: { theme_color } }
         }
 
         RazorpayCheckout.open(options).then((data) => {
@@ -202,7 +203,7 @@ const styles = StyleSheet.create({
         width: 300,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#20B2AA",
+        backgroundColor: theme_color,
         shadowColor: "rgba(0,0,0,0.4)",
         shadowOffset: {
             width: 1,
@@ -216,7 +217,7 @@ const styles = StyleSheet.create({
     },
     buttonPaynow: {
         // backgroundColor: '#0d0d0d',
-        backgroundColor: '#20B2AA',
+        backgroundColor: theme_color,
         padding: 12,
         borderRadius: 30,
         marginTop: 20,
@@ -240,7 +241,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        // backgroundColor: "#20B2AA",
+        // backgroundColor: theme_color,
         backgroundColor: "#ffffff",
 
     },

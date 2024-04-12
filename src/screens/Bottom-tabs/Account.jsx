@@ -15,6 +15,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import { Appbar } from 'react-native-paper';
 import { FlatList } from 'react-native';
+import { theme_color } from '../../../config';
 
 
 const LeftContent = props => <Avatar.Icon {...props} icon="account-supervisor" />
@@ -30,8 +31,8 @@ const AccountTab = () => {
 
   // console.log("auth_user", parsedData)
 
+
   const handleSignOut = () => {
-    // const auth_user = SecureStore.getItem('auth_user')
     SecureStore.deleteItemAsync('auth_user')
     navigation.navigate("Login")
 
@@ -106,37 +107,39 @@ const AccountTab = () => {
   const [posts, setPosts] = useState(data)
 
   const handleEditProfile = () => {
-    // navigation.navigate("EditProfile", {
-    //   data: parsedData
-    // })
+    navigation.navigate("EditProfile", {
+      // data: parsedData
+    })
   }
 
   return (
     <>
 
       <ScrollView style={styles.container}>
-        <Appbar.Header statusBarHeight={0}>
+        
+        {/* <Appbar.Header statusBarHeight={0}> */}
           {/* <Appbar.BackAction onPress={() => { }} />
         <Appbar.Content title="Title" />
         <Appbar.Action icon="calendar" onPress={() => { }} />
         <Appbar.Action icon="magnify" onPress={() => { }} /> */}
-        </Appbar.Header>
+        {/* </Appbar.Header> */}
+
         <View style={styles.headerContainer}>
           <Image
             style={styles.coverPhoto}
             source={{ uri: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvcGVydHl8ZW58MHx8MHx8fDA%3D' }}
           />
           <View style={styles.profileContainer}>
-            {/* <Image
+            <Image
               style={styles.profilePhoto}
-              source={{ uri: parsedData.image }}
+              source={{ uri: "https://media.istockphoto.com/id/186841959/photo/beautiful-modern-indian-woman.jpg?s=612x612&w=0&k=20&c=zFH5vouHzfXYrrFhtEulQCa9fDoJDt1X3kH0u4kOS9c=" }}
             />
-            <Text style={styles.nameText}>{parsedData.firstName}</Text> */}
+            <Text style={styles.nameText}>Bhavna Ahuja</Text>
           </View>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.statCount}>1234</Text>
+          <Text style={styles.statCount}>1234 </Text>
           <Text style={styles.statLabel}>Properties</Text>
         </View>
 
@@ -198,7 +201,7 @@ const AccountTab = () => {
                             <TouchableOpacity style={styles.socialBarButton}>
                               <Feather onPress={() => {
                                 handle_change_location()
-                              }} name="edit" color='#20B2AA' size={20} />
+                              }} name="edit" color={theme_color} size={20} />
                               {/* <Image
                                 style={styles.icon}
                                 source={{ uri: 'https://img.icons8.com/material/96/2ecc71/visible.png' }}
@@ -212,7 +215,7 @@ const AccountTab = () => {
                             <TouchableOpacity style={styles.socialBarButton}>
                               <Feather onPress={() => {
                                 handle_change_location()
-                              }} name="share" color='#20B2AA' size={20} />
+                              }} name="share" color={theme_color} size={20} />
                             </TouchableOpacity>
                           </View>
                           <View style={styles.verticleLine}></View>
@@ -220,7 +223,7 @@ const AccountTab = () => {
                             <TouchableOpacity style={styles.socialBarButton}>
                               <FontAwesome5 onPress={() => {
                                 handle_change_location()
-                              }} name="eye" color='#20B2AA' size={20} />
+                              }} name="eye" color={theme_color} size={20} />
                             </TouchableOpacity>
                           </View>
                         </View>
@@ -321,7 +324,7 @@ const styles = {
     color: '#999',
   },
   button: {
-    backgroundColor: '#20B2AA',
+    backgroundColor: theme_color,
     borderRadius: 5,
     padding: 10,
     marginHorizontal: 20,

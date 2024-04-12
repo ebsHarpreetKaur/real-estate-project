@@ -13,6 +13,7 @@ import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-a
 import RazorpayCheckout from 'react-native-razorpay';
 import { TouchableHighlight } from "react-native";
 import axios from "axios";
+import { theme_color } from "../../../config";
 // import { Clipboard } from 'react-native';
 // import Clipboard from '@react-native-clipboard/clipboard';
 
@@ -325,7 +326,7 @@ const Otp = ({ route }) => {
         // isloading === true
         //   ?
         //   <View style={[styles.container_activity_indicator, styles.horizontal]}>
-        //     <ActivityIndicator size="large" color="#20B2AA" />
+        // <ActivityIndicator size="large" color={theme_color} />
         //   </View>
 
         //   :
@@ -347,7 +348,7 @@ r
 
 
               <Button
-                style={{ color: "#20B2AA" }}
+                style={{ color: { theme_color } }}
                 title="Edit Phone Number"
                 onPress={() => navigation.navigate("Login")}
               />

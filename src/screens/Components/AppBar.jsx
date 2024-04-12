@@ -1,4 +1,4 @@
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Appbar } from 'react-native-paper';
 import * as SecureStore from 'expo-secure-store';
 import { useNavigation, useNavigationState } from '@react-navigation/native';
@@ -48,7 +48,8 @@ const AppBar = () => {
             {/* array.map(function(currentValue, index, array) {
                 // Return element for newArray
             }); */}
-            <Appbar.Header statusBarHeight={55} style={styles.headerBar} mode='' >
+
+            <Appbar.Header statusBarHeight={Platform.OS === 'android' ? 5 : 55} style={styles.headerBar} mode='' >
                 {/* <Appbar.BackAction onPress={_goBack} />
                 <Appbar.Content title="Header" style={styles.loginText} onPress={() => {
 
@@ -56,10 +57,10 @@ const AppBar = () => {
                 <Appbar.Action icon="magnify" onPress={_handleSearch} /> */}
                 {/* <Appbar.Action icon="dots-vertical" onPress={_handleMore} /> */}
             </Appbar.Header>
-            
+
             <View style={styles.userCard}>
                 <View>
-                <Image source={{ uri: 'https://media.istockphoto.com/id/186841959/photo/beautiful-modern-indian-woman.jpg?s=612x612&w=0&k=20&c=zFH5vouHzfXYrrFhtEulQCa9fDoJDt1X3kH0u4kOS9c=' }} style={styles.userPhoto} />
+                    <Image source={{ uri: 'https://media.istockphoto.com/id/186841959/photo/beautiful-modern-indian-woman.jpg?s=612x612&w=0&k=20&c=zFH5vouHzfXYrrFhtEulQCa9fDoJDt1X3kH0u4kOS9c=' }} style={styles.userPhoto} />
                     {/* <Image source={{ uri: auth_user !== null || '' ? auth_user.image : 'https://www.shutterstock.com/shutterstock/photos/1760295569/display_1500/stock-vector-profile-picture-avatar-icon-vector-1760295569.jpg' }} style={styles.userPhoto} /> */}
                 </View>
                 <View style={styles.userInfo}>

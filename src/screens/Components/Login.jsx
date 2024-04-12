@@ -19,6 +19,7 @@ import { Button } from "react-native-paper";
 import { Image, TouchableWithoutFeedback } from "react-native";
 import { ALERT_TYPE, Toast, Dialog } from 'react-native-alert-notification';
 import { ActivityIndicator } from "react-native";
+import { theme_color } from "../../../config";
 
 const Login = () => {
     const navigation = useNavigation();
@@ -54,7 +55,7 @@ const Login = () => {
                 isloading === true
                     ?
                     <View style={[styles.container_activity_indicator, styles.horizontal]}>
-                        <ActivityIndicator size="large" color="#20B2AA" />
+                        <ActivityIndicator size="large" color={theme_color} />
                     </View>
 
                     :
@@ -145,7 +146,7 @@ const styles = StyleSheet.create({
 
     button: {
         // backgroundColor: '#0d0d0d',
-        backgroundColor: '#20B2AA',
+        backgroundColor: theme_color,
         padding: 18,
         borderRadius: 30,
         marginTop: 48,

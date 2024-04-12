@@ -5,15 +5,23 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { theme_color } from '../../../config';
 
 const EditProfileView = (params) => {
     const data = params.route.params.data
     // console.log("params", params.route.params.data)
+    // const profile = {
+    //     name: data.firstName,
+    //     email: data.email,
+    //     rera_num: 'FEX898CE',
+    //     avatar: data.image,
+    // }
+
     const profile = {
-        name: data.firstName,
-        email: data.email,
+        name: "Bhavna Ahuja",
+        email: "bhavna@gmail.com",
         rera_num: 'FEX898CE',
-        avatar: data.image,
+        avatar: "ff",
     }
     const [name, setName] = useState(profile.name);
     const [email, setEmail] = useState(profile.email);
@@ -34,7 +42,7 @@ const EditProfileView = (params) => {
             <View style={styles.avatarContainer}>
                 <Image
                     style={styles.avatar}
-                    source={{ uri: data.image }}
+                    source={{ uri: "https://media.istockphoto.com/id/186841959/photo/beautiful-modern-indian-woman.jpg?s=612x612&w=0&k=20&c=zFH5vouHzfXYrrFhtEulQCa9fDoJDt1X3kH0u4kOS9c=" }}
                 />
                 <TouchableOpacity style={styles.changeAvatarButton} onPress={() => {/* open image picker */ }}>
                     <Text style={styles.changeAvatarButtonText}>Change Avatar</Text>
@@ -153,7 +161,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
     },
     submitButton: {
-        backgroundColor: '#20B2AA',
+        backgroundColor: theme_color,
 
         shadowColor: '#808080',
         shadowOffset: {
@@ -213,7 +221,7 @@ const styles = StyleSheet.create({
     },
     button: {
         marginTop: 20,
-        backgroundColor: '#20B2AA',
+        backgroundColor: theme_color,
         borderRadius: 5,
         paddingVertical: 10,
         paddingHorizontal: 20,
@@ -236,7 +244,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     changeAvatarButtonText: {
-        color: '#20B2AAl',
+        color: theme_color,
         fontSize: 18,
     },
 });

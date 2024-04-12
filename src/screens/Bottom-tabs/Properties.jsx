@@ -1,194 +1,3 @@
-
-// import React, { useState } from 'react';
-// import { StyleSheet, View, Text, TextInput, FlatList, Image, TouchableOpacity } from 'react-native';
-
-
-
-// const propertyData = [
-//     {
-//         id: '1',
-//         image: 'https://source.unsplash.com/900x900/?house',
-//         price: '$250,000',
-//         address: '123 Main St',
-//         squareMeters: '150',
-//         beds: '3',
-//         baths: '2',
-//         parking: '1'
-//     },
-//     {
-//         id: '2',
-//         image: 'https://source.unsplash.com/900x900/?apartment',
-//         price: '$400,000',
-//         address: '456 Oak Ave',
-//         squareMeters: '200',
-//         beds: '4',
-//         baths: '3',
-//         parking: '2'
-//     },
-//     {
-//         id: '3',
-//         image: 'https://source.unsplash.com/900x900/?house+front',
-//         price: '$150,000',
-//         address: '789 Maple Rd',
-//         squareMeters: '100',
-//         beds: '2',
-//         baths: '1',
-//         parking: '0'
-//     },
-//     {
-//         id: '4',
-//         image: 'https://source.unsplash.com/900x900/?small+house',
-//         price: '$150,000',
-//         address: '789 Maple Rd',
-//         squareMeters: '100',
-//         beds: '2',
-//         baths: '1',
-//         parking: '0'
-//     }
-// ];
-
-// const PropertiesTab = () => {
-//     const [searchText, setSearchText] = useState('');
-
-//     const handleSearch = (text) => {
-//         setSearchText(text);
-//     }
-
-//     const renderItem = ({ item }) => (
-//         <TouchableOpacity style={styles.card}>
-//             <Image source={{ uri: item.image }} style={styles.image} />
-//             <View style={styles.cardBody}>
-//                 <Text style={styles.price}>{item.price}</Text>
-//                 <Text style={styles.address}>{item.address}</Text>
-//                 <Text style={styles.squareMeters}>{item.squareMeters} sq. m.</Text>
-//             </View>
-//             <View style={styles.cardFooter}>
-//                 <Text style={styles.beds}>{item.beds} beds</Text>
-//                 <Text style={styles.baths}>{item.baths} baths</Text>
-//                 <Text style={styles.parking}>{item.parking} parking</Text>
-//             </View>
-//         </TouchableOpacity>
-//     );
-
-//     const filteredData = propertyData.filter((item) => {
-//         return item.address.toLowerCase().includes(searchText.toLowerCase());
-//     });
-
-//     return (
-//         <View style={styles.container}>
-//             <View style={styles.searchInputContainer}>
-//                 <TextInput
-//                     style={styles.searchInput}
-//                     placeholder="Search properties..."
-//                     onChangeText={handleSearch}
-//                     value={searchText}
-//                 />
-//             </View>
-//             <FlatList
-//                 contentContainerStyle={styles.propertyListContainer}
-//                 data={filteredData}
-//                 renderItem={renderItem}
-//                 keyExtractor={(item) => item.id}
-//             />
-//         </View>
-//     );
-// }
-
-// export default PropertiesTab;
-
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         paddingTop: 60,
-//     },
-//     searchInputContainer: {
-//         paddingHorizontal: 20,
-//     },
-//     searchInput: {
-//         height: 40,
-//         borderWidth: 1,
-//         borderColor: '#dcdcdc',
-//         backgroundColor: '#fff',
-//         borderRadius: 5,
-//         padding: 10,
-//         marginBottom: 10
-//     },
-//     propertyListContainer: {
-//         paddingHorizontal: 20,
-//     },
-//     card: {
-//         backgroundColor: '#fff',
-//         borderRadius: 5,
-//         marginTop: 10,
-//         marginBottom: 10,
-//         shadowColor: '#000',
-//         shadowOffset: {
-//             width: 0,
-//             height: 2
-//         },
-//         shadowOpacity: 0.25,
-//         shadowRadius: 3.84,
-//         elevation: 5
-//     },
-//     image: {
-//         height: 150,
-//         marginBottom: 10,
-//         borderTopLeftRadius: 5,
-//         borderTopRightRadius: 5,
-//     },
-//     cardBody: {
-//         marginBottom: 10,
-//         padding: 10,
-//     },
-//     price: {
-//         fontSize: 20,
-//         fontWeight: 'bold',
-//         marginBottom: 5
-//     },
-//     address: {
-//         fontSize: 16,
-//         marginBottom: 5
-//     },
-//     squareMeters: {
-//         fontSize: 14,
-//         marginBottom: 5,
-//         color: '#666'
-//     },
-//     cardFooter: {
-//         padding: 10,
-//         flexDirection: 'row',
-//         borderTopWidth: 1,
-//         borderTopColor: '#dcdcdc',
-//         justifyContent: 'space-between',
-//     },
-//     beds: {
-//         fontSize: 14,
-//         color: '#ffa500',
-//         fontWeight: 'bold'
-//     },
-//     baths: {
-//         fontSize: 14,
-//         color: '#ffa500',
-//         fontWeight: 'bold'
-//     },
-//     parking: {
-//         fontSize: 14,
-//         color: '#ffa500',
-//         fontWeight: 'bold'
-//     }
-// });
-
-
-
-
-
-
-
-
-
-
-
-
 import {
     SafeAreaView,
     View,
@@ -201,7 +10,9 @@ import {
     Modal,
     TouchableWithoutFeedback,
     Keyboard,
-    TextInput
+    TextInput,
+    Platform,
+    TouchableOpacity
 } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import * as SecureStore from 'expo-secure-store';
@@ -217,8 +28,12 @@ import AppBar from '../Components/AppBar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import PropertyDetail from '../Stacks/PropertyDetail';
 import Entypo from 'react-native-vector-icons/Entypo';
+import { theme_color } from '../../../config';
+import { ScrollView } from 'react-native';
+import { Chip } from 'react-native-paper';
 
 const LeftContent = props => <Avatar.Icon {...props} icon="gift" />
 
@@ -273,16 +88,30 @@ export default function PropertiesTab() {
                     <Text variant="bodyLarge" style={styles.dealText}>{item.deal}</Text>
 
                     {/* <Card.Title title="Property Owner" subtitle="Active" left={LeftContent} /> */}
-                    <Card.Content style={styles.contentText}>
+
+                    <Card.Content style={styles.cardBody}>
                         <Text variant="bodyMedium" style={styles.price}>{item.price}</Text>
 
-                        <Text variant="titleMedium" style={styles.title}>{<MaterialIcons name="location-pin" color='#20B2AA' size={15} />}{item.district}</Text>
+                        <Text variant="titleSmall" style={styles.address}>{<MaterialIcons name="location-pin" color={theme_color} size={10} />}{item.district}</Text>
+                        <Text style={styles.squareMeters}>{item.area_sqmt} sq. m.</Text>
+
                     </Card.Content>
                     <Divider />
                     <Card.Content style={styles.cardContent}>
-                        <Text variant="bodyMedium" style={styles.propertyDetailText}>{<MaterialCommunityIcons name="bed" color='#20B2AA' size={25} />}{item.bed} Bed</Text>
-                        <Text variant="bodyMedium" style={styles.propertyDetailText}>{<FontAwesome name="bath" color='#20B2AA' size={25} />}{item.bath} Bath</Text>
-                        <Text variant="bodyMedium" style={styles.propertyDetailText}>{<MaterialCommunityIcons name="car-arrow-left" color='#20B2AA' size={25} />}{item.parking} Parking</Text>
+                        <Text variant="bodyMedium" style={styles.propertyDetailText}>
+                            {/* {<MaterialCommunityIcons name="bed" color={theme_color} size={25} />} */}
+                            {item.bed} Bed</Text>
+                        <View style={styles.verticleLine}></View>
+
+                        <Text variant="bodyMedium" style={styles.propertyDetailText}>
+                            {/* {<FontAwesome name="bath" color={theme_color} size={25} />} */}
+
+                            {item.bath} Bath</Text>
+                        <View style={styles.verticleLine}></View>
+
+                        <Text variant="bodyMedium" style={styles.propertyDetailText}>
+                            {/* {<MaterialCommunityIcons name="car-arrow-left" color={theme_color} size={25} />} */}
+                            {item.parking} Parking</Text>
                     </Card.Content>
                     {/* <Card.Actions>
                       <Button>Cancel</Button>
@@ -309,7 +138,6 @@ export default function PropertiesTab() {
 
     return (
         <>
-
             <StatusBar
                 animated={true}
                 backgroundColor="#61dafb"
@@ -339,52 +167,8 @@ export default function PropertiesTab() {
                     onPress={() => {
                     }} name="filter-sharp" color='#DEDEDE' size={15} style={{ fontSize: 35, margin: 5, marginTop: "4%" }} />
             </View>
-            {/* <View style={styles.headerMenu}>
-                <Searchbar
-                    placeholder="Search"
-                    onChangeText={text => {
-                        onSearch(text)
-                    }}
-                    value={searchQuery}
-                    iconColor='gray'
-                    style={styles.searchBar}
-                />
-                <Menu
-                    visible={visible}
-                    onDismiss={closeMenu}
-                    anchor={
-                        <MaterialCommunityIcons name="filter-variant" color='black' size={35} style={styles.filterIcon} onPress={openMenu} />
 
-                        // <SimpleLineIcons
-                        //     name="equalizer" size={25} style={styles.filterIcon} color="black" onPress={openMenu} />
-                    }>
-                    <Menu.Item
-                        onPress={() => {
-                            console.log('Low to High Price was pressed');
-                        }}
-                        title="Low to High Price"
-                    />
-                    <Menu.Item
-                        onPress={() => {
-                            console.log('High to Low Pricewas pressed');
-                        }}
-                        title="High to Low Price"
-                    />
-                    <Menu.Item
-                        onPress={() => {
-                            console.log('Sort by Name was pressed');
-                            let templist = propertydata.sort((a, b) =>
-                                a.title > b.title ? 1 : -1)
-                            setPropertyData(templist)
-
-                        }}
-                        title="Sort by Name"
-                    // disabled
-                    />
-                </Menu>
-            </View> */}
-
-            <SafeAreaView style={styles.container}>
+            {/* <SafeAreaView style={styles.container}>
                 <FlatList
                     data={propertydata}
                     renderItem={renderItem}
@@ -393,8 +177,73 @@ export default function PropertiesTab() {
 
                     </View>}
                 />
-            </SafeAreaView>
+            </SafeAreaView> */}
 
+            <View style={styles.container2}>
+                <FlatList
+                    style={styles.list}
+                    data={propertydata}
+                    keyExtractor={item => {
+                        return item.id
+                    }}
+                    ItemSeparatorComponent={() => {
+                        return <View style={styles.separator} />
+                    }}
+                    renderItem={property => {
+                        const item = property.item
+                        return (
+                            <View style={styles.card}>
+                                <Image style={styles.cardImage} source={{ uri: item.photo }} />
+                                <View style={styles.cardHeader}>
+                                    <View>
+                                        <Text style={styles.title}>{item.title}</Text>
+                                        <Text style={styles.title}>{item.price}</Text>
+                                        <Text style={styles.title}>{item.district}</Text>
+
+                                        <Text style={styles.description}>{item.description.split(' ').slice(0, 10).join(' ')}{item.description.split(' ').length > 10 ? '...' : ''}
+                                        </Text>
+                                        <View style={styles.timeContainer}>
+                                            <Image
+                                                style={styles.iconData}
+                                                source={{ uri: 'https://img.icons8.com/color/96/3498db/calendar.png' }}
+                                            />
+                                            <Text style={styles.time}>{item.time}</Text>
+                                        </View>
+                                    </View>
+                                </View>
+                                <View style={styles.cardFooter}>
+                                    <View style={styles.socialBarContainer}>
+                                        <View style={styles.socialBarSection}>
+                                            <TouchableOpacity style={styles.socialBarButton}>
+                                                {<MaterialCommunityIcons name="bed" color={theme_color} size={22} />}
+                                                <Text style={styles.bed}>{item.bed}</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                        <View style={styles.verticleLine}></View>
+
+                                        <View style={styles.socialBarSection}>
+                                            <TouchableOpacity style={styles.socialBarButton}>
+                                                {<FontAwesome name="bath" color={theme_color} size={20} />}
+                                                <Text style={styles.bed}>{item.bath}</Text>
+
+                                            </TouchableOpacity>
+                                        </View>
+                                        <View style={styles.verticleLine}></View>
+                                        <View style={styles.socialBarSection}>
+                                            <TouchableOpacity style={styles.socialBarButton}>
+                                                {<MaterialCommunityIcons name="car-arrow-left" color={theme_color} size={22} />}
+                                                <Text style={styles.bed}>{item.parking}</Text>
+
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+
+                                </View>
+                            </View>
+                        )
+                    }}
+                />
+            </View>
 
         </>
     );
@@ -411,6 +260,146 @@ const styles = StyleSheet.create({
         shadowOpacity: 0
 
     },
+    list: {
+        paddingHorizontal: 8,
+        backgroundColor: '#ffffff',
+    },
+    bed: {
+        color: "#0066b2",
+        marginLeft: 5,
+        fontWeight: "700"
+    },
+    
+    timeContainer: {
+        flexDirection: 'row',
+    },
+    cardBody: {
+        marginBottom: 10,
+        padding: 10,
+    },
+    price: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 5
+    },
+    iconData: {
+        width: 15,
+        height: 15,
+        marginTop: 5,
+        marginRight: 5,
+    },
+    description: {
+        fontSize: 15,
+        color: '#888',
+        flex: 1,
+        marginTop: 5,
+        marginBottom: 5,
+    },
+    time: {
+        fontSize: 13,
+        color: '#808080',
+        marginTop: 5,
+    },
+
+    section2: {
+
+        marginBottom: 16,
+        // marginLeft: 15,
+        marginTop: 20
+
+    },
+    separator: {
+        marginTop: 10,
+    },
+    sectionTitle: {
+        fontSize: 20,
+        fontWeight: '600',
+        marginLeft: "5%"
+
+    },
+    socialBarContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row',
+        flex: 1,
+
+    },
+    socialBarSection: {
+        justifyContent: 'center',
+        flexDirection: 'row',
+        flex: 1,
+    },
+    socialBarlabel: {
+        marginLeft: 8,
+        alignSelf: 'flex-end',
+        justifyContent: 'center',
+
+    },
+
+    socialBarButton: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    card: {
+        shadowColor: '#00000021',
+        shadowOffset: {
+            width: 2,
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 9,
+        marginVertical: 8,
+        width: "100%",
+        backgroundColor: 'white',
+    },
+    cardHeader: {
+        paddingVertical: 17,
+        paddingHorizontal: 16,
+        borderTopLeftRadius: 1,
+        borderTopRightRadius: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    cardContent: {
+        paddingVertical: 12.5,
+        paddingHorizontal: 16,
+    },
+    cardFooter: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingTop: 12.5,
+        paddingBottom: 25,
+        paddingHorizontal: 16,
+        borderBottomLeftRadius: 1,
+        borderBottomRightRadius: 1,
+        backgroundColor: '#ffff',
+    },
+    cardImage: {
+        flex: 1,
+        height: 200,
+        width: null,
+    },
+    container2: {
+
+        flex: 1,
+        marginTop: 20,
+    },
+    verticleLine: {
+        height: '100%',
+        width: 1,
+        backgroundColor: '#DEDEDE',
+    },
+    address: {
+        fontSize: 13,
+        marginBottom: 5,
+        color: "#666"
+    },
+    squareMeters: {
+        fontSize: 14,
+        marginBottom: 5,
+        color: '#666'
+    },
     container: {
         flex: 1,
         marginTop: StatusBar.currentHeight || 0,
@@ -420,15 +409,12 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: "#999999"
     },
-    separator: {
-        // height: 2,
-        backgroundColor: "#ADD8E6",
-    },
+
     locationIcon: {
     },
     headerMenu: {
         flexDirection: 'row',
-        padding: 5,
+        padding: Platform.OS ? 5 : 0,
         // backgroundColor: "#ffffff",
 
     },
@@ -441,10 +427,7 @@ const styles = StyleSheet.create({
         // margin: 5,
         marginTop: "50%",
     },
-    price: {
-        fontWeight: "bold",
-        fontSize: 20
-    },
+
     actionButtons: {
         marginTop: "5%"
     },
@@ -462,13 +445,13 @@ const styles = StyleSheet.create({
     cardContent: {
         display: "flex",
         flexDirection: "row",
-        justifyContent: "space-between",
+        justifyContent: "space-evenly",
         marginTop: 30,
     },
     propertyDetailText: {
         fontWeight: "bold",
         fontSize: 15,
-        color: "#20B2AA",
+        color: theme_color,
     },
     contentText: {
         padding: 10
@@ -479,10 +462,13 @@ const styles = StyleSheet.create({
     },
     dealText: {
         position: "absolute",
-        backgroundColor: "#20B2AA",
+        backgroundColor: theme_color,
         textAlign: "center",
         color: "white",
-        padding: 5,
+        borderRadius: 15,
+        // padding: 1,
+        width: 50,
+        height: 25,
         margin: 10,
     },
     inputs: {

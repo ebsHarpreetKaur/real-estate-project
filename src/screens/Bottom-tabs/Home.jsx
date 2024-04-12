@@ -34,6 +34,7 @@ import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 import axios from 'axios';
 import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
+import { theme_color } from '../../../config';
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -62,7 +63,11 @@ export default function HomeTab() {
     const [userSelected, setUserSelected] = useState([])
     const [auth_user, setAuth_user] = useState([])
     const [Dealer_data, setDealer_data] = useState([])
+  const [searchText2, setSearchText2] = useState('');
 
+  const handleSearch = (text) => {
+    setSearchText2(text);
+  }
 
     React.useEffect(() => {
         auth_user_data();
@@ -147,7 +152,7 @@ export default function HomeTab() {
             // title: 'New message',
             // body: 'You have a new message',
             content: {
-                title: `Unify`,
+                title: `Hubuzz Technology`,
                 body: `👤${auth_user.username} shown interest in your property.`,
                 data: { data: 'goes here' },
             },
@@ -247,9 +252,7 @@ export default function HomeTab() {
                             {/* <MaterialCommunityIcons name="arrow-right" color='#DEDEDE' size={23} style={{ marginTop: 10, marginRight: "2%" }} onPress={() => handle_dealer_profile_view(item)} /> */}
                         </View>
                         <View style={styles.msgContainer}>
-                            <Text style={styles.msgTxt}><MaterialIcons onPress={() => {
-                                handle_change_location()
-                            }} name="location-pin" color='#DEDEDE' size={12} />{item.user_city}</Text>
+                            <Text style={styles.msgTxt}><MaterialIcons name="location-pin" color='#DEDEDE' size={12} />{item.user_city}</Text>
                         </View>
                     </View>
 
@@ -289,6 +292,7 @@ export default function HomeTab() {
                     handle_change_location()
                 }} name="location" color='#DEDEDE' size={15} style={{ fontSize: 35, margin: 5, marginTop: "4%" }} />
             </View>
+
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
 
                 <View style={{ flex: 1 }} >
@@ -378,7 +382,7 @@ const styles = StyleSheet.create({
         textAlign: 'flex-end',
     },
     forgotPasswordButtonText: {
-        color: '#20B2AA',
+        color: theme_color,
         fontSize: 12,
         fontWeight: 'bold',
         textAlign: 'right'
@@ -417,7 +421,7 @@ const styles = StyleSheet.create({
         color:"#DEDEDE"
     },
     eoi_button: {
-        backgroundColor: '#20B2AA',
+        backgroundColor: theme_color,
         borderRadius: 5,
         padding: 5,
         marginTop: 6,
@@ -431,7 +435,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     sendnotifiButton: {
-        backgroundColor: '#20B2AA',
+        backgroundColor: theme_color,
         borderRadius: 5,
         padding: 10,
         marginTop: 10,
@@ -446,7 +450,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     cancelsendnotifiText: {
-        color: '#20B2AA',
+        color: theme_color,
         fontSize: 12,
         fontWeight: 'bold',
     },
@@ -493,7 +497,7 @@ const styles = StyleSheet.create({
     btnClose: {
         flex: 1,
         height: 40,
-        backgroundColor: '#20b2aa',
+        backgroundColor: theme_color,
         padding: 5,
         alignItems: 'center',
         justifyContent: 'center',
@@ -554,7 +558,7 @@ const styles = StyleSheet.create({
     },
     msgTxt: {
         fontWeight: '400',
-        color: '#008B8B',
+        color: '#0066b2',
         fontSize: 12,
         marginLeft: 15,
     },
@@ -577,7 +581,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 30,
-        backgroundColor: '#20B2AA',
+        backgroundColor: theme_color,
     },
     followButtonText: {
         color: '#FFFFFF',
@@ -639,7 +643,7 @@ const styles = StyleSheet.create({
     propertyDetailText: {
         fontWeight: "bold",
         fontSize: 15,
-        color: "#20B2AA",
+        color: theme_color,
     },
     contentText: {
         padding: 10
@@ -650,7 +654,7 @@ const styles = StyleSheet.create({
     },
     dealText: {
         position: "absolute",
-        backgroundColor: "#20B2AA",
+        backgroundColor: theme_color,
         textAlign: "center",
         color: "white",
         padding: 5,

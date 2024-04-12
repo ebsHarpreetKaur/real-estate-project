@@ -1,0 +1,13 @@
+-------------------------- how to create BUILD ----------------------------
+
+step 1: eas login
+step 2: eas whoami
+step 3: eas build --profile development --platform android
+step 4: Download build and open in android/Ios
+
+After build:
+
+step 5: npx expo start --dev-client
+
+
+
