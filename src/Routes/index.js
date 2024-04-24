@@ -27,8 +27,7 @@ import ChatDetail from '../screens/Stacks/ChatDetail';
 import WelcomeScreen from '../screens/Components/Welcome';
 import EditProfileView from '../screens/Components/EditProfile';
 import { theme_color } from '../../config';
-
-
+import VideoConference from '../screens/Components/VideoConference'
 
 
 const Stack = createNativeStackNavigator()
@@ -189,17 +188,6 @@ export default function AppNavigation() {
             >
 
                 <Tab.Screen
-                    name="Properties"
-                    component={PropertiesScreen}
-                    options={{
-                        tabBarLabel: 'Properties',
-                        tabBarActiveTintColor: theme_color,
-                        tabBarIcon: ({ color, size }) => (
-                            <MaterialCommunityIcons name="home-city" color={color} size={size} />
-                        ),
-                    }}
-                />
-                <Tab.Screen
                     name="Home"
                     component={HomeScreen}
                     options={{
@@ -207,6 +195,18 @@ export default function AppNavigation() {
                         tabBarActiveTintColor: theme_color,
                         tabBarIcon: ({ color, size }) => (
                             <MaterialCommunityIcons name="home-analytics" color={color} size={size} />
+                        ),
+                    }}
+                />
+
+                <Tab.Screen
+                    name="Properties"
+                    component={PropertiesScreen}
+                    options={{
+                        tabBarLabel: 'Properties',
+                        tabBarActiveTintColor: theme_color,
+                        tabBarIcon: ({ color, size }) => (
+                            <MaterialCommunityIcons name="home-city" color={color} size={size} />
                         ),
                     }}
                 />
@@ -321,6 +321,8 @@ export default function AppNavigation() {
                                         <Stack.Screen name="PropertyDetail" component={PropertyDetail} />
                                         <Stack.Screen name="UserProfile" component={UserProfile} />
                                         <Stack.Screen name="EditProfile" component={EditProfileView} />
+                                        <Stack.Screen name="VideoConferencing" component={VideoConference} />
+                                       
 
                                     </>
                                 )

@@ -52,6 +52,9 @@
         {
           "locationAlwaysAndWhenInUsePermission": "Allow Real Estate App to use your location."
         }
+      ],
+      [
+        "@config-plugins/react-native-webrtc"
       ]
     ],
     "extra": {

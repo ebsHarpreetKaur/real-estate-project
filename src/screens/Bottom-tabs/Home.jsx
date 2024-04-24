@@ -235,7 +235,9 @@ export default function HomeTab() {
 
     const renderItem = ({ item }) => {
         return (
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=>{
+                handle_dealer_profile_view()
+            }}>
                 <View style={styles.row}>
                     <Image source={{ uri: item.image }} style={styles.pic} />
                     <View>
