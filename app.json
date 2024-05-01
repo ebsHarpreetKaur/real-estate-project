@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Unify",
-    "slug": "real-estate-rn",
+    "slug": "real-estate-react-native",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/splash/logo.png",
@@ -22,18 +22,27 @@
       "supportsTablet": true,
       "config": {
         "usesNonExemptEncryption": false
-      }
+      },
+      "bitcode": false
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/splash/logo-withoutbg.png",
+        "foregroundImage": "./assets/splash/logo.png",
         "backgroundColor": "#ffffff"
       },
       "useNextNotificationsApi": true,
       "permissions": [
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION",
-        "android.permission.FOREGROUND_SERVICE"
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.ACCESS_NETWORK_STATE",
+        "android.permission.BLUETOOTH",
+        "android.permission.CAMERA",
+        "android.permission.INTERNET",
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.SYSTEM_ALERT_WINDOW",
+        "android.permission.WAKE_LOCK"
       ],
       "package": "com.ebullientsoft.unifyreactnativerealestateapp"
     },
@@ -59,9 +68,9 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "a1cbb590-b5bb-40a6-9bcc-1b8a1a886e95"
+        "projectId": "e5afe387-0294-4fce-8e2c-db823fcfd9f9"
       }
     },
-    "owner": "erharpreetkaur"
+    "owner": "ebullientsoft"
   }
 }

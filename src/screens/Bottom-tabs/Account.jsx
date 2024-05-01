@@ -15,7 +15,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import { Appbar } from 'react-native-paper';
 import { FlatList } from 'react-native';
-import { theme_color } from '../../../config';
+// import { theme_color } from '../../../config';
 
 
 const LeftContent = props => <Avatar.Icon {...props} icon="account-supervisor" />
@@ -30,6 +30,38 @@ const AccountTab = () => {
   // const parsedData = JSON.parse(auth_user);
 
   // console.log("auth_user", parsedData)
+
+  // const [auth_user, setAuth_user] = useState([]);
+
+  // React.useEffect(() => {
+  //   const auth_user_data = async () => {
+  //     let userData;
+  //     userData = await SecureStore.getItemAsync('auth_user');
+  //     const parsedData = JSON.parse(userData);
+  //     setAuth_user(parsedData)
+  //     // console.log("parsedData.......", parsedData)
+  //   };
+
+  //   auth_user_data();
+  // }, []);
+
+  // console.log("auth_user status on logout", auth_user)
+
+  const [auth_user, setAuth_user] = useState([]);
+
+  React.useEffect(() => {
+    const auth_user_data = async () => {
+      let userData;
+      userData = await SecureStore.getItemAsync('auth_user');
+      const parsedData = JSON.parse(userData);
+      setAuth_user(parsedData)
+      // console.log("parsedData.......", parsedData)
+    };
+
+    auth_user_data();
+  }, []);
+
+  console.log("auth_user.......", auth_user)
 
 
   const handleSignOut = () => {
@@ -116,9 +148,9 @@ const AccountTab = () => {
     <>
 
       <ScrollView style={styles.container}>
-        
+
         {/* <Appbar.Header statusBarHeight={0}> */}
-          {/* <Appbar.BackAction onPress={() => { }} />
+        {/* <Appbar.BackAction onPress={() => { }} />
         <Appbar.Content title="Title" />
         <Appbar.Action icon="calendar" onPress={() => { }} />
         <Appbar.Action icon="magnify" onPress={() => { }} /> */}
@@ -201,7 +233,7 @@ const AccountTab = () => {
                             <TouchableOpacity style={styles.socialBarButton}>
                               <Feather onPress={() => {
                                 handle_change_location()
-                              }} name="edit" color={theme_color} size={20} />
+                              }} name="edit" color="#0066b2" size={20} />
                               {/* <Image
                                 style={styles.icon}
                                 source={{ uri: 'https://img.icons8.com/material/96/2ecc71/visible.png' }}
@@ -215,7 +247,7 @@ const AccountTab = () => {
                             <TouchableOpacity style={styles.socialBarButton}>
                               <Feather onPress={() => {
                                 handle_change_location()
-                              }} name="share" color={theme_color} size={20} />
+                              }} name="share" color="#0066b2" size={20} />
                             </TouchableOpacity>
                           </View>
                           <View style={styles.verticleLine}></View>
@@ -223,7 +255,7 @@ const AccountTab = () => {
                             <TouchableOpacity style={styles.socialBarButton}>
                               <FontAwesome5 onPress={() => {
                                 handle_change_location()
-                              }} name="eye" color={theme_color} size={20} />
+                              }} name="eye" color="#0066b2" size={20} />
                             </TouchableOpacity>
                           </View>
                         </View>
@@ -324,7 +356,7 @@ const styles = {
     color: '#999',
   },
   button: {
-    backgroundColor: theme_color,
+    backgroundColor: "#0066b2",
     borderRadius: 5,
     padding: 10,
     marginHorizontal: 20,

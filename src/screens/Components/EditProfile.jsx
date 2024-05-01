@@ -5,7 +5,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { theme_color } from '../../../config';
+// import { theme_color } from '../../../config';
 
 const EditProfileView = (params) => {
     const data = params.route.params.data
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
     },
     submitButton: {
-        backgroundColor: theme_color,
+        backgroundColor: "#0066b2",
 
         shadowColor: '#808080',
         shadowOffset: {
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
     },
     button: {
         marginTop: 20,
-        backgroundColor: theme_color,
+        backgroundColor: "#0066b2",
         borderRadius: 5,
         paddingVertical: 10,
         paddingHorizontal: 20,
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     changeAvatarButtonText: {
-        color: theme_color,
+        color: "#0066b2",
         fontSize: 18,
     },
 });

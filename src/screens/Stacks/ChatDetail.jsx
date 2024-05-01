@@ -10,7 +10,7 @@ import {
     KeyboardAvoidingView,
 } from 'react-native'
 import AppBar from '../Components/AppBar'
-import { theme_color } from '../../../config'
+// import { theme_color } from '../../../config';
 const { width, height } = Dimensions.get('window')
 
 export default ChatDetail = () => {
@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
     rightBlock: {
         width: 220,
         borderRadius: 5,
-        backgroundColor: theme_color,
+        backgroundColor: "#0066b2",
         padding: 10,
         shadowColor: '#3d3d3d',
         shadowRadius: 2,

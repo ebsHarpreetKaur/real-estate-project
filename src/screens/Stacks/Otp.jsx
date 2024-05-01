@@ -5,15 +5,16 @@ import { checkVerification } from "../../api/context/verify";
 // import OTPInputView from "@twotalltotems/react-native-otp-input";
 // import { OTPInputView } from '@react-native-otp-inputs/otp-input';
 import OtpInputs from 'react-native-otp-inputs';
+import * as Updates from 'expo-updates';
 
 import * as SecureStore from 'expo-secure-store';
 import AuthContext from "../../api/context/Context";
-import { today } from "../../api/context/auth";
+import { REACT_NATIVE_BASE_URL, today, token } from "../../api/context/auth";
 import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
 import RazorpayCheckout from 'react-native-razorpay';
 import { TouchableHighlight } from "react-native";
 import axios from "axios";
-import { theme_color } from "../../../config";
+// import { theme_color } from "../../../config";
 // import { Clipboard } from 'react-native';
 // import Clipboard from '@react-native-clipboard/clipboard';
 
@@ -33,92 +34,36 @@ const Otp = ({ route }) => {
 
 
   const [user_data, setUserData] = useState(null);
+  let phoneNumberWithoutCountryCode = phoneNumber.replace(/^(\+91)/, '');
 
-  // useEffect(() => {
-  //   const fetch_payment_status = async () => {
-  //     try {
-  //       const response = await axios.get(`http://127.0.0.1:8000/api/user/mobile/${phoneNumber}`);
-  //       console.log("res.....", response)
-  //       setUserData(response.data);
-  //       // if (!response.data) {
-  //       //   setisLoading(true)
-  //       // }
-  //     } catch (error) {
-  //       console.error('Error fetching payment:', error);
-  //     }
-  //   };
-  //   fetch_payment_status();
-  // }, [phoneNumber]);
+  useEffect(() => {
+    fetch_payment_status();
+  }, [phoneNumber]);
 
-  const user = [
-    {
-      "mobile": 4675336343,
-      "otp_status": true,
-      "user_location": [
-        {
-          "coords": {
-            "speed": -1,
-            "longitude": 76.69112317715411,
-            "latitude": 30.71134927265382,
-            "accuracy": 16.965582688710988,
-            "heading": -1,
-            "altitude": 318.2151985168457,
-            "altitudeAccuracy": 7.0764055252075195
-          },
-          "timestamp": 1709037095653.2131
-        }
-      ],
-      "status": true,
-      "email": "g@gmail.co",
-      "user_pincode": 3953553,
-      "name": "hhs",
-      "payment_res": [
-        {
-          "acquirer_data":
-          {
-            "rrn": "769255470364",
-            "upi_transaction_id": "B15ED4C29A80128921A45D11D56D082C"
-          },
-          "amount": 100,
-          "amount_refunded": 0,
-          "bank": null,
-          "captured": true,
-          "card_id": null,
-          "contact": "+919191919191",
-          "created_at": 1710414058,
-          "currency": "INR",
-          "description": "Credits towards consultation",
-          "email": "void@razorpay.com",
-          "entity": "payment",
-          "error_code": null,
-          "error_description": null,
-          "error_reason": null,
-          "error_source": null,
-          "error_step": null,
-          "fee": 2,
-          "id": "pay_NmD9sdUkyhhk45",
-          "international": false,
-          "invoice_id": null,
-          "method": "upi",
-          "notes": [],
-          "order_id": null,
-          "refund_status": null,
-          "reward": null,
-          "status": "captured",
-          "tax": 0,
-          "upi": { "vpa": "success@razorpay" },
-          "vpa": "success@razorpay",
-          "wallet": null
-        }
-      ],
-      "payment_status": true,
-      "updated_at": "2024-03-13T10:20:01.745000Z",
-      "created_at": "2024-03-13T10:20:01.745000Z",
-      "_id": "65f17dd17dee41026b0bd1a2"
-    },
+  const fetch_payment_status = async () => {
+    try {
+      const response = await axios.get(`${REACT_NATIVE_BASE_URL}user/mobile/${phoneNumberWithoutCountryCode}`, {
+        headers: {
+          "Accept": 'application/json',
+          'content-type': 'application/json',
+          "Authorization": `Bearer ${token}`
+        },
+      });
+      // console.log("paym res", response?.data?.user)
 
-  ]
-  console.log("user", user[0])
+      setUserData(response?.data?.user);
+      // if (!response.data) {
+      //   setisLoading(true)
+      // }
+    } catch (error) {
+      console.error('Error fetching payment:', error);
+    }
+  };
+
+
+
+  // console.log("res.....HERREEEEE", user_data)
+
   const handleCodeVerification = useCallback(
     (code) => {
       checkVerification(phoneNumber, code).then((success) => {
@@ -126,191 +71,108 @@ const Otp = ({ route }) => {
         //   console.log("wrong code")
         //   setInvalidCode(true)
         // } else {
-        console.log("otp status", success)
-        if (user.length === 0 || null) {
-          Dialog.show({
-            type: ALERT_TYPE.WARNING,
-            title: 'warning',
-            textBody: 'Please complete your payment.',
-            button: 'close',
-          })
-          navigation.navigate("CheckAuthCredentials", {
-            params: {
-              phoneNumber: formattedValue,
-              otp_status: success
-            },
-          });
-        } else {
-          if (
-            user[0]?.payment_status === false
-          ) {
-            Dialog.show({
-              type: ALERT_TYPE.WARNING,
-              title: 'warning',
-              textBody: 'Payment pending...',
-              button: 'close',
-            })
-            navigation.navigate("CheckAuthCredentials", {
-              params: {
-                phoneNumber: formattedValue,
-                otp_status: success
-              },
-            });
-          } else {
-            // fetch('http://127.0.0.1:8000/api/user/login', {
-            //   method: 'POST',
-            //   headers: {
-            //     'Content-Type': 'application/json',
-            //   },
-            //   body: JSON.stringify({
-            // "mobile":4675336343,
-            // "status":true,
-            // "otp_status":true,
-            // "user_pincode":3953553,
-            // "name":"hhs",
-            // "payment_status":true,
-            // "payment_res":[
-            //     {
-            //         "amount": 100.00,
-            //         "currency": "USD",
-            //         "card_number": "4111111111111111",
-            //         "card_exp_month": "12",
-            //         "card_exp_year": "2025",
-            //         "card_cvv": "123",
-            //         "billing_address": {
-            //             "line1": "123 Billing St",
-            //             "line2": "",
-            //             "city": "Billing City",
-            //             "state": "CA",
-            //             "postal_code": "12345",
-            //             "country": "US"
-            //         },
-            //         "customer_name": "John Doe",
-            //         "customer_email": "john.doe@example.com",
-            //         "customer_phone": "+1234567890",
-            //         "description": "Payment for order #12345",
-            //         "metadata": {
-            //             "order_id": "12345",
-            //             "customer_id": "67890"
-            //         }
-            //     }
-            // ],
+        // console.log("user_data", user_data)
 
-            // "email":"g@gmail.co",
-            //     "user_location": [
-            //             {
-            //                 "coords": {
-            //                     "speed": -1,
-            //                     "longitude": 76.69112317715411,
-            //                     "latitude": 30.71134927265382,
-            //                     "accuracy": 16.965582688710988,
-            //                     "heading": -1,
-            //                     "altitude": 318.2151985168457,
-            //                     "altitudeAccuracy": 7.0764055252075195
-            //                 },
-            //                 "timestamp": 1709037095653.2131
-            //             }
-            //         ]
-            //     // expiresInMins: 60, // optional
-            //   })
-            // })
-            //   .then(res => res.json())
-            //   .then(res => {
-            //     console.log(res, "res........")
-
-            // if (res) {
-
-            const login_res = [
-              {
-                "message": "User logged in successfully",
-                "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzEwNTAzMTM3LCJleHAiOjE3MTA1MDY3MzcsIm5iZiI6MTcxMDUwMzEzNywianRpIjoiOHdLc0JRTGV1RW1TY2VuMyIsInN1YiI6IjY1ZjQxMTAzOWU0N2NhOTdiYzA5NWFhMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.kUu8onNc5GS3DfVF3zo4zBFTtzD2pKCNAaeygDBzFcU",
-                "user": {
-                  "_id": "65f411039e47ca97bc095aa2",
-                  "mobile": 4675336343,
-                  "otp_status": true,
-                  "user_location": [
-                    {
-                      "coords": {
-                        "speed": -1,
-                        "longitude": 76.69112317715411,
-                        "latitude": 30.71134927265382,
-                        "accuracy": 16.965582688710988,
-                        "heading": -1,
-                        "altitude": 318.2151985168457,
-                        "altitudeAccuracy": 7.0764055252075195
-                      },
-                      "timestamp": 1709037095653.2131
-                    }
-                  ],
-                  "status": true,
-                  "email": "g@gmail.co",
-                  "user_pincode": 3953553,
-                  "name": "hhs",
-                  "payment_res": [
-                    {
-                      "amount": 100,
-                      "currency": "USD",
-                      "card_number": "4111111111111111",
-                      "card_exp_month": "12",
-                      "card_exp_year": "2025",
-                      "card_cvv": "123",
-                      "billing_address": {
-                        "line1": "123 Billing St",
-                        "line2": null,
-                        "city": "Billing City",
-                        "state": "CA",
-                        "postal_code": "12345",
-                        "country": "US"
-                      },
-                      "customer_name": "John Doe",
-                      "customer_email": "john.doe@example.com",
-                      "customer_phone": "+1234567890",
-                      "description": "Payment for order #12345",
-                      "metadata": {
-                        "order_id": "12345",
-                        "customer_id": "67890"
-                      }
-                    }
-                  ],
-                  "payment_status": true,
-                  "updated_at": "2024-03-15T09:12:35.474000Z",
-                  "created_at": "2024-03-15T09:12:35.474000Z"
-                },
-                "token_type": "Bearer",
-                "expires_in": 3600
-              }
-            ]
-            const modifiedResponse = {
-              ...login_res,
-
-            }
-            const user_object_string = JSON.stringify(modifiedResponse);
-
-            SecureStore.setItemAsync('auth_user', user_object_string)
-              .then(() => {
-                console.log('User stored successfully');
+        axios.get(`${REACT_NATIVE_BASE_URL}user/mobile/${phoneNumberWithoutCountryCode}`, {
+          headers: {
+            "Accept": 'application/json',
+            'content-type': 'application/json',
+            "Authorization": `Bearer ${token}`
+          },
+        })
+          .then((response) => {
+            if (response) {
+              if (response?.data?.user === null || response?.data?.user === undefined) {
                 Toast.show({
-                  type: ALERT_TYPE.SUCCESS,
-                  title: 'Success',
-                  textBody: 'Login successfully',
+                  type: ALERT_TYPE.WARNING,
+                  title: 'warning',
+                  textBody: 'Please wait...',
                 })
-
-                navigation.navigate("Home", {
+                navigation.navigate("CheckAuthCredentials", {
                   params: {
-                    modifiedResponse: modifiedResponse
+                    phoneNumber: phoneNumberWithoutCountryCode,
+                    otp_status: success
                   },
                 });
 
-              })
-              .catch(error => {
-                console.error('Error storing object:', error);
-              });
+              } else {
+                console.log("hereeeee?", response?.data?.user)
+                if (response?.data?.user?.payment_status === false || response?.data?.user?.payment_status == "" || response?.data?.user?.payment_status == undefined) {
+                  Toast.show({
+                    type: ALERT_TYPE.WARNING,
+                    title: 'warning',
+                    textBody: 'Payment pending...',
+                  })
+                  navigation.navigate("CheckAuthCredentials", {
+                    params: {
+                      phoneNumber: phoneNumberWithoutCountryCode,
+                      otp_status: success
+                    },
+                  });
+                } else {
+                  axios.post(`${REACT_NATIVE_BASE_URL}login`, {
+                    mobile: phoneNumberWithoutCountryCode,
+                    otp_status: success,
+                    user_location: response?.data?.user?.user_location,
+                    status: response?.data?.user?.status,
+                    payment_res: response?.data?.user?.payment_res,
+                    payment_status: response?.data?.user?.payment_status
+                  }, {
+                    headers: {
+                      "Accept": 'application/json',
+                      'content-type': 'application/json',
+                    },
+                  })
+                    .then(function (response) {
+                      console.log("login response - - -", response?.data);
+                      const modifiedResponse = response?.data
+                      const user_object_string = JSON.stringify(modifiedResponse);
 
-            // }
+                      SecureStore.setItemAsync('auth_user', user_object_string)
+                        .then(() => {
+                          console.log('User stored successfully');
+                          Toast.show({
+                            type: ALERT_TYPE.SUCCESS,
+                            title: 'Success',
+                            textBody: 'Login successfully',
+                          })
 
-            // });
-          }
-        }
+                          navigation.navigate("Home", {
+                            params: {
+                              modifiedResponse: modifiedResponse
+                            },
+                          });
+
+                        })
+                    })
+                    .catch(function (error) {
+                      console.log("error - - -", error);
+                    })
+
+                    .catch(error => {
+                      console.error('Error storing object:', error);
+                    });
+
+                  // }
+
+                  // });
+                }
+              }
+            }
+          })
+          .catch((err) => {
+            console.log("Err", err)
+          })
+        // console.log("paym res", response?.data?.user)
+
+        // if (!response.data) {
+        //   setisLoading(true)
+        // }
+
+
+
+
+
 
         // }
 
@@ -348,7 +210,7 @@ r
 
 
               <Button
-                style={{ color: { theme_color } }}
+                style={{ color: "#0066b2" }}
                 title="Edit Phone Number"
                 onPress={() => navigation.navigate("Login")}
               />

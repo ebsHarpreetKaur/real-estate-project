@@ -19,7 +19,8 @@ import { Button } from "react-native-paper";
 import { Image, TouchableWithoutFeedback } from "react-native";
 import { ALERT_TYPE, Toast, Dialog } from 'react-native-alert-notification';
 import { ActivityIndicator } from "react-native";
-import { theme_color } from "../../../config";
+import { auth_user_credentials } from "../../api/context/auth";
+// import { theme_color } from "../../../config";
 
 const Login = () => {
     const navigation = useNavigation();
@@ -27,6 +28,9 @@ const Login = () => {
     const [formattedValue, setFormattedValue] = useState("");
     const phoneInput = useRef(null);
     const [isloading, setisLoading] = useState(false)
+
+
+
 
     const handleOTPscreen = () => {
         // setisLoading(true)
@@ -55,7 +59,7 @@ const Login = () => {
                 isloading === true
                     ?
                     <View style={[styles.container_activity_indicator, styles.horizontal]}>
-                        <ActivityIndicator size="large" color={theme_color} />
+                        <ActivityIndicator size="large" color="#0066b2" />
                     </View>
 
                     :
@@ -105,8 +109,8 @@ const Login = () => {
                                             })
                                         } else {
                                             // sendSmsVerification(formattedValue).then((sent) => {
-                                                // SecureStore.deleteItemAsync('auth_user') 
-                                                handleOTPscreen()
+                                            // SecureStore.deleteItemAsync('auth_user') 
+                                            handleOTPscreen()
 
                                             // });
                                         }
@@ -146,7 +150,7 @@ const styles = StyleSheet.create({
 
     button: {
         // backgroundColor: '#0d0d0d',
-        backgroundColor: theme_color,
+        backgroundColor: "#0066b2",
         padding: 18,
         borderRadius: 30,
         marginTop: 48,

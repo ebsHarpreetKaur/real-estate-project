@@ -11,11 +11,14 @@ import * as Location from 'expo-location';
 import RazorpayCheckout from 'react-native-razorpay';
 import { ALERT_TYPE, Toast, Dialog } from 'react-native-alert-notification';
 import { encode } from 'base-64';
-import { theme_color } from '../../../config';
+// import { theme_color } from '../../../config';
+import axios from 'axios';
+import { REACT_NATIVE_BASE_URL } from '../../api/context/auth'
+
 
 export default function CheckAuthCredentials(data) {
-    const user_data = data?.route?.params?.user[0]
-    // console.log("user..........", data?.route?.params?.user[0])
+    const user_data = data.route?.params?.params
+    console.log("user......... here.", user_data)
     const navigation = useNavigation()
     const [user_location, setUserLocation] = useState('');
     const [reraNumber, setReraNumber] = useState('');
@@ -94,7 +97,7 @@ export default function CheckAuthCredentials(data) {
                 contact: '9191919191',
                 name: 'Harpreet'
             },
-            theme: { color: { theme_color } }
+            theme: { color: "#0066b2" }
         }
 
         RazorpayCheckout.open(options).then((data) => {
@@ -114,14 +117,71 @@ export default function CheckAuthCredentials(data) {
                 })
             }).then(response => response.json())
                 .then(captureData => {
-                    console.log("Capture details:", captureData);
 
-                    Toast.show({
-                        type: ALERT_TYPE.SUCCESS,
-                        title: `Payment id : ${data.razorpay_payment_id}`,
-                        textBody: 'Payment captured successfully',
-                    });
-                    navigation.navigate("Home")
+                    if (captureData) {
+                        console.log("Capture details:", captureData);
+
+                        Toast.show({
+                            type: ALERT_TYPE.SUCCESS,
+                            title: `Payment id : ${data.razorpay_payment_id}`,
+                            textBody: 'Payment captured successfully',
+                        });
+                        axios.post(`${REACT_NATIVE_BASE_URL}login`, {
+                            mobile: user_data?.phoneNumber,
+                            otp_status: true,
+                            user_location: [
+                                {
+                                    "coords": {
+                                        "speed": -1,
+                                        "longitude": 76.69112317715411,
+                                        "latitude": 30.71134927265382,
+                                        "accuracy": 16.965582688710988,
+                                        "heading": -1,
+                                        "altitude": 318.2151985168457,
+                                        "altitudeAccuracy": 7.0764055252075195
+                                    },
+                                    "timestamp": 1709037095653.2131
+                                }
+                            ],
+                            user_city: "Mohali",
+                            name: "User",
+                            status: true,
+                            payment_res: [captureData],
+                            payment_status: true
+                        })
+                            .then(function (response) {
+                                console.log("login response - - -", response?.data);
+                                const modifiedResponse = response?.data
+
+                                const user_object_string = JSON.stringify(modifiedResponse);
+
+                                SecureStore.setItemAsync('auth_user', user_object_string)
+                                    .then(() => {
+                                        console.log('User stored successfully');
+                                        Toast.show({
+                                            type: ALERT_TYPE.SUCCESS,
+                                            title: 'Success',
+                                            textBody: 'Login successfully',
+                                        })
+
+                                        navigation.navigate("Home", {
+                                            params: {
+                                                modifiedResponse: modifiedResponse
+                                            },
+                                        });
+
+                                    })
+                            })
+                            .catch(function (error) {
+                                console.log("error - - -", error);
+                            })
+
+                            .catch(error => {
+                                console.error('Error storing object:', error);
+                            });
+                    }
+
+
                 })
                 .catch(error => {
                     console.error("Error capturing payment:", error);
@@ -203,7 +263,7 @@ const styles = StyleSheet.create({
         width: 300,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: theme_color,
+        backgroundColor: "#0066b2",
         shadowColor: "rgba(0,0,0,0.4)",
         shadowOffset: {
             width: 1,
@@ -217,7 +277,7 @@ const styles = StyleSheet.create({
     },
     buttonPaynow: {
         // backgroundColor: '#0d0d0d',
-        backgroundColor: theme_color,
+        backgroundColor: "#0066b2",
         padding: 12,
         borderRadius: 30,
         marginTop: 20,
@@ -241,7 +301,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        // backgroundColor: theme_color,
+        // backgroundColor: "#0066b2",
         backgroundColor: "#ffffff",
 
     },

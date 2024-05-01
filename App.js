@@ -4,14 +4,14 @@ import AppNavigation from './src/Routes';
 import { MD3LightTheme as DefaultTheme, PaperProvider } from 'react-native-paper';
 import { AlertNotificationRoot } from 'react-native-alert-notification';
 import 'expo-dev-client';
-import { theme_color } from './config';
+// import { theme_color } from './config';
 
 
 const theme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: theme_color,
+    primary: "#0066b2",
     secondary: 'yellow',
   },
 };
@@ -22,10 +22,8 @@ export default function App() {
 
     <PaperProvider theme={theme}>
       <AlertNotificationRoot>
-
         <AppNavigation />
       </AlertNotificationRoot>
-
     </PaperProvider>
   );
 }

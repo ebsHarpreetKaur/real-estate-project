@@ -24,7 +24,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import AppBar from '../Components/AppBar';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import users from '../../data/UserConstant';
 import * as Location from 'expo-location';
 import { Card, ListItem, Icon } from 'react-native-elements';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -34,7 +33,8 @@ import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 import axios from 'axios';
 import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
-import { theme_color } from '../../../config';
+// import { theme_color } from '../../../config';
+import { REACT_NATIVE_BASE_URL, REACT_NATIVE_IMAGE_URL, token } from '../../api/context/auth';
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -52,7 +52,6 @@ export default function HomeTab() {
     const openMenu = () => setVisible(true);
     const closeMenu = () => setVisible(false);
     const [visible, setVisible] = useState(false);
-    const [Userdata, setUserData] = useState(users)
     const [dealer_images, setdealer_images] = useState([])
     const [imageBase64, setImageBase64] = useState(null);
     const [expoPushToken, setExpoPushToken] = useState('');
@@ -63,11 +62,13 @@ export default function HomeTab() {
     const [userSelected, setUserSelected] = useState([])
     const [auth_user, setAuth_user] = useState([])
     const [Dealer_data, setDealer_data] = useState([])
-  const [searchText2, setSearchText2] = useState('');
+    const [searchText2, setSearchText2] = useState('');
 
-  const handleSearch = (text) => {
-    setSearchText2(text);
-  }
+    const handleSearch = (text) => {
+        setSearchText2(text);
+    }
+
+
 
     React.useEffect(() => {
         auth_user_data();
@@ -85,29 +86,20 @@ export default function HomeTab() {
 
     const get_dealer_list = async () => {
 
-        axios.get('http://127.0.0.1:8000/api/users', { timeout: 1000 }, {
+        await axios.get(`${REACT_NATIVE_BASE_URL}users`, {
             headers: {
                 "Accept": 'application/json',
                 'content-type': 'application/json',
+                "Authorization": `Bearer ${token}`
             },
         })
             .then(function (response) {
-                console.log("response", response);
+                // console.log("response - - -", response?.data?.users?.data);
+                setDealer_data(response?.data?.users?.data)
             })
             .catch(function (error) {
-                console.log("error", error);
+                console.log("error - - -", error);
             })
-
-
-        // await fetch('http://127.0.0.1:8000/api/users', {
-        //     method: 'GET',
-        //     headers: { 'Content-Type': 'application/json' },
-
-        // })
-        //     .then(res => res.json())
-        //     .then(res => {
-        //         console.log(res, "res........")
-        //     });
 
     }
 
@@ -207,12 +199,12 @@ export default function HomeTab() {
     const onSearch = (text) => {
         setSearchQuery(text)
         if (text == '') {
-            setUserData(users)
+            setDealer_data(Dealer_data)
         } else {
-            let templist = users.filter(item => {
+            let templist = Dealer_data.filter(item => {
                 return item.user_city.toLowerCase().indexOf(text.toLowerCase()) > -1
             })
-            setUserData(templist)
+            setDealer_data(templist)
         }
 
     }
@@ -234,16 +226,18 @@ export default function HomeTab() {
     // );
 
     const renderItem = ({ item }) => {
+        // console.log("itemmmmm", item)
         return (
-            <TouchableOpacity onPress={()=>{
+
+            <TouchableOpacity onPress={() => {
                 handle_dealer_profile_view()
             }}>
                 <View style={styles.row}>
-                    <Image source={{ uri: item.image }} style={styles.pic} />
+                    <Image source={{ uri: item.image ? `${REACT_NATIVE_IMAGE_URL}user_images/${item.image}` : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKcAAACUCAMAAADBJsndAAAAMFBMVEXk5ueutLenrrGrsbTo6uvg4uO3vL/Jzc/b3d++w8XGysy7wMLV2NrM0NLCxsiyuLpTF7avAAADsUlEQVR4nO2b3bajIAyFjQRERXn/tx10nNaO/QGiCa7FvmrPOhffAhJCsts0VVVVVVVVVVVVVVVVVVVVJwnx+Kk0BTLrpqFfNHeTs0WyIrreAKiHwJvBFkaKjR6ghf+lWpi0NNtO6GZQB8pVLQy6kDXF5iPluqi+KwIUnfpCuZKCLYB0OJ7LI+kgDmp+LOYGOsqC6ijKBdRLhpONpFxATSMGquMxJUGTMBdQoZxv0jhB9RILil1sDD1BJ35QdBF58yDLztn4DEwYuSlxSN71RWpi5kzInK+gvCcU56zlDJy8xZPOCaJVnhMT+8zlDOJc0MSbaC/FGPI45XOCYsyhY/62g5rZNp6w7cCZmhxhOcMTlKtsyk6e23pyRTxSKIO43kqYneT/iivVWyInU3WXV3nu5Vg2PrOk24mnrMeZiMnF2RMxmRITjlROnm5T5TyZ8y7n8y7xfpf8SSvrgOs+usv9Tq6XDA9mg1mtpafY6k/C6x04WyI3eR/d5r15l/d7Rst7x8nYD6H0lzinHnfp1xH6n8A6RMrvJzNPjrP786yU+fMOplJpp5xLnrOZvOk287iMnZeYbzZ3mRffZ/6e6GfwcsaLFH+IpJEFo590YdNlnUGR/iUj7lyMSk+DMGQT5a/jLI0/66dfUd5ctwnd/GlNFcwlmBU3YaPfkapWdSX5aRet/mSvXvzJc2n+5FWI2rpu6Megcv3eq/BBhlgk5EqltbZPhW9F4eLm759HY7z/56CHcDzNOA/TZJsCWMOZdLPxazJ/E+/r37wfJ8GzuoTN1EPbRtyb4Z/GzmmBwg4bN4/w68Z8XVvTT9xFkx3h2135iRXAOC7EEDWdz2/btKp3DPu/XDsZK/m6qqa7nNR56vBoJYXuQsYQO4Y6OnqghgrlojVFNybE929SM1ySUzVtGvOO1J/eFcOmI0bPW7X9uUU0WsqE44uUP7PlhNM1lCvpadNOPP9kvoCedErRnpEyv+qMvae7An5LzXRMihU5HnQkXqSkCSEfKN2yEg1KaeLyYZLy05Vp8w1obveeI9JfQDOjXhPtKumgWaNkvDy9H0EzqhKiST5TyUGPToAy44iyH84NNPHZLLPrkGwaIvgqiJxJMU90plHkE2YjMkH0Vyph1MR5rx8Vn5to/jmi4s0EvPXHUdGcopTQxt6eVnY5Yw2NOIhiRvuXyb+LoCoyhVqZq/2puIiXTPIbZ1Sql85Ky0spat+ZnuxfFPfDSbka5KGoq9O04irCT1JVVSWkP19hMaEOQ65tAAAAAElFTkSuQmCC"}} style={styles.pic} />
                     <View>
                         <View style={styles.nameContainer}>
                             <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">
-                                {item.fullname}
+                                {item.name}
                             </Text>
                             <TouchableOpacity style={styles.eoi_button} onPress={async () => {
                                 selectUser(item);
@@ -262,6 +256,7 @@ export default function HomeTab() {
             </TouchableOpacity>
         )
     }
+
 
     return (
         <>
@@ -299,7 +294,7 @@ export default function HomeTab() {
 
                 <View style={{ flex: 1 }} >
                     <FlatList
-                        data={Userdata}
+                        data={Dealer_data}
                         keyExtractor={item => {
                             return item.id
                         }}
@@ -328,7 +323,7 @@ export default function HomeTab() {
                 <View style={styles.popupContent}>
                     <View style={styles.card}>
                         <TextInput style={styles.to_button} placeholder="" editable={false}
-                            selectTextOnFocus={false} value={userSelected?.fullname}/>
+                            selectTextOnFocus={false} value={userSelected?.fullname} />
                         <Text style={{ marginRight: "75%" }}>message:</Text>
                         <TextInput style={styles.message_input} placeholder="message"
                             editable
@@ -384,7 +379,7 @@ const styles = StyleSheet.create({
         textAlign: 'flex-end',
     },
     forgotPasswordButtonText: {
-        color: theme_color,
+        color: "#0066b2",
         fontSize: 12,
         fontWeight: 'bold',
         textAlign: 'right'
@@ -420,10 +415,10 @@ const styles = StyleSheet.create({
         padding: 10,
         marginVertical: 10,
         width: '100%',
-        color:"#DEDEDE"
+        color: "#DEDEDE"
     },
     eoi_button: {
-        backgroundColor: theme_color,
+        backgroundColor: "#0066b2",
         borderRadius: 5,
         padding: 5,
         marginTop: 6,
@@ -437,7 +432,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     sendnotifiButton: {
-        backgroundColor: theme_color,
+        backgroundColor: "#0066b2",
         borderRadius: 5,
         padding: 10,
         marginTop: 10,
@@ -452,7 +447,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     cancelsendnotifiText: {
-        color: theme_color,
+        color: "#0066b2",
         fontSize: 12,
         fontWeight: 'bold',
     },
@@ -499,7 +494,7 @@ const styles = StyleSheet.create({
     btnClose: {
         flex: 1,
         height: 40,
-        backgroundColor: theme_color,
+        backgroundColor: "#0066b2",
         padding: 5,
         alignItems: 'center',
         justifyContent: 'center',
@@ -560,7 +555,7 @@ const styles = StyleSheet.create({
     },
     msgTxt: {
         fontWeight: '400',
-        color: '#0066b2',
+        color: "#0066b2",
         fontSize: 12,
         marginLeft: 15,
     },
@@ -583,7 +578,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 30,
-        backgroundColor: theme_color,
+        backgroundColor: "#0066b2",
     },
     followButtonText: {
         color: '#FFFFFF',
@@ -645,7 +640,7 @@ const styles = StyleSheet.create({
     propertyDetailText: {
         fontWeight: "bold",
         fontSize: 15,
-        color: theme_color,
+        color: "#0066b2",
     },
     contentText: {
         padding: 10
@@ -656,7 +651,7 @@ const styles = StyleSheet.create({
     },
     dealText: {
         position: "absolute",
-        backgroundColor: theme_color,
+        backgroundColor: "#0066b2",
         textAlign: "center",
         color: "white",
         padding: 5,

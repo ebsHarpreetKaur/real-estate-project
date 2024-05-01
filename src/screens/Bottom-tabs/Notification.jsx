@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, Image, FlatList } from 'react-native'
 import AppBar from '../Components/AppBar'
-import { theme_color } from '../../../config'
+// import { theme_color } from '../../../config'
 
 export default Notifications = () => {
   const data = [
@@ -151,6 +151,6 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 16,
-    color: theme_color,
+    color: "#0066b2",
   },
 })

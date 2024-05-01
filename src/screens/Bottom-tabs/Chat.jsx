@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, Image, FlatList } from 'react-native'
 import AppBar from '../Components/AppBar'
 import { useNavigation } from '@react-navigation/native'
@@ -8,11 +8,35 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import * as Location from 'expo-location';
 import Entypo from 'react-native-vector-icons/Entypo';
+import { REACT_NATIVE_BASE_URL, token } from '../../api/context/auth'
+import axios from 'axios';
 
 
 export default ChatTab = () => {
   const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = useState('');
+
+  useEffect(() => {
+    get_chat_list()
+  }, [])
+
+  const get_chat_list = async () => {
+    await axios.get(`${REACT_NATIVE_BASE_URL}chat/messages`, { recipient_id: "662a1e7dcb934ee1fb0b2c44" }, {
+      headers: {
+        "Accept": 'application/json',
+        'content-type': 'application/json',
+        "Authorization": `Bearer ${token}`
+      },
+    })
+      .then(function (response) {
+        // console.log("property - - ", response?.data?.data?.data);
+        setPropertyData(response?.data?.data?.data)
+      })
+      .catch(function (error) {
+        console.log("error - - -", error);
+      })
+  }
+
 
   callsData = [
     {

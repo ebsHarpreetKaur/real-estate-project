@@ -11,7 +11,7 @@ import {
     Dimensions,
 } from 'react-native';
 import Swiper from 'react-native-swiper';
-import { theme_color } from "../../../config";
+// import { theme_color } from "../../../config";
 
 const { width, height } = Dimensions.get('window');
 
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
     /** Button */
     button: {
         // backgroundColor: '#0d0d0d',
-        backgroundColor: theme_color,
+        backgroundColor: "#0066b2",
         padding: 18,
         borderRadius: 12,
         marginTop: 48,

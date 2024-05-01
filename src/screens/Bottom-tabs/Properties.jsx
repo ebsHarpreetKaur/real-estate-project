@@ -16,7 +16,6 @@ import {
 } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import * as SecureStore from 'expo-secure-store';
-import property from '../../data/PropertyConstants';
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { SimpleLineIcons } from '@expo/vector-icons';
@@ -31,9 +30,11 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import PropertyDetail from '../Stacks/PropertyDetail';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { theme_color } from '../../../config';
+// import { theme_color } from '../../../config';
 import { ScrollView } from 'react-native';
 import { Chip } from 'react-native-paper';
+import axios from 'axios';
+import { REACT_NATIVE_BASE_URL, REACT_NATIVE_IMAGE_URL, token } from '../../api/context/auth';
 
 const LeftContent = props => <Avatar.Icon {...props} icon="gift" />
 
@@ -44,20 +45,38 @@ export default function PropertiesTab() {
     const openMenu = () => setVisible(true);
     const closeMenu = () => setVisible(false);
     const [visible, setVisible] = useState(false);
-    const [propertydata, setPropertyData] = useState(property)
+    const [propertydata, setPropertyData] = useState()
 
 
+    const get_property_list = async () => {
 
-    // useEffect(() => {
-    //     setPropertyData(property)
-    // }, [])
+        await axios.get(`${REACT_NATIVE_BASE_URL}properties`, {
+            headers: {
+                "Accept": 'application/json',
+                'content-type': 'application/json',
+                "Authorization": `Bearer ${token}`
+            },
+        })
+            .then(function (response) {
+                // console.log("property - - ", response?.data?.data?.data);
+                setPropertyData(response?.data?.data?.data)
+            })
+            .catch(function (error) {
+                console.log("error - - -", error);
+            })
+    }
+
+
+    useEffect(() => {
+        get_property_list()
+    }, [])
 
     const onSearch = (text) => {
         setSearchQuery(text)
         if (text == '') {
-            setPropertyData(property)
+            setPropertyData(propertydata)
         } else {
-            let templist = property.filter(item => {
+            let templist = propertydata.filter(item => {
                 return item.title.toLowerCase().indexOf(text.toLowerCase()) > -1
             })
             setPropertyData(templist)
@@ -92,25 +111,25 @@ export default function PropertiesTab() {
                     <Card.Content style={styles.cardBody}>
                         <Text variant="bodyMedium" style={styles.price}>{item.price}</Text>
 
-                        <Text variant="titleSmall" style={styles.address}>{<MaterialIcons name="location-pin" color={theme_color} size={10} />}{item.district}</Text>
+                        <Text variant="titleSmall" style={styles.address}>{<MaterialIcons name="location-pin" color="#0066b2" size={10} />}{item.district}</Text>
                         <Text style={styles.squareMeters}>{item.area_sqmt} sq. m.</Text>
 
                     </Card.Content>
                     <Divider />
                     <Card.Content style={styles.cardContent}>
                         <Text variant="bodyMedium" style={styles.propertyDetailText}>
-                            {/* {<MaterialCommunityIcons name="bed" color={theme_color} size={25} />} */}
+                            {/* {<MaterialCommunityIcons name="bed" color="#0066b2" size={25} />} */}
                             {item.bed} Bed</Text>
                         <View style={styles.verticleLine}></View>
 
                         <Text variant="bodyMedium" style={styles.propertyDetailText}>
-                            {/* {<FontAwesome name="bath" color={theme_color} size={25} />} */}
+                            {/* {<FontAwesome name="bath" color="#0066b2" size={25} />} */}
 
                             {item.bath} Bath</Text>
                         <View style={styles.verticleLine}></View>
 
                         <Text variant="bodyMedium" style={styles.propertyDetailText}>
-                            {/* {<MaterialCommunityIcons name="car-arrow-left" color={theme_color} size={25} />} */}
+                            {/* {<MaterialCommunityIcons name="car-arrow-left" color="#0066b2" size={25} />} */}
                             {item.parking} Parking</Text>
                     </Card.Content>
                     {/* <Card.Actions>
@@ -193,7 +212,7 @@ export default function PropertiesTab() {
                         const item = property.item
                         return (
                             <View style={styles.card}>
-                                <Image style={styles.cardImage} source={{ uri: item.photo }} />
+                                <Image style={styles.cardImage} source={{ uri: `${REACT_NATIVE_IMAGE_URL}property_default_image/${item.photo}` }} />
                                 <View style={styles.cardHeader}>
                                     <View>
                                         <Text style={styles.title}>{item.title}</Text>
@@ -215,7 +234,7 @@ export default function PropertiesTab() {
                                     <View style={styles.socialBarContainer}>
                                         <View style={styles.socialBarSection}>
                                             <TouchableOpacity style={styles.socialBarButton}>
-                                                {<MaterialCommunityIcons name="bed" color={theme_color} size={22} />}
+                                                {<MaterialCommunityIcons name="bed" color="#0066b2" size={22} />}
                                                 <Text style={styles.bed}>{item.bed}</Text>
                                             </TouchableOpacity>
                                         </View>
@@ -223,7 +242,7 @@ export default function PropertiesTab() {
 
                                         <View style={styles.socialBarSection}>
                                             <TouchableOpacity style={styles.socialBarButton}>
-                                                {<FontAwesome name="bath" color={theme_color} size={20} />}
+                                                {<FontAwesome name="bath" color="#0066b2" size={20} />}
                                                 <Text style={styles.bed}>{item.bath}</Text>
 
                                             </TouchableOpacity>
@@ -231,7 +250,7 @@ export default function PropertiesTab() {
                                         <View style={styles.verticleLine}></View>
                                         <View style={styles.socialBarSection}>
                                             <TouchableOpacity style={styles.socialBarButton}>
-                                                {<MaterialCommunityIcons name="car-arrow-left" color={theme_color} size={22} />}
+                                                {<MaterialCommunityIcons name="car-arrow-left" color="#0066b2" size={22} />}
                                                 <Text style={styles.bed}>{item.parking}</Text>
 
                                             </TouchableOpacity>
@@ -269,7 +288,7 @@ const styles = StyleSheet.create({
         marginLeft: 5,
         fontWeight: "700"
     },
-    
+
     timeContainer: {
         flexDirection: 'row',
     },
@@ -451,7 +470,7 @@ const styles = StyleSheet.create({
     propertyDetailText: {
         fontWeight: "bold",
         fontSize: 15,
-        color: theme_color,
+        color: "#0066b2",
     },
     contentText: {
         padding: 10
@@ -462,7 +481,7 @@ const styles = StyleSheet.create({
     },
     dealText: {
         position: "absolute",
-        backgroundColor: theme_color,
+        backgroundColor: "#0066b2",
         textAlign: "center",
         color: "white",
         borderRadius: 15,
