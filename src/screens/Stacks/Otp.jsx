@@ -6,14 +6,15 @@ import { checkVerification } from "../../api/context/verify";
 // import { OTPInputView } from '@react-native-otp-inputs/otp-input';
 import OtpInputs from 'react-native-otp-inputs';
 import * as Updates from 'expo-updates';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import * as SecureStore from 'expo-secure-store';
-import AuthContext from "../../api/context/Context";
-import { REACT_NATIVE_BASE_URL, today, token } from "../../api/context/auth";
+import { REACT_NATIVE_BASE_URL, today } from "../../api/context/auth";
 import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
 import RazorpayCheckout from 'react-native-razorpay';
 import { TouchableHighlight } from "react-native";
 import axios from "axios";
+import AuthContext from "../../api/context/Context";
 // import { theme_color } from "../../../config";
 // import { Clipboard } from 'react-native';
 // import Clipboard from '@react-native-clipboard/clipboard';
@@ -30,42 +31,31 @@ const Otp = ({ route }) => {
   console.log("Number", phoneNumber)
   const [isloading, setisLoading] = useState(false)
 
-  // const { signIn } = React.useContext(AuthContext);
+  const { signIn } = React.useContext(AuthContext);
 
 
-  const [user_data, setUserData] = useState(null);
   let phoneNumberWithoutCountryCode = phoneNumber.replace(/^(\+91)/, '');
 
-  useEffect(() => {
-    fetch_payment_status();
-  }, [phoneNumber]);
+  const [AuthToken, setAuthToken] = useState(null);
+  const [AuthUser, setAuthUser] = useState(null);
 
-  const fetch_payment_status = async () => {
-    try {
-      const response = await axios.get(`${REACT_NATIVE_BASE_URL}user/mobile/${phoneNumberWithoutCountryCode}`, {
-        headers: {
-          "Accept": 'application/json',
-          'content-type': 'application/json',
-          "Authorization": `Bearer ${token}`
-        },
-      });
-      // console.log("paym res", response?.data?.user)
-
-      setUserData(response?.data?.user);
-      // if (!response.data) {
-      //   setisLoading(true)
-      // }
-    } catch (error) {
-      console.error('Error fetching payment:', error);
-    }
-  };
-
-
+  AsyncStorage.getItem('auth_user').then((AuthUserData) => {
+      // console.log("autttttt", AuthUserData);
+      if (AuthUserData) {
+          const parsedAuthUserData = JSON.parse(AuthUserData);
+          setAuthToken(parsedAuthUserData?.access_token)
+      } else {
+          console.log("No data found in AsyncStorage for 'auth_user'");
+      }
+  }).catch((error) => {
+      console.error("Error retrieving data from AsyncStorage:", error);
+  });
 
   // console.log("res.....HERREEEEE", user_data)
 
   const handleCodeVerification = useCallback(
     (code) => {
+      console.log("heree", phoneNumberWithoutCountryCode)
       checkVerification(phoneNumber, code).then((success) => {
         // if (!success) {
         //   console.log("wrong code")
@@ -77,12 +67,13 @@ const Otp = ({ route }) => {
           headers: {
             "Accept": 'application/json',
             'content-type': 'application/json',
-            "Authorization": `Bearer ${token}`
+            // "Authorization": `Bearer ${AuthToken}`
           },
         })
           .then((response) => {
+            console.log("res", response?.data?.message)
             if (response) {
-              if (response?.data?.user === null || response?.data?.user === undefined) {
+              if (response?.data?.message === "User not found with this mobile number") {
                 Toast.show({
                   type: ALERT_TYPE.WARNING,
                   title: 'warning',
@@ -96,27 +87,23 @@ const Otp = ({ route }) => {
                 });
 
               } else {
-                console.log("hereeeee?", response?.data?.user)
-                if (response?.data?.user?.payment_status === false || response?.data?.user?.payment_status == "" || response?.data?.user?.payment_status == undefined) {
-                  Toast.show({
-                    type: ALERT_TYPE.WARNING,
-                    title: 'warning',
-                    textBody: 'Payment pending...',
-                  })
-                  navigation.navigate("CheckAuthCredentials", {
-                    params: {
-                      phoneNumber: phoneNumberWithoutCountryCode,
-                      otp_status: success
-                    },
-                  });
-                } else {
+                console.log("yes user exist", response?.data?.user)
+              
                   axios.post(`${REACT_NATIVE_BASE_URL}login`, {
                     mobile: phoneNumberWithoutCountryCode,
-                    otp_status: success,
-                    user_location: response?.data?.user?.user_location,
+                    // otp_status: success,
+                    otp_status: true,
+                    name: "Anonymous",
+                    user_location: response?.data?.user?.user_location ? response?.data?.user?.user_location : "N/A",
                     status: response?.data?.user?.status,
-                    payment_res: response?.data?.user?.payment_res,
-                    payment_status: response?.data?.user?.payment_status
+                    // payment_res: response?.data?.user?.payment_res,
+                    payment_res: [{
+                      
+                    }],
+                    // payment_status: response?.data?.user?.payment_status,
+                    payment_status: true,
+                    user_city: response?.data?.user?.user_city ? response?.data?.user?.user_city : "N/A"
+
                   }, {
                     headers: {
                       "Accept": 'application/json',
@@ -126,53 +113,38 @@ const Otp = ({ route }) => {
                     .then(function (response) {
                       console.log("login response - - -", response?.data);
                       const modifiedResponse = response?.data
-                      const user_object_string = JSON.stringify(modifiedResponse);
+                      AsyncStorage.setItem(
+                        'auth_user',
+                        JSON.stringify(modifiedResponse),
+                        () => {
+                          signIn({ modifiedResponse })
 
-                      SecureStore.setItemAsync('auth_user', user_object_string)
-                        .then(() => {
-                          console.log('User stored successfully');
                           Toast.show({
                             type: ALERT_TYPE.SUCCESS,
                             title: 'Success',
                             textBody: 'Login successfully',
                           })
 
-                          navigation.navigate("Home", {
-                            params: {
-                              modifiedResponse: modifiedResponse
-                            },
-                          });
-
-                        })
+                        
+                        },
+                      );
                     })
                     .catch(function (error) {
-                      console.log("error - - -", error);
+                      console.log("error while login - - -", error);
                     })
-
-                    .catch(error => {
-                      console.error('Error storing object:', error);
-                    });
-
-                  // }
-
-                  // });
-                }
+                
               }
+            }else{
+              console.log("unable to login user")
             }
           })
           .catch((err) => {
-            console.log("Err", err)
+            console.log("Err finding user using mobile", err)
           })
-        // console.log("paym res", response?.data?.user)
-
+       
         // if (!response.data) {
         //   setisLoading(true)
         // }
-
-
-
-
-
 
         // }
 
@@ -224,12 +196,16 @@ r
                 codeInputHighlightStyle={styles.underlineStyleHighLighted}
                 onCodeFilled={handleCodeVerification}
               /> */}
-              <OtpInputs
-                style={{ color: "red", borderColor: "green" }}
-                autoFocus={true}
-                handleChange={(code) => handleCodeVerification(code)}
-                numberOfInputs={6}
-              />
+              <View style={styles.container}>
+                <OtpInputs
+                  autoFocus={true}
+                  handleChange={(code) => handleCodeVerification(code)}
+                  numberOfInputs={6}
+                  inputStyles={styles.input}
+
+                />
+              </View>
+
               {invalidCode && <Text style={styles.error}>Incorrect code.</Text>}
 
 
@@ -246,6 +222,21 @@ r
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  input: {
+    width: 50,
+    height: 40,
+    margin: 5,
+    marginTop: 30,
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: 'lightgrey',
+    textAlign: 'center',
+  },
   container_activity_indicator: {
     flex: 1,
     justifyContent: 'center',

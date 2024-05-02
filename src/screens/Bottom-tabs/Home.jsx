@@ -34,7 +34,8 @@ import Constants from 'expo-constants';
 import axios from 'axios';
 import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
 // import { theme_color } from '../../../config';
-import { REACT_NATIVE_BASE_URL, REACT_NATIVE_IMAGE_URL, token } from '../../api/context/auth';
+import { AuthUserData, REACT_NATIVE_BASE_URL, REACT_NATIVE_IMAGE_URL, REACT_NATIVE_USER_PROFILE_URL, token } from '../../api/context/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -64,6 +65,8 @@ export default function HomeTab() {
     const [Dealer_data, setDealer_data] = useState([])
     const [searchText2, setSearchText2] = useState('');
 
+   
+
     const handleSearch = (text) => {
         setSearchText2(text);
     }
@@ -71,26 +74,36 @@ export default function HomeTab() {
 
 
     React.useEffect(() => {
-        auth_user_data();
         get_dealer_list();
     }, []);
 
-    const auth_user_data = async () => {
-        let userData;
-        userData = await SecureStore.getItemAsync('auth_user');
-        const parsedData = JSON.parse(userData);
-        setAuth_user(parsedData)
-        // console.log("parsedData", parsedData)
-        // console.log("auth_user..........", auth_user)
-    };
+
+    React.useEffect(() => {
+        const auth_user_data = async () => {
+            let userData;
+            
+                // userData = await SecureStore.getItemAsync('auth_user');
+                AsyncStorage.getItem('auth_user', (err, result) => {
+                    const parsedData = JSON.parse(result);
+                    setAuth_user(parsedData)
+                    console.log("parsedData", parsedData?.message);
+                });
+
+                // console.log("parsedData.......", parsedData)
+            };
+
+            auth_user_data();
+        }, []);
+
 
     const get_dealer_list = async () => {
-
+        const AuthUserData = await AsyncStorage.getItem('auth_user');
+        const parsedAuthUserData = JSON.parse(AuthUserData);
         await axios.get(`${REACT_NATIVE_BASE_URL}users`, {
             headers: {
                 "Accept": 'application/json',
                 'content-type': 'application/json',
-                "Authorization": `Bearer ${token}`
+                "Authorization": `Bearer ${parsedAuthUserData?.access_token}`
             },
         })
             .then(function (response) {
@@ -98,7 +111,7 @@ export default function HomeTab() {
                 setDealer_data(response?.data?.users?.data)
             })
             .catch(function (error) {
-                console.log("error - - -", error);
+                console.log("error fetching dealers- - -", error);
             })
 
     }
@@ -230,10 +243,10 @@ export default function HomeTab() {
         return (
 
             <TouchableOpacity onPress={() => {
-                handle_dealer_profile_view()
+                handle_dealer_profile_view(item)
             }}>
                 <View style={styles.row}>
-                    <Image source={{ uri: item.image ? `${REACT_NATIVE_IMAGE_URL}user_images/${item.image}` : "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKcAAACUCAMAAADBJsndAAAAMFBMVEXk5ueutLenrrGrsbTo6uvg4uO3vL/Jzc/b3d++w8XGysy7wMLV2NrM0NLCxsiyuLpTF7avAAADsUlEQVR4nO2b3bajIAyFjQRERXn/tx10nNaO/QGiCa7FvmrPOhffAhJCsts0VVVVVVVVVVVVVVVVVVVVJwnx+Kk0BTLrpqFfNHeTs0WyIrreAKiHwJvBFkaKjR6ghf+lWpi0NNtO6GZQB8pVLQy6kDXF5iPluqi+KwIUnfpCuZKCLYB0OJ7LI+kgDmp+LOYGOsqC6ijKBdRLhpONpFxATSMGquMxJUGTMBdQoZxv0jhB9RILil1sDD1BJ35QdBF58yDLztn4DEwYuSlxSN71RWpi5kzInK+gvCcU56zlDJy8xZPOCaJVnhMT+8zlDOJc0MSbaC/FGPI45XOCYsyhY/62g5rZNp6w7cCZmhxhOcMTlKtsyk6e23pyRTxSKIO43kqYneT/iivVWyInU3WXV3nu5Vg2PrOk24mnrMeZiMnF2RMxmRITjlROnm5T5TyZ8y7n8y7xfpf8SSvrgOs+usv9Tq6XDA9mg1mtpafY6k/C6x04WyI3eR/d5r15l/d7Rst7x8nYD6H0lzinHnfp1xH6n8A6RMrvJzNPjrP786yU+fMOplJpp5xLnrOZvOk287iMnZeYbzZ3mRffZ/6e6GfwcsaLFH+IpJEFo590YdNlnUGR/iUj7lyMSk+DMGQT5a/jLI0/66dfUd5ctwnd/GlNFcwlmBU3YaPfkapWdSX5aRet/mSvXvzJc2n+5FWI2rpu6Megcv3eq/BBhlgk5EqltbZPhW9F4eLm759HY7z/56CHcDzNOA/TZJsCWMOZdLPxazJ/E+/r37wfJ8GzuoTN1EPbRtyb4Z/GzmmBwg4bN4/w68Z8XVvTT9xFkx3h2135iRXAOC7EEDWdz2/btKp3DPu/XDsZK/m6qqa7nNR56vBoJYXuQsYQO4Y6OnqghgrlojVFNybE929SM1ySUzVtGvOO1J/eFcOmI0bPW7X9uUU0WsqE44uUP7PlhNM1lCvpadNOPP9kvoCedErRnpEyv+qMvae7An5LzXRMihU5HnQkXqSkCSEfKN2yEg1KaeLyYZLy05Vp8w1obveeI9JfQDOjXhPtKumgWaNkvDy9H0EzqhKiST5TyUGPToAy44iyH84NNPHZLLPrkGwaIvgqiJxJMU90plHkE2YjMkH0Vyph1MR5rx8Vn5to/jmi4s0EvPXHUdGcopTQxt6eVnY5Yw2NOIhiRvuXyb+LoCoyhVqZq/2puIiXTPIbZ1Sql85Ky0spat+ZnuxfFPfDSbka5KGoq9O04irCT1JVVSWkP19hMaEOQ65tAAAAAElFTkSuQmCC"}} style={styles.pic} />
+                    <Image source={{ uri: item.image ? `${REACT_NATIVE_USER_PROFILE_URL}${item.image}` : "data:image/png;base64,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" }} style={styles.pic} />
                     <View>
                         <View style={styles.nameContainer}>
                             <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">
@@ -296,7 +309,7 @@ export default function HomeTab() {
                     <FlatList
                         data={Dealer_data}
                         keyExtractor={item => {
-                            return item.id
+                            return item._id
                         }}
                         renderItem={renderItem}
                     />
@@ -529,8 +542,8 @@ const styles = StyleSheet.create({
     },
     pic: {
         borderRadius: 30,
-        width: 60,
-        height: 60,
+        width: 50,
+        height: 50,
     },
     nameContainer: {
         flexDirection: 'row',

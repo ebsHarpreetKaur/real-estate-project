@@ -1,5 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 import React from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 var today = new Date();
 var dd = String(today.getDate()).padStart(2, '0');
@@ -9,15 +10,22 @@ today = yyyy + '-' + mm + '-' + dd;
 // console.log(today)
 const REACT_NATIVE_BASE_URL = "https://hubuzztechnology.com/api/"
 const REACT_NATIVE_IMAGE_URL = "https://hubuzztechnology.com/images/"
+const REACT_NATIVE_PROPERTY_URL = "https://hubuzztechnology.com/"
+const REACT_NATIVE_USER_PROFILE_URL = "https://hubuzztechnology.com/"
 
+// const AuthUserData = AsyncStorage.getItem('auth_user');
+// const parsedAuthUserData = JSON.parse(AuthUserData);
 
-var token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2h1YnV6enRlY2hub2xvZ3kuY29tL2FwaS9sb2dpbiIsImlhdCI6MTcxNDU0Njg3OSwiZXhwIjoxNzE0NTUwNDc5LCJuYmYiOjE3MTQ1NDY4NzksImp0aSI6IjhuRGluZjV0bVRnelJOTVciLCJzdWIiOiI2NjI5ZjNiNWNiOTM0ZWUxZmIwYjJjNDIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.Bzvspq1NBkoLnXj1K3jFalvHHiJUr14bLgVbi8t4lbI"
+// var token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzE0NjQ3NjA1LCJleHAiOjE3MTQ2NTEyMDUsIm5iZiI6MTcxNDY0NzYwNSwianRpIjoiU2tTSGZORzh2aVJRQ2F1WiIsInN1YiI6IjY2MzM1OWJhYTJjNThjYzM4YzAyM2EzMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.jduiVBgc-tXk6B2ogN17MVTIcx_CLv6wFXY2F1fhe3M"
 
 
 
 export {
   today,
-  token,
+  // token,
   REACT_NATIVE_BASE_URL,
-  REACT_NATIVE_IMAGE_URL
+  REACT_NATIVE_IMAGE_URL,
+  REACT_NATIVE_PROPERTY_URL,
+  REACT_NATIVE_USER_PROFILE_URL
 }
+

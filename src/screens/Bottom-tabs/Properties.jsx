@@ -34,7 +34,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { ScrollView } from 'react-native';
 import { Chip } from 'react-native-paper';
 import axios from 'axios';
-import { REACT_NATIVE_BASE_URL, REACT_NATIVE_IMAGE_URL, token } from '../../api/context/auth';
+import { REACT_NATIVE_BASE_URL, REACT_NATIVE_IMAGE_URL, REACT_NATIVE_PROPERTY_URL, token } from '../../api/context/auth';
 
 const LeftContent = props => <Avatar.Icon {...props} icon="gift" />
 
@@ -49,12 +49,13 @@ export default function PropertiesTab() {
 
 
     const get_property_list = async () => {
-
+        const AuthUserData = await AsyncStorage.getItem('auth_user');
+        const parsedAuthUserData = JSON.parse(AuthUserData);
         await axios.get(`${REACT_NATIVE_BASE_URL}properties`, {
             headers: {
                 "Accept": 'application/json',
                 'content-type': 'application/json',
-                "Authorization": `Bearer ${token}`
+                "Authorization": `Bearer ${parsedAuthUserData?.access_token}`
             },
         })
             .then(function (response) {
@@ -62,7 +63,7 @@ export default function PropertiesTab() {
                 setPropertyData(response?.data?.data?.data)
             })
             .catch(function (error) {
-                console.log("error - - -", error);
+                console.log("error fetching properites- - -", error);
             })
     }
 
@@ -103,7 +104,7 @@ export default function PropertiesTab() {
 
                 <Card style={styles.flatListContainer} mode='elevated'>
 
-                    <Card.Cover source={{ uri: item.photo }} style={styles.image} />
+                    <Card.Cover source={{ uri: item.photo ? item.photo : "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" }} style={styles.image} />
                     <Text variant="bodyLarge" style={styles.dealText}>{item.deal}</Text>
 
                     {/* <Card.Title title="Property Owner" subtitle="Active" left={LeftContent} /> */}
@@ -203,7 +204,7 @@ export default function PropertiesTab() {
                     style={styles.list}
                     data={propertydata}
                     keyExtractor={item => {
-                        return item.id
+                        return item._id
                     }}
                     ItemSeparatorComponent={() => {
                         return <View style={styles.separator} />
@@ -212,11 +213,14 @@ export default function PropertiesTab() {
                         const item = property.item
                         return (
                             <View style={styles.card}>
-                                <Image style={styles.cardImage} source={{ uri: `${REACT_NATIVE_IMAGE_URL}property_default_image/${item.photo}` }} />
+                                <Image style={styles.cardImage} source={{
+                                    uri: item.photo ? `${REACT_NATIVE_PROPERTY_URL}${item.photo}` :
+                                        "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png"
+                                }} />
                                 <View style={styles.cardHeader}>
                                     <View>
                                         <Text style={styles.title}>{item.title}</Text>
-                                        <Text style={styles.title}>{item.price}</Text>
+                                        <Text style={styles.price}>${item.price}</Text>
                                         <Text style={styles.title}>{item.district}</Text>
 
                                         <Text style={styles.description}>{item.description.split(' ').slice(0, 10).join(' ')}{item.description.split(' ').length > 10 ? '...' : ''}
@@ -226,7 +230,7 @@ export default function PropertiesTab() {
                                                 style={styles.iconData}
                                                 source={{ uri: 'https://img.icons8.com/color/96/3498db/calendar.png' }}
                                             />
-                                            <Text style={styles.time}>{item.time}</Text>
+                                            <Text style={styles.time}>{item.updated_at.split('T')[0]}</Text>
                                         </View>
                                     </View>
                                 </View>
@@ -235,7 +239,7 @@ export default function PropertiesTab() {
                                         <View style={styles.socialBarSection}>
                                             <TouchableOpacity style={styles.socialBarButton}>
                                                 {<MaterialCommunityIcons name="bed" color="#0066b2" size={22} />}
-                                                <Text style={styles.bed}>{item.bed}</Text>
+                                                <Text style={styles.bed}>{item.bedrooms ? item.bedrooms : "N/A"}</Text>
                                             </TouchableOpacity>
                                         </View>
                                         <View style={styles.verticleLine}></View>
@@ -243,15 +247,14 @@ export default function PropertiesTab() {
                                         <View style={styles.socialBarSection}>
                                             <TouchableOpacity style={styles.socialBarButton}>
                                                 {<FontAwesome name="bath" color="#0066b2" size={20} />}
-                                                <Text style={styles.bed}>{item.bath}</Text>
-
+                                                <Text style={styles.bed}>{item.bathrooms ? item.bathrooms : "N/A"}</Text>
                                             </TouchableOpacity>
                                         </View>
                                         <View style={styles.verticleLine}></View>
                                         <View style={styles.socialBarSection}>
                                             <TouchableOpacity style={styles.socialBarButton}>
                                                 {<MaterialCommunityIcons name="car-arrow-left" color="#0066b2" size={22} />}
-                                                <Text style={styles.bed}>{item.parking}</Text>
+                                                <Text style={styles.bed}>{item.parking ? item.parking : "N/A"}</Text>
 
                                             </TouchableOpacity>
                                         </View>
@@ -297,9 +300,10 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     price: {
-        fontSize: 20,
+        fontSize: 15,
         fontWeight: 'bold',
-        marginBottom: 5
+        marginBottom: 5,
+        color:"grey"
     },
     iconData: {
         width: 15,

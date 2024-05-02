@@ -118,6 +118,7 @@ const Login = () => {
                                 >
                                     <Text style={styles.buttonText}>Sign in</Text>
                                 </TouchableOpacity>
+                                <Text style={styles.infoText}>You'll be automatically signed in after otp verfication</Text>
                             </SafeAreaView>
                         </TouchableWithoutFeedback>
                     </>
@@ -128,6 +129,10 @@ const Login = () => {
 };
 
 const styles = StyleSheet.create({
+    infoText:{
+        color:"grey",
+        fontSize:10
+    },
     container_activity_indicator: {
         flex: 1,
         justifyContent: 'center',
@@ -154,7 +159,7 @@ const styles = StyleSheet.create({
         padding: 18,
         borderRadius: 30,
         marginTop: 48,
-        marginBottom: 36,
+        marginBottom: 20,
         width: "80%"
     },
     buttonText: {

@@ -14,7 +14,8 @@ import { encode } from 'base-64';
 // import { theme_color } from '../../../config';
 import axios from 'axios';
 import { REACT_NATIVE_BASE_URL } from '../../api/context/auth'
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import AuthContext from '../../api/context/Context';
 
 export default function CheckAuthCredentials(data) {
     const user_data = data.route?.params?.params
@@ -26,6 +27,7 @@ export default function CheckAuthCredentials(data) {
     const [errorMsg, setErrorMsg] = useState(null);
     const [city, setCity] = useState('');
 
+    const { signIn } = React.useContext(AuthContext);
 
 
     useEffect(() => {
@@ -126,59 +128,47 @@ export default function CheckAuthCredentials(data) {
                             title: `Payment id : ${data.razorpay_payment_id}`,
                             textBody: 'Payment captured successfully',
                         });
+                        console.log("register user", )
+              
                         axios.post(`${REACT_NATIVE_BASE_URL}login`, {
-                            mobile: user_data?.phoneNumber,
-                            otp_status: true,
-                            user_location: [
-                                {
-                                    "coords": {
-                                        "speed": -1,
-                                        "longitude": 76.69112317715411,
-                                        "latitude": 30.71134927265382,
-                                        "accuracy": 16.965582688710988,
-                                        "heading": -1,
-                                        "altitude": 318.2151985168457,
-                                        "altitudeAccuracy": 7.0764055252075195
-                                    },
-                                    "timestamp": 1709037095653.2131
-                                }
-                            ],
-                            user_city: "Mohali",
-                            name: "User",
-                            status: true,
-                            payment_res: [captureData],
-                            payment_status: true
+                          mobile: user_data?.phoneNumber,
+                          // otp_status: user_data?.otp_status,
+                          otp_status: true,
+                          user_location: location ? location : "N/A",
+                          status: false,
+                          payment_res: [captureData],
+                          payment_status: true,
+                          user_city: city ? city : "N/A",
+                          name: "Anonymous",
+                          user_pincode: "N/A"
+                          
+      
+                        }, {
+                          headers: {
+                            "Accept": 'application/json',
+                            'content-type': 'application/json',
+                          },
                         })
-                            .then(function (response) {
-                                console.log("login response - - -", response?.data);
-                                const modifiedResponse = response?.data
-
-                                const user_object_string = JSON.stringify(modifiedResponse);
-
-                                SecureStore.setItemAsync('auth_user', user_object_string)
-                                    .then(() => {
-                                        console.log('User stored successfully');
-                                        Toast.show({
-                                            type: ALERT_TYPE.SUCCESS,
-                                            title: 'Success',
-                                            textBody: 'Login successfully',
-                                        })
-
-                                        navigation.navigate("Home", {
-                                            params: {
-                                                modifiedResponse: modifiedResponse
-                                            },
-                                        });
-
-                                    })
-                            })
-                            .catch(function (error) {
-                                console.log("error - - -", error);
-                            })
-
-                            .catch(error => {
-                                console.error('Error storing object:', error);
-                            });
+                          .then(function (response) {
+                            console.log("login response - - -", response?.data);
+                            const modifiedResponse = response?.data
+                            AsyncStorage.setItem(
+                              'auth_user',
+                              JSON.stringify(modifiedResponse),
+                              () => {
+                                signIn({ modifiedResponse })
+      
+                                Toast.show({
+                                  type: ALERT_TYPE.SUCCESS,
+                                  title: 'Success',
+                                  textBody: 'Login successfully',
+                                })                        
+                              },
+                            );
+                          })
+                          .catch(function (error) {
+                            console.log("error while login here - - -", error);
+                          })
                     }
 
 
@@ -232,7 +222,7 @@ export default function CheckAuthCredentials(data) {
                             right={<TextInput.Icon icon={() => <Icon name="document-text-outline" size={20} color="black" />} />}
                         /> */}
 
-                        <Text>You have a pending payment of Rs. 500</Text>
+                        <Text>You have a pending payment of Rs. 1</Text>
                         <TouchableOpacity
                             style={styles.buttonPaynow}
                             onPress={() => {
