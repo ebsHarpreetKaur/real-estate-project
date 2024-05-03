@@ -28,7 +28,6 @@ const Otp = ({ route }) => {
   const navigation = useNavigation()
   const phoneNumber = route?.params?.params?.phoneNumber;
   const [invalidCode, setInvalidCode] = useState(false);
-  console.log("Number", phoneNumber)
   const [isloading, setisLoading] = useState(false)
 
   const { signIn } = React.useContext(AuthContext);
@@ -40,15 +39,15 @@ const Otp = ({ route }) => {
   const [AuthUser, setAuthUser] = useState(null);
 
   AsyncStorage.getItem('auth_user').then((AuthUserData) => {
-      // console.log("autttttt", AuthUserData);
-      if (AuthUserData) {
-          const parsedAuthUserData = JSON.parse(AuthUserData);
-          setAuthToken(parsedAuthUserData?.access_token)
-      } else {
-          console.log("No data found in AsyncStorage for 'auth_user'");
-      }
+    // console.log("autttttt", AuthUserData);
+    if (AuthUserData) {
+      const parsedAuthUserData = JSON.parse(AuthUserData);
+      setAuthToken(parsedAuthUserData?.access_token)
+    } else {
+      console.log("No data found in AsyncStorage for 'auth_user'");
+    }
   }).catch((error) => {
-      console.error("Error retrieving data from AsyncStorage:", error);
+    console.error("Error retrieving data from AsyncStorage:", error);
   });
 
   // console.log("res.....HERREEEEE", user_data)
@@ -87,61 +86,62 @@ const Otp = ({ route }) => {
                 });
 
               } else {
+                const phoneNumberInt = parseInt(phoneNumberWithoutCountryCode, 10);
                 console.log("yes user exist", response?.data?.user)
-              
-                  axios.post(`${REACT_NATIVE_BASE_URL}login`, {
-                    mobile: phoneNumberWithoutCountryCode,
-                    // otp_status: success,
-                    otp_status: true,
-                    name: "Anonymous",
-                    user_location: response?.data?.user?.user_location ? response?.data?.user?.user_location : "N/A",
-                    status: response?.data?.user?.status,
-                    // payment_res: response?.data?.user?.payment_res,
-                    payment_res: [{
-                      
-                    }],
-                    // payment_status: response?.data?.user?.payment_status,
-                    payment_status: true,
-                    user_city: response?.data?.user?.user_city ? response?.data?.user?.user_city : "N/A"
 
-                  }, {
-                    headers: {
-                      "Accept": 'application/json',
-                      'content-type': 'application/json',
-                    },
+                axios.post(`${REACT_NATIVE_BASE_URL}login`, {
+                  mobile: phoneNumberInt,
+                  // otp_status: success,
+                  otp_status: true,
+                  // name: response?.data?.user?.name ? response?.data?.user?.name : "Anonymous",
+                  // user_location: response?.data?.user?.user_location ? response?.data?.user?.user_location : "N/A",
+                  // status: response?.data?.user?.status,
+                  // // payment_res: response?.data?.user?.payment_res,
+                  // payment_res: [{
+
+                  // }],
+                  // // payment_status: response?.data?.user?.payment_status,
+                  // payment_status: true,
+                  // user_city: response?.data?.user?.user_city ? response?.data?.user?.user_city : "N/A"
+
+                }, {
+                  headers: {
+                    "Accept": 'application/json',
+                    'content-type': 'application/json',
+                  },
+                })
+                  .then(function (response) {
+                    console.log("login response user exist- - -", response?.data);
+                    const modifiedResponse = response?.data
+                    AsyncStorage.setItem(
+                      'auth_user',
+                      JSON.stringify(modifiedResponse),
+                      () => {
+                        signIn({ modifiedResponse })
+
+                        Toast.show({
+                          type: ALERT_TYPE.SUCCESS,
+                          title: 'Success',
+                          textBody: 'Login successfully',
+                        })
+
+
+                      },
+                    );
                   })
-                    .then(function (response) {
-                      console.log("login response - - -", response?.data);
-                      const modifiedResponse = response?.data
-                      AsyncStorage.setItem(
-                        'auth_user',
-                        JSON.stringify(modifiedResponse),
-                        () => {
-                          signIn({ modifiedResponse })
+                  .catch(function (error) {
+                    console.log("error while login user exist- - -", error);
+                  })
 
-                          Toast.show({
-                            type: ALERT_TYPE.SUCCESS,
-                            title: 'Success',
-                            textBody: 'Login successfully',
-                          })
-
-                        
-                        },
-                      );
-                    })
-                    .catch(function (error) {
-                      console.log("error while login - - -", error);
-                    })
-                
               }
-            }else{
+            } else {
               console.log("unable to login user")
             }
           })
           .catch((err) => {
             console.log("Err finding user using mobile", err)
           })
-       
+
         // if (!response.data) {
         //   setisLoading(true)
         // }

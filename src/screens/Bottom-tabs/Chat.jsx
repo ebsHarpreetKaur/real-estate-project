@@ -10,6 +10,7 @@ import * as Location from 'expo-location';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { REACT_NATIVE_BASE_URL, token } from '../../api/context/auth'
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 export default ChatTab = () => {
@@ -21,19 +22,23 @@ export default ChatTab = () => {
   }, [])
 
   const get_chat_list = async () => {
-    await axios.get(`${REACT_NATIVE_BASE_URL}chat/messages`, { recipient_id: "662a1e7dcb934ee1fb0b2c44" }, {
+    const AuthUserData = await AsyncStorage.getItem('auth_user');
+    const parsedAuthUserData = JSON.parse(AuthUserData);
+    console.log("here", parsedAuthUserData?.access_token)
+
+    await axios.post(`${REACT_NATIVE_BASE_URL}chat/messages`, { recipient_id: parsedAuthUserData?.user?._id }, {
       headers: {
         "Accept": 'application/json',
         'content-type': 'application/json',
-        "Authorization": `Bearer ${token}`
+        "Authorization": `Bearer ${parsedAuthUserData?.access_token}`
       },
     })
       .then(function (response) {
-        // console.log("property - - ", response?.data?.data?.data);
-        setPropertyData(response?.data?.data?.data)
+        console.log("chat - - ", response);
+        // setPropertyData(response?.data?.data?.data)
       })
       .catch(function (error) {
-        console.log("error - - -", error);
+        console.log("error while fetching chat- - -", error);
       })
   }
 
@@ -163,7 +168,7 @@ export default ChatTab = () => {
 
 
   const handle_chat_with_user = (item) => {
-    console.log('chat data....', item)
+    // console.log('chat data....', item)
     navigation.navigate('ChatDetail', { data: item })
 
   }
@@ -212,9 +217,13 @@ export default ChatTab = () => {
             source={{ uri: 'https://img.icons8.com/color/70/000000/search.png' }}
           /> */}
 
-          <MaterialIcons onPress={() => {
+          {/* <MaterialIcons onPress={() => {
 
-          }} name="search" color='#DEDEDE' size={15} style={{ fontSize: 20, marginLeft: 10 }} />
+          }} name="search" color='#DEDEDE' size={15} style={{ fontSize: 20, marginLeft: 10 }} /> */}
+          <Image
+            style={[styles.icon, styles.inputIcon]}
+            source={{ uri: 'https://img.icons8.com/color/70/000000/search.png' }}
+          />
           <TextInput
             style={styles.inputs}
             placeholder="Search..."
@@ -224,10 +233,10 @@ export default ChatTab = () => {
               onSearch(text)
             }}
           />
+          <MaterialCommunityIcons onPress={() => {
+          }} name="filter-variant" color='#DEDEDE' size={15} style={{ fontSize: 35, marginLeft: "61%" }} />
         </View>
 
-        <MaterialCommunityIcons onPress={() => {
-        }} name="filter-variant" color='#DEDEDE' size={15} style={{ fontSize: 35, margin: 5, marginTop: "4%" }} />
       </View>
       <FlatList
         extraData={calls}
@@ -249,19 +258,23 @@ const styles = StyleSheet.create({
 
   },
   inputIcon: {
+    height: 20,
+    width: 20,
     marginLeft: 15,
+    marginRight: 15,
+
     justifyContent: 'center',
   },
   inputContainer: {
     borderBottomColor: '#F5FCFF',
     backgroundColor: '#FFFFFF',
-    borderRadius: 30,
+    // borderRadius: 30,
     borderBottomWidth: 1,
     height: 45,
     flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
-    margin: 10,
+    // margin: 10,
   },
   row: {
     flexDirection: 'row',

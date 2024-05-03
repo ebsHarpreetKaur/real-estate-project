@@ -45,26 +45,67 @@ export default function PropertiesTab() {
     const openMenu = () => setVisible(true);
     const closeMenu = () => setVisible(false);
     const [visible, setVisible] = useState(false);
-    const [propertydata, setPropertyData] = useState()
+    const [propertydata, setPropertyData] = useState([])
 
+
+    // const get_property_list = async () => {
+    //     const AuthUserData = await AsyncStorage.getItem('auth_user');
+    //     const parsedAuthUserData = JSON.parse(AuthUserData);
+    //     await axios.get(`${REACT_NATIVE_BASE_URL}properties`, {
+    //         headers: {
+    //             "Accept": 'application/json',
+    //             'content-type': 'application/json',
+    //             "Authorization": `Bearer ${parsedAuthUserData?.access_token}`
+    //         },
+    //     })
+    //         .then(function (response) {
+    //             // console.log("property - - ", response?.data?.data?.data);
+    //             setPropertyData(response?.data?.data?.data)
+    //         })
+    //         .catch(function (error) {
+    //             console.log("error fetching properites- - -", error);
+    //         })
+    // }
 
     const get_property_list = async () => {
-        const AuthUserData = await AsyncStorage.getItem('auth_user');
-        const parsedAuthUserData = JSON.parse(AuthUserData);
-        await axios.get(`${REACT_NATIVE_BASE_URL}properties`, {
-            headers: {
-                "Accept": 'application/json',
-                'content-type': 'application/json',
-                "Authorization": `Bearer ${parsedAuthUserData?.access_token}`
-            },
-        })
-            .then(function (response) {
-                // console.log("property - - ", response?.data?.data?.data);
-                setPropertyData(response?.data?.data?.data)
-            })
-            .catch(function (error) {
-                console.log("error fetching properites- - -", error);
-            })
+        try {
+            const AuthUserData = await AsyncStorage.getItem('auth_user');
+            const parsedAuthUserData = JSON.parse(AuthUserData);
+            const response = await axios.get(`${REACT_NATIVE_BASE_URL}properties`, {
+                headers: {
+                    "Accept": 'application/json',
+                    'content-type': 'application/json',
+                    "Authorization": `Bearer ${parsedAuthUserData?.access_token}`
+                },
+            });
+            setPropertyData(response?.data?.data?.data);
+        } catch (error) {
+            if (error.response.status === 401) {
+                try {
+                    const tokenResponse = await axios.post(`${REACT_NATIVE_BASE_URL}refresh`);
+                    const newToken = tokenResponse.data.authorization.token;
+                    const AuthUser = tokenResponse.data.user;
+
+                    await AsyncStorage.setItem('auth_user', JSON.stringify({
+                        access_token: newToken,
+                        user: AuthUser
+                    }));
+                    // await get_property_list();
+                    const response = await axios.get(`${REACT_NATIVE_BASE_URL}properties`, {
+                        headers: {
+                            "Accept": 'application/json',
+                            'content-type': 'application/json',
+                            "Authorization": `Bearer ${newToken}`
+                        },
+                    });
+                    setPropertyData(response?.data?.data?.data);
+                } catch (refreshError) {
+                    console.log("Error refreshing token:", refreshError);
+                }
+            } else {
+                console.log("Error fetching dealers:", error);
+            }
+        }
     }
 
 
@@ -75,10 +116,10 @@ export default function PropertiesTab() {
     const onSearch = (text) => {
         setSearchQuery(text)
         if (text == '') {
-            setPropertyData(propertydata)
+            get_property_list()
         } else {
             let templist = propertydata.filter(item => {
-                return item.title.toLowerCase().indexOf(text.toLowerCase()) > -1
+                return item.property_name.toLowerCase().indexOf(text.toLowerCase()) > -1
             })
             setPropertyData(templist)
         }
@@ -89,71 +130,6 @@ export default function PropertiesTab() {
         navigation.navigate('PropertyDetail', { data: item })
 
     }
-
-
-    // const renderItem = useCallback(
-    //     ({ item }) => <Pressable onPress={() => handle_contact_dealer(item)}>
-    //         <PropertyDetail data={item} />
-    //     </Pressable>, []
-    // );
-
-
-    const renderItem = useCallback(
-        ({ item }) =>
-            <Pressable onPress={() => handle_contact_dealer(item)}>
-
-                <Card style={styles.flatListContainer} mode='elevated'>
-
-                    <Card.Cover source={{ uri: item.photo ? item.photo : "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png" }} style={styles.image} />
-                    <Text variant="bodyLarge" style={styles.dealText}>{item.deal}</Text>
-
-                    {/* <Card.Title title="Property Owner" subtitle="Active" left={LeftContent} /> */}
-
-                    <Card.Content style={styles.cardBody}>
-                        <Text variant="bodyMedium" style={styles.price}>{item.price}</Text>
-
-                        <Text variant="titleSmall" style={styles.address}>{<MaterialIcons name="location-pin" color="#0066b2" size={10} />}{item.district}</Text>
-                        <Text style={styles.squareMeters}>{item.area_sqmt} sq. m.</Text>
-
-                    </Card.Content>
-                    <Divider />
-                    <Card.Content style={styles.cardContent}>
-                        <Text variant="bodyMedium" style={styles.propertyDetailText}>
-                            {/* {<MaterialCommunityIcons name="bed" color="#0066b2" size={25} />} */}
-                            {item.bed} Bed</Text>
-                        <View style={styles.verticleLine}></View>
-
-                        <Text variant="bodyMedium" style={styles.propertyDetailText}>
-                            {/* {<FontAwesome name="bath" color="#0066b2" size={25} />} */}
-
-                            {item.bath} Bath</Text>
-                        <View style={styles.verticleLine}></View>
-
-                        <Text variant="bodyMedium" style={styles.propertyDetailText}>
-                            {/* {<MaterialCommunityIcons name="car-arrow-left" color="#0066b2" size={25} />} */}
-                            {item.parking} Parking</Text>
-                    </Card.Content>
-                    {/* <Card.Actions>
-                      <Button>Cancel</Button>
-                      <Button>Ok</Button>
-                  </Card.Actions> */}
-                </Card>
-                {/* <Card mode='elevated' style={styles.flatListContainer}>
-                  <Card.Title title="Property Owner" subtitle="Active" left={LeftContent} />
-                  <Card.Content>
-                      <Text variant="titleLarge" style={styles.title}>{item.title}</Text>
-                      <Text variant="bodyMedium" style={styles.price}>{item.price}</Text>
-                  </Card.Content>
-                  <Card.Cover source={{ uri: item.photo }} style={styles.image} />
-                  <Card.Actions style={styles.actionButtons}>
-                      <Button>Contact Dealer</Button>
-                      <Button>Explore</Button>
-                  </Card.Actions>
-              </Card> */}
-
-
-            </Pressable>, []
-    );
 
 
     return (
@@ -180,12 +156,11 @@ export default function PropertiesTab() {
                             onSearch(text)
                         }}
                     />
+                    <MaterialCommunityIcons onPress={() => {
+                    }} name="filter-variant" color='#DEDEDE' size={15} style={{ fontSize: 35, marginRight: "3%" }} />
                 </View>
 
-                <Ionicons
 
-                    onPress={() => {
-                    }} name="filter-sharp" color='#DEDEDE' size={15} style={{ fontSize: 35, margin: 5, marginTop: "4%" }} />
             </View>
 
             {/* <SafeAreaView style={styles.container}>
@@ -212,19 +187,32 @@ export default function PropertiesTab() {
                     renderItem={property => {
                         const item = property.item
                         return (
-                            <View style={styles.card}>
-                                <Image style={styles.cardImage} source={{
-                                    uri: item.photo ? `${REACT_NATIVE_PROPERTY_URL}${item.photo}` :
-                                        "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png"
-                                }} />
+                            <View style={styles.card} >
+                                <TouchableOpacity onPress={() => { handle_contact_dealer(item) }}>
+
+                                    <Image style={styles.cardImage} source={{
+                                        uri: item.photo ? `${REACT_NATIVE_PROPERTY_URL}${item.photo}` :
+                                            "https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png"
+                                    }} />
+                                </TouchableOpacity>
+
                                 <View style={styles.cardHeader}>
                                     <View>
-                                        <Text style={styles.title}>{item.title}</Text>
-                                        <Text style={styles.price}>${item.price}</Text>
-                                        <Text style={styles.title}>{item.district}</Text>
+                                        <View style={{ display: "flex", flexDirection: "row", }}>
 
-                                        <Text style={styles.description}>{item.description.split(' ').slice(0, 10).join(' ')}{item.description.split(' ').length > 10 ? '...' : ''}
-                                        </Text>
+                                            <View style={{width:200,}}>
+                                                <Text style={styles.title}>{item.property_name}</Text>
+                                                <Text style={styles.description}>{item.description.split(' ').slice(0, 10).join(' ')}{item.description.split(' ').length > 10 ? '...' : ''}
+                                                </Text>
+
+                                            </View>
+                                            <View style={{ marginLeft: "30%" }}>
+                                                <Text style={styles.price}>${item.price}</Text>
+                                                <Text style={styles.title}>{item.district}</Text>
+                                            </View>
+                                        </View>
+
+
                                         <View style={styles.timeContainer}>
                                             <Image
                                                 style={styles.iconData}
@@ -303,7 +291,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: 'bold',
         marginBottom: 5,
-        color:"grey"
+        color: "grey"
     },
     iconData: {
         width: 15,
@@ -377,7 +365,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     cardHeader: {
-        paddingVertical: 17,
+        // paddingVertical: 5,
         paddingHorizontal: 16,
         borderTopLeftRadius: 1,
         borderTopRightRadius: 1,
@@ -404,9 +392,8 @@ const styles = StyleSheet.create({
         width: null,
     },
     container2: {
-
         flex: 1,
-        marginTop: 20,
+        // marginTop: 20,
     },
     verticleLine: {
         height: '100%',
@@ -437,7 +424,7 @@ const styles = StyleSheet.create({
     },
     headerMenu: {
         flexDirection: 'row',
-        padding: Platform.OS ? 5 : 0,
+        padding: 5,
         // backgroundColor: "#ffffff",
 
     },
@@ -501,18 +488,21 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     inputIcon: {
+        height: 20,
+        width: 20,
         marginLeft: 15,
         justifyContent: 'center',
     },
     inputContainer: {
         borderBottomColor: '#F5FCFF',
         backgroundColor: '#FFFFFF',
-        borderRadius: 30,
+        // borderRadius: 30,
         borderBottomWidth: 1,
         height: 45,
         flexDirection: 'row',
         alignItems: 'center',
         flex: 1,
-        margin: 10,
+        // margin: 10,
+
     },
 });

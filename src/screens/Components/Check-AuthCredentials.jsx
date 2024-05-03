@@ -121,54 +121,54 @@ export default function CheckAuthCredentials(data) {
                 .then(captureData => {
 
                     if (captureData) {
-                        console.log("Capture details:", captureData);
+                        // console.log("Capture details:", captureData);
 
                         Toast.show({
                             type: ALERT_TYPE.SUCCESS,
                             title: `Payment id : ${data.razorpay_payment_id}`,
                             textBody: 'Payment captured successfully',
                         });
-                        console.log("register user", )
-              
+                        console.log("register user",)
+                        const pincode = 129392
                         axios.post(`${REACT_NATIVE_BASE_URL}login`, {
-                          mobile: user_data?.phoneNumber,
-                          // otp_status: user_data?.otp_status,
-                          otp_status: true,
-                          user_location: location ? location : "N/A",
-                          status: false,
-                          payment_res: [captureData],
-                          payment_status: true,
-                          user_city: city ? city : "N/A",
-                          name: "Anonymous",
-                          user_pincode: "N/A"
-                          
-      
+                            mobile: user_data?.phoneNumber,
+                            // otp_status: user_data?.otp_status,
+                            otp_status: true,
+                            user_location: location ? location : "N/A",
+                            status: false,
+                            payment_res: [captureData],
+                            payment_status: true,
+                            user_city: city ? city : "N/A",
+                            name: "Anonymous",
+                            user_pincode: pincode
+
+
                         }, {
-                          headers: {
-                            "Accept": 'application/json',
-                            'content-type': 'application/json',
-                          },
+                            headers: {
+                                "Accept": 'application/json',
+                                'content-type': 'application/json',
+                            },
                         })
-                          .then(function (response) {
-                            console.log("login response - - -", response?.data);
-                            const modifiedResponse = response?.data
-                            AsyncStorage.setItem(
-                              'auth_user',
-                              JSON.stringify(modifiedResponse),
-                              () => {
-                                signIn({ modifiedResponse })
-      
-                                Toast.show({
-                                  type: ALERT_TYPE.SUCCESS,
-                                  title: 'Success',
-                                  textBody: 'Login successfully',
-                                })                        
-                              },
-                            );
-                          })
-                          .catch(function (error) {
-                            console.log("error while login here - - -", error);
-                          })
+                            .then(function (response) {
+                                console.log("login response - - -", response?.data);
+                                const modifiedResponse = response?.data
+                                AsyncStorage.setItem(
+                                    'auth_user',
+                                    JSON.stringify(modifiedResponse),
+                                    () => {
+                                        signIn({ modifiedResponse })
+
+                                        Toast.show({
+                                            type: ALERT_TYPE.SUCCESS,
+                                            title: 'Success',
+                                            textBody: 'Login successfully',
+                                        })
+                                    },
+                                );
+                            })
+                            .catch(function (error) {
+                                console.log("error while login here - - -", error);
+                            })
                     }
 
 

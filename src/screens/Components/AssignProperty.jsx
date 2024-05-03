@@ -9,7 +9,7 @@ import { useForm, Controller } from 'react-hook-form'
 export default function AssignProperty(data) {
     const propertyData = data.route.params.data
 
-    console.log("data.................", propertyData)
+    // console.log("data.................", propertyData)
     const [name, setName] = useState('')
     const [text, setText] = React.useState("");
     const [formData, setFormData] = React.useState({

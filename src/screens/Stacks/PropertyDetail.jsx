@@ -8,11 +8,13 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { REACT_NATIVE_PROPERTY_URL } from '../../api/context/auth';
 // import { theme_color } from '../../../config';
 
 export default function PropertyDetail(props) {
   const navigation = useNavigation();
   const data = props.route.params.data
+  const property_details = [props.route.params.data?.property_details]
   const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
 
   console.log("props", data)
@@ -30,35 +32,48 @@ export default function PropertyDetail(props) {
         {/* <Image source={{ uri: data.photo }} style={{ height: 350, width: "100%" }} /> */}
         <Card style={styles.flatListContainer} mode='elevated'>
 
-          <Card.Cover source={{ uri: data.photo }} style={styles.image} />
+          <Card.Cover source={{ uri: data?.photo ? `${REACT_NATIVE_PROPERTY_URL}${data?.photo}` : "https://www.riserproperty.com/property-not-found.svg" }} style={styles.mainphoto} />
           <Text variant="bodyLarge" style={styles.dealText}>{data.deal}</Text>
 
           {/* <Card.Title title="Property Owner" subtitle="Active" left={LeftContent} /> */}
           <Card.Content style={styles.contentText}>
-            <Text variant="bodyMedium" style={styles.price}>{data.price}</Text>
+          <Text variant="bodyMedium" style={styles.price}>{data.property_name}</Text>
 
-            <Text variant="titleMedium" style={styles.title}>{<MaterialIcons name="location-pin" color="#0066b2" size={15} />}{data.district}</Text>
-            <Button style={{ fontWeight: "bold", fontSize: 20 }} onPress={() => handlePropertyAssign(data)}>Assign</Button>
+            <Text variant="bodyMedium" style={styles.price}>${data.price}</Text>
+
+            <Text variant="titleSmall" style={styles.title}>{<MaterialIcons name="location-pin" color="#0066b2" size={10} />}{data.district}</Text>
+            <Button style={{ fontWeight: "bold", fontSize: 20 }} onPress={() => handlePropertyAssign(data)}>Share</Button>
 
           </Card.Content>
           <Divider />
           <Card.Content style={styles.cardContent}>
-            <Text variant="bodyMedium" style={styles.propertyDetailText}>{<MaterialCommunityIcons name="bed" color="#0066b2" size={25} />}{data.bed} Bed</Text>
-            <Text variant="bodyMedium" style={styles.propertyDetailText}>{<FontAwesome name="bath" color="#0066b2" size={25} />}{data.bath} Bath</Text>
-            <Text variant="bodyMedium" style={styles.propertyDetailText}>{<MaterialCommunityIcons name="car-arrow-left" color="#0066b2" size={25} />}{data.parking} Parking</Text>
+            <View>
+              <MaterialCommunityIcons name="bed" color="#0066b2" size={25} />
+              <Text variant="bodyMedium" style={styles.propertyDetailText}>{data.bedrooms} Bed</Text>
+            </View>
+
+            <View>
+              <FontAwesome name="bath" color="#0066b2" size={25} />
+              <Text variant="bodyMedium" style={styles.propertyDetailText}>{data.bathrooms} Bath</Text>
+            </View>
+            <View>
+              <MaterialCommunityIcons name="car-arrow-left" color="#0066b2" size={25} />
+              <Text variant="bodyMedium" style={styles.propertyDetailText}>{data.parking} Parking</Text>
+            </View>
+
+
           </Card.Content>
           <Divider />
           <View style={{ padding: 10 }}>
-            <Text variant="bodyMedium" style={{ fontWeight: "bold", fontSize: 20 }}>Description</Text>
+            <Text variant="bodyMedium" style={{ fontWeight: "bold", fontSize: 15,  }}>Description</Text>
 
             <Card.Actions >
-              <Text style={{ color: "black", fontSize: 15 }}>{data.description}</Text>
-
+              <Text style={{ color: "black", fontSize: 15,marginRight:"55%" }}>{data.description}</Text>
             </Card.Actions>
           </View>
           <Divider />
           <View style={{ padding: 10 }}>
-            <Text variant="bodyMedium" style={{ fontWeight: "bold", fontSize: 20 }}>Photos</Text>
+            <Text variant="bodyMedium" style={{ fontWeight: "bold", fontSize: 15 }}>Photos</Text>
             <ScrollView
               horizontal={true}
             >
@@ -77,33 +92,40 @@ export default function PropertyDetail(props) {
           <Divider />
 
           <View style={{ padding: 10 }}>
-            <Text variant="bodyMedium" style={{ fontWeight: "bold", fontSize: 20 }}>Property Details</Text>
+            <Text variant="bodyMedium" style={{ fontWeight: "bold", fontSize: 15 }}>Property Details</Text>
 
             <Card.Actions style={{ display: "flex", flexDirection: "column" }}>
 
-              {data.property_details && data.property_details.map((item, index) => (
+              {property_details && property_details.map((item, index) => (
                 <>
-                  <View style={{ display: "flex", flexDirection: "row" }}>
-                    <MaterialCommunityIcons name="check-circle-outline" color="#0066b2" size={25} />
-                    <Text style={{ color: "black", fontSize: 18, marginLeft: 5 }}>{item.city_view}</Text>
-                  </View>
-                  <View style={{ display: "flex", flexDirection: "row" }}>
-                    <MaterialCommunityIcons name="check-circle-outline" color="#0066b2" size={25} />
-                    <Text style={{ color: "black", fontSize: 18, marginLeft: 5 }}>{item.air_conditioned}</Text>
-                  </View>
-                  <View style={{ display: "flex", flexDirection: "row" }}>
-                    <MaterialCommunityIcons name="check-circle-outline" color="#0066b2" size={25} />
-                    <Text style={{ color: "black", fontSize: 18, marginLeft: 5 }}>{item.phone}</Text>
-                  </View>
-                  <View style={{ display: "flex", flexDirection: "row" }}>
-                    <MaterialCommunityIcons name="check-circle-outline" color="#0066b2" size={25} />
-                    <Text style={{ color: "black", fontSize: 18, marginLeft: 5 }}>{item.family_villa}</Text>
-                  </View>
-                  <View style={{ display: "flex", flexDirection: "row" }}>
-                    <MaterialCommunityIcons name="check-circle-outline" color="#0066b2" size={25} />
-                    <Text style={{ color: "black", fontSize: 18, marginLeft: 5 }}>{item.internet}</Text>
-                  </View>
+                  <View style={{ display: "flex", flexDirection: "row", marginRight: "50%" }}>
 
+                    <View>
+                      <MaterialCommunityIcons name="check-circle-outline" color="#0066b2" size={20} style={{ marginRight: 5 }} />
+                      <MaterialCommunityIcons name="check-circle-outline" color="#0066b2" size={20} style={{ marginRight: 5 }} />
+                      <MaterialCommunityIcons name="check-circle-outline" color="#0066b2" size={20} style={{ marginRight: 5 }} />
+                      <MaterialCommunityIcons name="check-circle-outline" color="#0066b2" size={20} style={{ marginRight: 5 }} />
+                      <MaterialCommunityIcons name="check-circle-outline" color="#0066b2" size={20} style={{ marginRight: 5 }} />
+                    </View>
+                    <View>
+                      <View>
+                        <Text style={{ color: "black", fontSize: 15 }}>City view : {item.city_view ? item.city_view : "N/A"}</Text>
+                      </View>
+                      <View>
+                        <Text style={{ color: "black", fontSize: 15 }}>Air conditioned : {item.air_conditioned ? item.air_conditioned : "N/A"}</Text>
+                      </View>
+                      <View>
+                        <Text style={{ color: "black", fontSize: 15 }}>Contact : {item.phone ? item.phone : "N/A"}</Text>
+                      </View>
+                      <View>
+                        <Text style={{ color: "black", fontSize: 15 }}>Family villa : {item.family_villa ? item.family_villa : "N/A"}</Text>
+                      </View>
+                      <View>
+                        <Text style={{ color: "black", fontSize: 15 }}>Internet : {item.internet ? item.internet : "N/A"}</Text>
+                      </View>
+                    </View>
+
+                  </View>
 
                 </>
 
@@ -114,7 +136,7 @@ export default function PropertyDetail(props) {
           <Divider />
 
           <View style={{ padding: 10 }}>
-            <Text variant="bodyMedium" style={{ fontWeight: "bold", fontSize: 20 }}>Contact</Text>
+            <Text variant="bodyMedium" style={{ fontWeight: "bold", fontSize: 15 }}>Contact</Text>
 
             <Card.Actions >
               <Text style={{ color: "#0066b2", fontWeight: "bold", fontSize: 15, marginRight: "30%" }}>{data.dealer}</Text>
@@ -139,16 +161,18 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     borderRadius: 10,
     shadowOpacity: 0,
-    height: "100%"
+    height: "100%",
+    width: "100%"
+
 
   },
   container: {
     flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
+    // marginTop: StatusBar.currentHeight || 0,
     backgroundColor: "#ffffff",
   },
   title: {
-    fontSize: 15,
+    fontSize: 12,
     color: "#999999"
   },
   separator: {
@@ -163,6 +187,9 @@ const styles = StyleSheet.create({
     // backgroundColor: "#ffffff",
 
   },
+  mainphoto: {
+    marginRight: 18
+  },
   searchBar: {
     backgroundColor: '#ffffff',
     margin: 5,
@@ -174,7 +201,7 @@ const styles = StyleSheet.create({
   },
   price: {
     fontWeight: "bold",
-    fontSize: 20
+    fontSize: 15
   },
   actionButtons: {
     marginTop: "5%"
@@ -217,6 +244,7 @@ const styles = StyleSheet.create({
     color: "white",
     padding: 5,
     margin: 10,
+    // borderRadius:50
   },
 
 

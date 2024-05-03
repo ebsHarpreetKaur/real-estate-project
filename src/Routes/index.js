@@ -149,7 +149,7 @@ export default function AppNavigation() {
             let user_payment_status = parsedUserData?.user?.payment_status
 
 
-            console.log("userToken", parsedUserData?.user?.payment_status)
+            // console.log("userToken", parsedUserData?.user?.payment_status)
 
 
             // After restoring token, we may need to validate it in production apps
@@ -165,7 +165,7 @@ export default function AppNavigation() {
     const authContext = React.useMemo(
         () => ({
             signIn: async (data) => {
-                console.log("Data", data?.modifiedResponse?.access_token)
+                // console.log("Data", data?.modifiedResponse?.access_token)
                 const auth_token = data?.modifiedResponse?.access_token
                 const user_payment_status = data?.modifiedResponse?.user?.payment_status
 
@@ -351,7 +351,7 @@ export default function AppNavigation() {
             </Tab.Navigator>
         );
     }
-    console.log("state....", state)
+    // console.log("state....", state)
     function MyStack() {
 
         return (

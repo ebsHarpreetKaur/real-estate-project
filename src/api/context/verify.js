@@ -16,7 +16,7 @@ const sendSmsVerification = async (phoneNumber) => {
     });
 
     const json = await response.json();
-    console.log("dataaaaaaaaaaa", json);
+    // console.log("dataaaaaaaaaaa", json);
 
 
     return json.success;

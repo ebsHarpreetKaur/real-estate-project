@@ -65,7 +65,7 @@ export default function HomeTab() {
     const [Dealer_data, setDealer_data] = useState([])
     const [searchText2, setSearchText2] = useState('');
 
-   
+
 
     const handleSearch = (text) => {
         setSearchText2(text);
@@ -81,40 +81,85 @@ export default function HomeTab() {
     React.useEffect(() => {
         const auth_user_data = async () => {
             let userData;
-            
-                // userData = await SecureStore.getItemAsync('auth_user');
-                AsyncStorage.getItem('auth_user', (err, result) => {
-                    const parsedData = JSON.parse(result);
-                    setAuth_user(parsedData)
-                    console.log("parsedData", parsedData?.message);
-                });
+            // userData = await SecureStore.getItemAsync('auth_user');
+            AsyncStorage.getItem('auth_user', (err, result) => {
+                const parsedData = JSON.parse(result);
+                setAuth_user(parsedData)
+                console.log("parsedData", parsedData?.message);
+            });
 
-                // console.log("parsedData.......", parsedData)
-            };
+            // console.log("parsedData.......", parsedData)
+        };
 
-            auth_user_data();
-        }, []);
+        auth_user_data();
+    }, []);
+
+
 
 
     const get_dealer_list = async () => {
-        const AuthUserData = await AsyncStorage.getItem('auth_user');
-        const parsedAuthUserData = JSON.parse(AuthUserData);
-        await axios.get(`${REACT_NATIVE_BASE_URL}users`, {
-            headers: {
-                "Accept": 'application/json',
-                'content-type': 'application/json',
-                "Authorization": `Bearer ${parsedAuthUserData?.access_token}`
-            },
-        })
-            .then(function (response) {
-                // console.log("response - - -", response?.data?.users?.data);
-                setDealer_data(response?.data?.users?.data)
-            })
-            .catch(function (error) {
-                console.log("error fetching dealers- - -", error);
-            })
+        try {
+            const AuthUserData = await AsyncStorage.getItem('auth_user');
+            const parsedAuthUserData = JSON.parse(AuthUserData);
+            const response = await axios.get(`${REACT_NATIVE_BASE_URL}users`, {
+                headers: {
+                    "Accept": 'application/json',
+                    'content-type': 'application/json',
+                    "Authorization": `Bearer ${parsedAuthUserData?.access_token}`
+                },
+            });
+            setDealer_data(response?.data?.users?.data);
+        } catch (error) {
+            if (error.response.status === 401) {
+                try {
+                    const tokenResponse = await axios.post(`${REACT_NATIVE_BASE_URL}refresh`);
+                    console.log("tokenres", tokenResponse)
 
+                    const newToken = tokenResponse.data.authorization.token;
+                    const AuthUser = tokenResponse.data.user;
+
+                    await AsyncStorage.setItem('auth_user', JSON.stringify({
+                        access_token: newToken,
+                        user: AuthUser
+                    }));
+                    // await get_dealer_list();
+                    const response = await axios.get(`${REACT_NATIVE_BASE_URL}users`, {
+                        headers: {
+                            "Accept": 'application/json',
+                            'content-type': 'application/json',
+                            "Authorization": `Bearer ${newToken}`
+                        },
+                    });
+                    setDealer_data(response?.data?.users?.data);
+                } catch (refreshError) {
+                    console.log("Error refreshing token:", refreshError);
+                }
+            } else {
+                console.log("Error fetching dealers:", error);
+            }
+        }
     }
+
+
+    // const get_dealer_list = async () => {
+    //     const AuthUserData = await AsyncStorage.getItem('auth_user');
+    //     const parsedAuthUserData = JSON.parse(AuthUserData);
+    //     await axios.get(`${REACT_NATIVE_BASE_URL}users`, {
+    //         headers: {
+    //             "Accept": 'application/json',
+    //             'content-type': 'application/json',
+    //             "Authorization": `Bearer ${parsedAuthUserData?.access_token}`
+    //         },
+    //     })
+    //         .then(function (response) {
+    //             // console.log("response - - -", response?.data?.users?.data);
+    //             setDealer_data(response?.data?.users?.data)
+    //         })
+    //         .catch(function (error) {
+    //             console.log("error fetching dealers- - -", error);
+    //         })
+
+    // }
 
 
 
@@ -212,12 +257,15 @@ export default function HomeTab() {
     const onSearch = (text) => {
         setSearchQuery(text)
         if (text == '') {
-            setDealer_data(Dealer_data)
+            get_dealer_list()
+            // setDealer_data(Dealer_data)
         } else {
+
             let templist = Dealer_data.filter(item => {
                 return item.user_city.toLowerCase().indexOf(text.toLowerCase()) > -1
             })
             setDealer_data(templist)
+
         }
 
     }
@@ -288,6 +336,9 @@ export default function HomeTab() {
                         source={{ uri: 'https://img.icons8.com/color/70/000000/search.png' }}
                     />
                     <TextInput
+                        onPress={() => {
+                            handle_change_location()
+                        }}
                         style={styles.inputs}
                         placeholder="Enter location..."
                         underlineColorAndroid="transparent"
@@ -298,9 +349,9 @@ export default function HomeTab() {
                     />
                 </View>
 
-                <Entypo onPress={() => {
+                {/* <Entypo onPress={() => {
                     handle_change_location()
-                }} name="location" color='#DEDEDE' size={15} style={{ fontSize: 35, margin: 5, marginTop: "4%" }} />
+                }} name="location" color='#DEDEDE' size={15} style={{ fontSize: 35, margin: 5, marginTop: "4%" }} /> */}
             </View>
 
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -526,19 +577,21 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     inputIcon: {
+        height: 20,
+        width: 20,
         marginLeft: 15,
         justifyContent: 'center',
     },
     inputContainer: {
         borderBottomColor: '#F5FCFF',
         backgroundColor: '#FFFFFF',
-        borderRadius: 30,
+        // borderRadius: 30,
         borderBottomWidth: 1,
         height: 45,
         flexDirection: 'row',
         alignItems: 'center',
         flex: 1,
-        margin: 10,
+        // margin: 10,
     },
     pic: {
         borderRadius: 30,
