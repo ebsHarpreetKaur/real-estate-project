@@ -28,6 +28,7 @@ import WelcomeScreen from '../screens/Components/Welcome';
 import EditProfileView from '../screens/Components/EditProfile';
 // import { theme_color } from '../../config';
 import VideoConference from '../screens/Components/VideoConference'
+import Commission from '../screens/Components/Commission';
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -290,7 +291,7 @@ export default function AppNavigation() {
                     name="Home"
                     component={HomeScreen}
                     options={{
-                        tabBarLabel: 'Dealers',
+                        tabBarLabel: 'Properties',
                         tabBarActiveTintColor: "#0066b2",
                         tabBarIcon: ({ color, size }) => (
                             <MaterialCommunityIcons name="home-analytics" color={color} size={size} />
@@ -298,7 +299,7 @@ export default function AppNavigation() {
                     }}
                 />
 
-                <Tab.Screen
+                {/* <Tab.Screen
                     name="Properties"
                     component={PropertiesScreen}
                     options={{
@@ -308,7 +309,7 @@ export default function AppNavigation() {
                             <MaterialCommunityIcons name="home-city" color={color} size={size} />
                         ),
                     }}
-                />
+                /> */}
                 <Tab.Screen
                     name="Chat"
                     component={ChatScreen}
@@ -365,31 +366,33 @@ export default function AppNavigation() {
                         <>
                             <Stack.Screen name="Login" component={SignInScreen} />
                             <Stack.Screen name="Otp" component={Otp} />
-                            <Stack.Screen name="CheckAuthCredentials" component={CheckAuthCredentials} />
+                            <Stack.Screen name="CheckAuthCredentials" component={CheckAuthCredentials} initialParams={{ user: state.userToken }} />
                         </>
                     )
 
-                        : state?.userPaymentStatus === false || null || undefined ? (
-                            <>
-                                <Stack.Screen name="CheckAuthCredentials" component={CheckAuthCredentials} initialParams={{ user: state.userToken }} />
+                        // : state?.userPaymentStatus === false || null || undefined ? (
+                        //     <>
+                        //         <Stack.Screen name="CheckAuthCredentials" component={CheckAuthCredentials} initialParams={{ user: state.userToken }} />
 
 
-                            </>
-                        )
-                            :
-                            <>
-                                <Stack.Screen
-                                    name=" "
-                                    component={Root}
-                                // options={{ headerShown: false }}
-                                />
-                                <Stack.Screen name="AssignProperty" component={AssignProperty} />
-                                <Stack.Screen name="ChatDetail" component={ChatDetail} />
-                                <Stack.Screen name="PropertyDetail" component={PropertyDetail} />
-                                <Stack.Screen name="UserProfile" component={UserProfile} />
-                                <Stack.Screen name="EditProfile" component={EditProfileView} />
-                                <Stack.Screen name="VideoConferencing" component={VideoConference} />
-                            </>
+                        //     </>
+                        // )
+                        :
+                        <>
+                            <Stack.Screen
+                                name=" "
+                                component={Root}
+                            // options={{ headerShown: false }}
+                            />
+                            <Stack.Screen name="AssignProperty" component={AssignProperty} />
+                            <Stack.Screen name="ChatDetail" component={ChatDetail} />
+                            <Stack.Screen name="PropertyDetail" component={PropertyDetail} />
+                            <Stack.Screen name="UserProfile" component={UserProfile} />
+                            <Stack.Screen name="EditProfile" component={EditProfileView} />
+                            <Stack.Screen name="VideoConferencing" component={VideoConference} />
+                            <Stack.Screen name="CheckAuthCredentials" component={CheckAuthCredentials} initialParams={{ user: state.userToken }} />
+                            <Stack.Screen name="Commission" component={Commission} />
+                        </>
 
                     }
 

@@ -7,8 +7,6 @@ import { checkVerification } from "../../api/context/verify";
 import OtpInputs from 'react-native-otp-inputs';
 import * as Updates from 'expo-updates';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-import * as SecureStore from 'expo-secure-store';
 import { REACT_NATIVE_BASE_URL, today } from "../../api/context/auth";
 import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
 import RazorpayCheckout from 'react-native-razorpay';
@@ -18,7 +16,13 @@ import AuthContext from "../../api/context/Context";
 // import { theme_color } from "../../../config";
 // import { Clipboard } from 'react-native';
 // import Clipboard from '@react-native-clipboard/clipboard';
-
+import * as SecureStore from 'expo-secure-store';
+import { HelperText, TextInput } from 'react-native-paper';
+import Icon from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import * as Location from 'expo-location';
+import { encode } from 'base-64';
+// import { theme_color } from '../../../config';
 
 //"@react-native-community/clipboard": "^1.5.1",
 
@@ -34,9 +38,74 @@ const Otp = ({ route }) => {
 
 
   let phoneNumberWithoutCountryCode = phoneNumber.replace(/^(\+91)/, '');
+  const phoneNumberInt = parseInt(phoneNumberWithoutCountryCode, 10);
 
   const [AuthToken, setAuthToken] = useState(null);
   const [AuthUser, setAuthUser] = useState(null);
+
+  const [user_location, setUserLocation] = useState('');
+  const [reraNumber, setReraNumber] = useState('');
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [city, setCity] = useState('');
+
+
+
+  useEffect(() => {
+      (async () => {
+          // SecureStore.deleteItemAsync('auth_user')
+          let { status } = await Location.requestForegroundPermissionsAsync();
+          if (status !== 'granted') {
+              setErrorMsg('Permission to access location was denied');
+              return;
+          }
+
+          let location = await Location.getCurrentPositionAsync({});
+          const { latitude, longitude } = location.coords;
+          const cityName = await getCityName(latitude, longitude);
+          setCity(cityName);
+          setLocation(location);
+      })();
+  }, []);
+
+  let text = 'Waiting..';
+  if (errorMsg) {
+      text = errorMsg;
+  } else if (location) {
+      text = JSON.stringify(location);
+  }
+  console.log("location.........", location)
+  console.log("city.........", city)
+
+
+  const getCityName = async (latitude, longitude) => {
+      try {
+          const location = await Location.reverseGeocodeAsync({ latitude, longitude });
+          if (location && location.length > 0) {
+              const { city } = location[0];
+              return city;
+          }
+          return 'City not found';
+      } catch (error) {
+          console.error('Error fetching city:', error);
+          return 'Error fetching city';
+      }
+  };
+
+
+  const onChangeReraNumber = text => {
+      setReraNumber(text)
+  };
+
+
+  const hasErrors = () => {
+      if (!reraNumber) {
+          return true;
+      }
+      return /[^0-9]/.test(reraNumber);
+  };
+
+
 
   AsyncStorage.getItem('auth_user').then((AuthUserData) => {
     // console.log("autttttt", AuthUserData);
@@ -78,15 +147,49 @@ const Otp = ({ route }) => {
                   title: 'warning',
                   textBody: 'Please wait...',
                 })
-                navigation.navigate("CheckAuthCredentials", {
-                  params: {
-                    phoneNumber: phoneNumberWithoutCountryCode,
-                    otp_status: success
+                const pincode = 129392
+
+                axios.post(`${REACT_NATIVE_BASE_URL}login`, {
+                  mobile: phoneNumberInt,
+                  // otp_status: success,
+                  otp_status: true,
+                  user_location: location ? location : "N/A",
+                  status: false,
+                  payment_res: [],
+                  payment_status: false,
+                  user_city: city ? city : "N/A",
+                  name: "Anonymous",
+                  user_pincode: pincode
+
+
+              }, {
+                  headers: {
+                      "Accept": 'application/json',
+                      'content-type': 'application/json',
                   },
-                });
+              })
+                  .then(function (response) {
+                      console.log("login response - - -", response?.data);
+                      const modifiedResponse = response?.data
+                      AsyncStorage.setItem(
+                          'auth_user',
+                          JSON.stringify(modifiedResponse),
+                          () => {
+                              signIn({ modifiedResponse })
+
+                              Toast.show({
+                                  type: ALERT_TYPE.SUCCESS,
+                                  title: 'Success',
+                                  textBody: 'Login successfully',
+                              })
+                          },
+                      );
+                  })
+                  .catch(function (error) {
+                      console.log("error while login here - - -", error);
+                  })
 
               } else {
-                const phoneNumberInt = parseInt(phoneNumberWithoutCountryCode, 10);
                 console.log("yes user exist", response?.data?.user)
 
                 axios.post(`${REACT_NATIVE_BASE_URL}login`, {

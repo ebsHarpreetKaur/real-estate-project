@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Unify",
-    "slug": "real-estate-react-native",
+    "slug": "unify",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/splash/logo.png",
@@ -68,9 +68,9 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "e5afe387-0294-4fce-8e2c-db823fcfd9f9"
+        "projectId": "a970345b-c7bc-4048-9827-c4fd56dde0ec"
       }
     },
-    "owner": "ebullientsoft"
+    "owner": "h7121999"
   }
 }

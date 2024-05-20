@@ -7,7 +7,7 @@ const sendSmsVerification = async (phoneNumber) => {
       channel: "sms",
     });
 
-    const response = await fetch(`https://verify-3620-yeqdl4.twil.io/start-verify`, {
+    const response = await fetch(`https://verify-5568-wk1pmn.twil.io/start-verify`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -16,7 +16,7 @@ const sendSmsVerification = async (phoneNumber) => {
     });
 
     const json = await response.json();
-    // console.log("dataaaaaaaaaaa", json);
+    console.log("dataaaaaaaaaaa", json);
 
 
     return json.success;
@@ -35,7 +35,7 @@ const checkVerification = async (phoneNumber, code) => {
       code,
     });
 
-    const response = await fetch(`https://verify-3620-yeqdl4.twil.io/check-verify`, {
+    const response = await fetch(`hthttps://verify-5568-wk1pmn.twil.io/check-verify`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -44,6 +44,8 @@ const checkVerification = async (phoneNumber, code) => {
     });
 
     const json = await response.json();
+    console.log("dataaaaaaaaaaa ..", json);
+
     return json.success;
   } catch (error) {
     console.error(error);

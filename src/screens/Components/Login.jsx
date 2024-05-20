@@ -108,11 +108,9 @@ const Login = () => {
                                                 textBody: 'Phone number required',
                                             })
                                         } else {
-                                            // sendSmsVerification(formattedValue).then((sent) => {
-                                            // SecureStore.deleteItemAsync('auth_user') 
-                                            handleOTPscreen()
-
-                                            // });
+                                            sendSmsVerification(formattedValue).then((sent) => {
+                                                handleOTPscreen()
+                                            });
                                         }
                                     }}
                                 >
@@ -129,9 +127,9 @@ const Login = () => {
 };
 
 const styles = StyleSheet.create({
-    infoText:{
-        color:"grey",
-        fontSize:10
+    infoText: {
+        color: "grey",
+        fontSize: 10
     },
     container_activity_indicator: {
         flex: 1,

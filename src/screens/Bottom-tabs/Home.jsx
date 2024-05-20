@@ -36,6 +36,9 @@ import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
 // import { theme_color } from '../../../config';
 import { AuthUserData, REACT_NATIVE_BASE_URL, REACT_NATIVE_IMAGE_URL, REACT_NATIVE_USER_PROFILE_URL, token } from '../../api/context/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import RazorpayCheckout from 'react-native-razorpay';
+import { encode } from 'base-64';
+// import { theme_color } from '../../../config';
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -53,7 +56,7 @@ export default function HomeTab() {
     const openMenu = () => setVisible(true);
     const closeMenu = () => setVisible(false);
     const [visible, setVisible] = useState(false);
-    const [dealer_images, setdealer_images] = useState([])
+    const [Token, setToken] = useState(null)
     const [imageBase64, setImageBase64] = useState(null);
     const [expoPushToken, setExpoPushToken] = useState('');
     const [notification, setNotification] = useState(false);
@@ -65,7 +68,7 @@ export default function HomeTab() {
     const [Dealer_data, setDealer_data] = useState([])
     const [searchText2, setSearchText2] = useState('');
 
-
+    // console.log("token", Token?.access_token)
 
     const handleSearch = (text) => {
         setSearchText2(text);
@@ -74,7 +77,7 @@ export default function HomeTab() {
 
 
     React.useEffect(() => {
-        get_dealer_list();
+        get_property_list();
     }, []);
 
 
@@ -96,25 +99,75 @@ export default function HomeTab() {
 
 
 
+    // const get_dealer_list = async () => {
 
-    const get_dealer_list = async () => {
+    // try {
+    //     const AuthUserData = await AsyncStorage.getItem('auth_user');
+    //     const parsedAuthUserData = JSON.parse(AuthUserData);
+    //     const response = await axios.get(`${REACT_NATIVE_BASE_URL}users`, {
+    //         headers: {
+    //             "Accept": 'application/json',
+    //             'content-type': 'application/json',
+    //             "Authorization": `Bearer ${parsedAuthUserData?.access_token}`
+    //         },
+    //     });
+    //     setDealer_data(response?.data?.users?.data);
+    // } catch (error) {
+    //     if (error.response.status === 401) {
+    //         try {
+    //             const tokenResponse = await axios.post(`${REACT_NATIVE_BASE_URL}refresh`);
+    //             console.log("tokenres", tokenResponse)
+
+    //             const newToken = tokenResponse.data.authorization.token;
+    //             const AuthUser = tokenResponse.data.user;
+
+    //             await AsyncStorage.setItem('auth_user', JSON.stringify({
+    //                 access_token: newToken,
+    //                 user: AuthUser
+    //             }));
+    //             // await get_dealer_list();
+    //             const response = await axios.get(`${REACT_NATIVE_BASE_URL}users`, {
+    //                 headers: {
+    //                     "Accept": 'application/json',
+    //                     'content-type': 'application/json',
+    //                     "Authorization": `Bearer ${newToken}`
+    //                 },
+    //             });
+    //             setDealer_data(response?.data?.users?.data);
+    //         } catch (refreshError) {
+    //             console.log("Error refreshing token:", refreshError);
+    //         }
+    //     } else {
+    //         console.log("Error fetching dealers:", error);
+    //     }
+    // }
+    // }
+    const uniqueUsers = [...new Set(Dealer_data.map(user => user._id))].map(id => {
+        return Dealer_data.find(user => user._id === id);
+    });
+    // console.log("dddd", uniqueUsers)
+
+    const get_property_list = async () => {
         try {
             const AuthUserData = await AsyncStorage.getItem('auth_user');
             const parsedAuthUserData = JSON.parse(AuthUserData);
-            const response = await axios.get(`${REACT_NATIVE_BASE_URL}users`, {
+            setToken(parsedAuthUserData)
+            const response = await axios.get(`${REACT_NATIVE_BASE_URL}properties`, {
                 headers: {
                     "Accept": 'application/json',
                     'content-type': 'application/json',
                     "Authorization": `Bearer ${parsedAuthUserData?.access_token}`
                 },
             });
-            setDealer_data(response?.data?.users?.data);
+            // console.log("proper.......", response)
+
+            setDealer_data(response?.data?.userdata);
+            // setProperty_data(response?.data?.data?.data);
+
         } catch (error) {
             if (error.response.status === 401) {
                 try {
                     const tokenResponse = await axios.post(`${REACT_NATIVE_BASE_URL}refresh`);
-                    console.log("tokenres", tokenResponse)
-
                     const newToken = tokenResponse.data.authorization.token;
                     const AuthUser = tokenResponse.data.user;
 
@@ -122,46 +175,68 @@ export default function HomeTab() {
                         access_token: newToken,
                         user: AuthUser
                     }));
-                    // await get_dealer_list();
-                    const response = await axios.get(`${REACT_NATIVE_BASE_URL}users`, {
+
+                    // await get_property_list();
+                    const response = await axios.get(`${REACT_NATIVE_BASE_URL}properties`, {
                         headers: {
                             "Accept": 'application/json',
                             'content-type': 'application/json',
                             "Authorization": `Bearer ${newToken}`
                         },
                     });
-                    setDealer_data(response?.data?.users?.data);
+                    setDealer_data(response?.data?.data?.userdata);
                 } catch (refreshError) {
-                    console.log("Error refreshing token:", refreshError);
+                    console.log("Error refreshing token here:", refreshError);
                 }
             } else {
                 console.log("Error fetching dealers:", error);
             }
         }
+
+
+
+        // Dealers API
+        // try {
+        //     const AuthUserData = await AsyncStorage.getItem('auth_user');
+        //     const parsedAuthUserData = JSON.parse(AuthUserData);
+        //     const response = await axios.get(`${REACT_NATIVE_BASE_URL}users`, {
+        //         headers: {
+        //             "Accept": 'application/json',
+        //             'content-type': 'application/json',
+        //             "Authorization": `Bearer ${parsedAuthUserData?.access_token}`
+        //         },
+        //     });
+        //     setDealer_data(response?.data?.users?.data);
+        // } catch (error) {
+        //     if (error.response.status === 401) {
+        //         try {
+        //             const tokenResponse = await axios.post(`${REACT_NATIVE_BASE_URL}refresh`);
+        //             console.log("tokenres", tokenResponse)
+
+        //             const newToken = tokenResponse.data.authorization.token;
+        //             const AuthUser = tokenResponse.data.user;
+
+        //             await AsyncStorage.setItem('auth_user', JSON.stringify({
+        //                 access_token: newToken,
+        //                 user: AuthUser
+        //             }));
+        //             // await get_dealer_list();
+        //             const response = await axios.get(`${REACT_NATIVE_BASE_URL}users`, {
+        //                 headers: {
+        //                     "Accept": 'application/json',
+        //                     'content-type': 'application/json',
+        //                     "Authorization": `Bearer ${newToken}`
+        //                 },
+        //             });
+        //             setDealer_data(response?.data?.users?.data);
+        //         } catch (refreshError) {
+        //             console.log("Error refreshing token:", refreshError);
+        //         }
+        //     } else {
+        //         console.log("Error fetching dealers:", error);
+        //     }
+        // }
     }
-
-
-    // const get_dealer_list = async () => {
-    //     const AuthUserData = await AsyncStorage.getItem('auth_user');
-    //     const parsedAuthUserData = JSON.parse(AuthUserData);
-    //     await axios.get(`${REACT_NATIVE_BASE_URL}users`, {
-    //         headers: {
-    //             "Accept": 'application/json',
-    //             'content-type': 'application/json',
-    //             "Authorization": `Bearer ${parsedAuthUserData?.access_token}`
-    //         },
-    //     })
-    //         .then(function (response) {
-    //             // console.log("response - - -", response?.data?.users?.data);
-    //             setDealer_data(response?.data?.users?.data)
-    //         })
-    //         .catch(function (error) {
-    //             console.log("error fetching dealers- - -", error);
-    //         })
-
-    // }
-
-
 
 
     const selectUser = user => {
@@ -251,13 +326,118 @@ export default function HomeTab() {
         return token;
     }
 
+    const handlePayNow = async (item) => {
+        console.log("first", item)
+        var options = {
+            description: 'Credits towards consultation',
+            image: 'https://i.imgur.com/3g7nmJC.jpg',
+            currency: 'INR',
+            key: 'rzp_test_JrPSA1HqBRf4v8',
+            // amount: parseFloat(options.amount) / 100,  //paise
+            amount: '100',  //paise
+            name: 'Hubuzz Technology',
+            order_id: '',
+            prefill: {
+                email: '...',
+                contact: '9191919191',
+                name: 'Harpreet'
+            },
+            theme: { color: "#0066b2" }
+        }
+
+        RazorpayCheckout.open(options).then((data) => {
+            // Payment successful
+            console.log("Payment success:", data);
+
+            // Capture the payment
+            fetch(`https://api.razorpay.com/v1/payments/${data.razorpay_payment_id}/capture`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Basic ' + encode('rzp_test_JrPSA1HqBRf4v8:NT8BITofXhihkTmiZxe471FZ'),
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    amount: options.amount,
+                    currency: options.currency
+                })
+            }).then(response => response.json())
+                .then(async captureData => {
+
+                    if (captureData) {
+                        // console.log("Capture details:", captureData);
+
+                        Toast.show({
+                            type: ALERT_TYPE.SUCCESS,
+                            title: `Payment id : ${data.razorpay_payment_id}`,
+                            textBody: 'Payment captured successfully',
+                        });
+                        console.log("update user")
+                        const AuthUserData = await AsyncStorage.getItem('auth_user');
+                        const parsedAuthUserData = JSON.parse(AuthUserData);
+                        axios.put(`${REACT_NATIVE_BASE_URL}user/${item._id}`, {
+                            mobile: item?.mobile,
+                            otp_status: item?.otp_status,
+                            user_location: item.location ? item.location : "N/A",
+                            status: item?.status ? item?.status : "N/A",
+                            payment_res: [captureData],
+                            payment_status: true,
+                            user_city: item.city ? item.city : "N/A",
+                            name: item?.name ? item?.name : "Anonymous",
+                            user_pincode: item.pincode ? item.pincode : "N/A"
+                        }, {
+                            headers: {
+                                "Accept": 'application/json',
+                                'Content-Type': 'multipart/form-data',                                "Authorization": `Bearer ${parsedAuthUserData?.access_token}`
+                            },
+                        })
+                            .then(function (response) {
+                                console.log("user updated - - -", response?.data);
+                                
+                               
+                            })
+                            .catch(function (error) {
+                                console.log("error while updatng user - - -", error);
+                            })
+                    }
+
+
+                })
+                .catch(error => {
+                    console.error("Error capturing payment:", error);
+                    alert('Error capturing payment');
+                });
+        }).catch((error) => {
+            // Payment failed
+            console.error("Payment error:", error);
+            alert(`Error: ${error.code} | ${error.description}`);
+        });
+
+
+
+        // RazorpayCheckout.open(options).then((data) => {
+        //     Dialog.show({
+        //         type: ALERT_TYPE.SUCCESS,
+        //         title:  `Payment id : ${data.razorpay_payment_id}`,
+        //         textBody: 'Payment done successfully',
+        //         button: 'close',
+        //     });
+
+        //     console.log("data", data)
+
+        //     // alert(`Success: ${data.razorpay_payment_id}`);
+        // }).catch((error) => {
+        //     console.log("Err", error)
+        //     alert(`Error: ${error.code} | ${error.description}`);
+        // });
+    }
+
     // useEffect(() => {
     //     setUserData(users)
     // }, [])
     const onSearch = (text) => {
         setSearchQuery(text)
         if (text == '') {
-            get_dealer_list()
+            get_property_list()
             // setDealer_data(Dealer_data)
         } else {
 
@@ -291,17 +471,22 @@ export default function HomeTab() {
         return (
 
             <TouchableOpacity onPress={() => {
-                handle_dealer_profile_view(item)
+                // handle_dealer_profile_view(item)
             }}>
                 <View style={styles.row}>
-                    <Image source={{ uri: item.image ? `${REACT_NATIVE_USER_PROFILE_URL}${item.image}` : "data:image/png;base64,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" }} style={styles.pic} />
+                    <Image source={{
+                        uri: item?.image === "N/A" || item?.image === "" ? 'data:image/png;base64,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' : item?.image !== "N/A" ? `${REACT_NATIVE_USER_PROFILE_URL}${item.image}` :
+                            'data:image/png;base64,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'
+                    }} style={styles.pic} />
                     <View>
                         <View style={styles.nameContainer}>
                             <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">
                                 {item.name}
                             </Text>
-                            <TouchableOpacity style={styles.eoi_button} onPress={async () => {
-                                selectUser(item);
+                            <TouchableOpacity style={styles.eoi_button} onPress={() => {
+                                item?.payment_status === true ?
+                                    handle_dealer_profile_view(item) :
+                                    handlePayNow(item)
                             }}>
                                 <Text style={styles.eoi_Text}>EOI</Text>
                             </TouchableOpacity>
@@ -340,7 +525,7 @@ export default function HomeTab() {
                             handle_change_location()
                         }}
                         style={styles.inputs}
-                        placeholder="Enter location..."
+                        placeholder="Enter city..."
                         underlineColorAndroid="transparent"
                         value={searchQuery}
                         onChangeText={text => {
@@ -358,10 +543,8 @@ export default function HomeTab() {
 
                 <View style={{ flex: 1 }} >
                     <FlatList
-                        data={Dealer_data}
-                        keyExtractor={item => {
-                            return item._id
-                        }}
+                        data={uniqueUsers}
+                        keyExtractor={(item, index) => index.toString()}
                         renderItem={renderItem}
                     />
                 </View>

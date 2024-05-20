@@ -200,7 +200,7 @@ export default function PropertiesTab() {
                                     <View>
                                         <View style={{ display: "flex", flexDirection: "row", }}>
 
-                                            <View style={{width:200,}}>
+                                            <View style={{ width: 200, }}>
                                                 <Text style={styles.title}>{item.property_name}</Text>
                                                 <Text style={styles.description}>{item.description.split(' ').slice(0, 10).join(' ')}{item.description.split(' ').length > 10 ? '...' : ''}
                                                 </Text>
