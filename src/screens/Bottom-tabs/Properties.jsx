@@ -14,9 +14,9 @@ import {
     Platform,
     TouchableOpacity
 } from 'react-native';
-import { Dropdown } from 'react-native-element-dropdown';
+// import { Dropdown } from 'react-native-element-dropdown';
 import * as SecureStore from 'expo-secure-store';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';                                                  
 import React, { useCallback, useEffect, useState } from 'react';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { Searchbar, Menu, Avatar, Button, Card, Text, Divider, } from 'react-native-paper';
@@ -166,7 +166,7 @@ export default function PropertiesTab() {
             {/* <SafeAreaView style={styles.container}>
                 <FlatList
                     data={propertydata}
-                    renderItem={renderItem}
+                    renderItem={renderItem}price
                     keyExtractor={item => item.id.toString()}
                     ItemSeparatorComponent={() => <View style={styles.separator}>
 
@@ -180,12 +180,12 @@ export default function PropertiesTab() {
                     data={propertydata}
                     keyExtractor={item => {
                         return item._id
-                    }}
+                        price  }}
                     ItemSeparatorComponent={() => {
                         return <View style={styles.separator} />
                     }}
                     renderItem={property => {
-                        const item = property.item
+                        const item = property.price
                         return (
                             <View style={styles.card} >
                                 <TouchableOpacity onPress={() => { handle_contact_dealer(item) }}>

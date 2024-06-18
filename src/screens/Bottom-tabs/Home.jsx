@@ -14,7 +14,7 @@ import {
     Platform,
     ScrollView
 } from 'react-native';
-import { Dropdown } from 'react-native-element-dropdown';
+// import { Dropdown } from 'react-native-element-dropdown';
 import * as SecureStore from 'expo-secure-store';
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState, useRef } from 'react';
@@ -34,10 +34,11 @@ import Constants from 'expo-constants';
 import axios from 'axios';
 import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
 // import { theme_color } from '../../../config';
-import { AuthUserData, REACT_NATIVE_BASE_URL, REACT_NATIVE_IMAGE_URL, REACT_NATIVE_USER_PROFILE_URL, token } from '../../api/context/auth';
+import { AuthUserData, REACT_NATIVE_BASE_URL, REACT_NATIVE_IMAGE_URL, REACT_NATIVE_USER_PROFILE_URL, today, token } from '../../api/context/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import RazorpayCheckout from 'react-native-razorpay';
 import { encode } from 'base-64';
+import { LogBox } from 'react-native';
 // import { theme_color } from '../../../config';
 
 Notifications.setNotificationHandler({
@@ -51,8 +52,19 @@ Notifications.setNotificationHandler({
 const LeftContent = props => <Avatar.Icon {...props} icon="gift" />
 
 export default function HomeTab() {
+    // Ignore specific warnings
+    LogBox.ignoreLogs([
+        'Warning: ...', // Can use a specific warning message or a regex
+        'Deprecation warning: ...',
+    ]);
+
+    // Ignore all warnings
+    LogBox.ignoreAllLogs();
+    
     const navigation = useNavigation()
     const [searchQuery, setSearchQuery] = useState('');
+    const [paymentStatus, setpaymentStatus] = useState('');
+
     const openMenu = () => setVisible(true);
     const closeMenu = () => setVisible(false);
     const [visible, setVisible] = useState(false);
@@ -67,6 +79,10 @@ export default function HomeTab() {
     const [auth_user, setAuth_user] = useState([])
     const [Dealer_data, setDealer_data] = useState([])
     const [searchText2, setSearchText2] = useState('');
+    const [receiverToken, setreceiverToken] = useState('');
+    const [userData, setUserData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     // console.log("token", Token?.access_token)
 
@@ -88,15 +104,15 @@ export default function HomeTab() {
             AsyncStorage.getItem('auth_user', (err, result) => {
                 const parsedData = JSON.parse(result);
                 setAuth_user(parsedData)
-                console.log("parsedData", parsedData?.message);
+                console.log("parsedData", parsedData?.user);
             });
 
-            // console.log("parsedData.......", parsedData)
         };
 
         auth_user_data();
     }, []);
 
+    console.log("auth_user.......", auth_user?.user)
 
 
     // const get_dealer_list = async () => {
@@ -278,13 +294,14 @@ export default function HomeTab() {
             // body: 'You have a new message',
             content: {
                 title: `Hubuzz Technology`,
-                body: `👤${auth_user.username} shown interest in your property.`,
+                body: `👤${auth_user?.user?.name} shown interest in your property.`,
                 data: { data: 'goes here' },
             },
             to: recipientToken,
             sound: 'default',
             trigger: { seconds: 2 },
         });
+        setreceiverToken(receiverToken)
     }
 
     async function registerForPushNotificationsAsync() {
@@ -326,6 +343,15 @@ export default function HomeTab() {
         return token;
     }
 
+
+    const handlePayment = async (item) => {
+        if (auth_user?.user?.payment_status === true) {
+            handle_dealer_profile_view(item);
+        } else {
+            handlePayNow(item);
+        }
+    };
+
     const handlePayNow = async (item) => {
         console.log("first", item)
         var options = {
@@ -365,7 +391,6 @@ export default function HomeTab() {
 
                     if (captureData) {
                         // console.log("Capture details:", captureData);
-
                         Toast.show({
                             type: ALERT_TYPE.SUCCESS,
                             title: `Payment id : ${data.razorpay_payment_id}`,
@@ -374,12 +399,12 @@ export default function HomeTab() {
                         console.log("update user")
                         const AuthUserData = await AsyncStorage.getItem('auth_user');
                         const parsedAuthUserData = JSON.parse(AuthUserData);
-                        axios.put(`${REACT_NATIVE_BASE_URL}user/${item._id}`, {
+                        await axios.put(`${REACT_NATIVE_BASE_URL}user/${auth_user?.user?._id}`, {
                             mobile: item?.mobile,
                             otp_status: item?.otp_status,
                             user_location: item.location ? item.location : "N/A",
                             status: item?.status ? item?.status : "N/A",
-                            payment_res: [captureData],
+                            payment_res: captureData,
                             payment_status: true,
                             user_city: item.city ? item.city : "N/A",
                             name: item?.name ? item?.name : "Anonymous",
@@ -387,13 +412,59 @@ export default function HomeTab() {
                         }, {
                             headers: {
                                 "Accept": 'application/json',
-                                'Content-Type': 'multipart/form-data',                                "Authorization": `Bearer ${parsedAuthUserData?.access_token}`
+                                'Content-Type': 'multipart/form-data', "Authorization": `Bearer ${parsedAuthUserData?.access_token}`
                             },
                         })
-                            .then(function (response) {
-                                console.log("user updated - - -", response?.data);
-                                
-                               
+                            .then(async function (response) {
+                                if (response) {
+                                    await AsyncStorage.removeItem('auth_user');
+
+                                    const modifiedResponse = response?.data?.result
+                                    AsyncStorage.setItem(
+                                        'auth_user',
+                                        JSON.stringify(modifiedResponse),
+                                        () => {
+                                            Toast.show({
+                                                type: ALERT_TYPE.SUCCESS,
+                                                title: 'Success',
+                                                textBody: 'User Updated!',
+                                            })
+                                        },
+                                    );
+
+                                    console.log("user updated - - -", response?.data?.result);
+
+                                    await axios.post(`${REACT_NATIVE_BASE_URL}send/notification`, {
+                                        'title': '',
+                                        'desctiption': `Hi, can we discuss further on this deal. I am interested in your property.`,
+                                        'sender_id': parsedAuthUserData?.user?._id,
+                                        'sender_data': parsedAuthUserData,
+                                        'receiver_data': item,
+                                        'receiver_id': item._id,
+                                        'receiver_token': receiverToken,
+                                        'sender_token': '',
+                                        'attachment': '',
+                                        'message': `${item?.name} has shown interest in your property`,
+                                        'notification_date': today,
+                                        'status': '',
+                                    }, {
+                                        headers: {
+                                            "Accept": 'application/json',
+                                            'Content-Type': 'multipart/form-data', "Authorization": `Bearer ${parsedAuthUserData?.access_token}`
+                                        },
+                                    })
+                                        .then(function (response) {
+                                            console.log("notifi sent - - -", response?.data);
+
+
+
+                                        })
+                                        .catch(function (error) {
+                                            console.log("error while updatng user - - -", error);
+                                        })
+                                }
+
+
                             })
                             .catch(function (error) {
                                 console.log("error while updatng user - - -", error);
@@ -468,6 +539,7 @@ export default function HomeTab() {
 
     const renderItem = ({ item }) => {
         // console.log("itemmmmm", item)
+
         return (
 
             <TouchableOpacity onPress={() => {
@@ -483,13 +555,13 @@ export default function HomeTab() {
                             <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">
                                 {item.name}
                             </Text>
+
                             <TouchableOpacity style={styles.eoi_button} onPress={() => {
-                                item?.payment_status === true ?
-                                    handle_dealer_profile_view(item) :
-                                    handlePayNow(item)
+                                handlePayment(item)
                             }}>
                                 <Text style={styles.eoi_Text}>EOI</Text>
                             </TouchableOpacity>
+
 
                             {/* <MaterialCommunityIcons name="arrow-right" color='#DEDEDE' size={23} style={{ marginTop: 10, marginRight: "2%" }} onPress={() => handle_dealer_profile_view(item)} /> */}
                         </View>
@@ -540,7 +612,6 @@ export default function HomeTab() {
             </View>
 
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-
                 <View style={{ flex: 1 }} >
                     <FlatList
                         data={uniqueUsers}
@@ -790,8 +861,9 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         fontWeight: '600',
         color: '#222',
-        fontSize: 17,
+        fontSize: 16,
         width: 170,
+        marginTop: "1%"
     },
     mblTxt: {
         fontWeight: '200',

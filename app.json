@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Unify",
-    "slug": "unify",
+    "slug": "unify-react-native",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/splash/logo.png",
@@ -26,6 +26,11 @@
       "bitcode": false
     },
     "android": {
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyBeBzhSUtOrX_U9uWZSw30dHaPuznaUyto"
+        }
+      },
       "adaptiveIcon": {
         "foregroundImage": "./assets/splash/logo.png",
         "backgroundColor": "#ffffff"
@@ -51,6 +56,12 @@
     },
     "plugins": [
       [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ],
+      [
         "expo-secure-store",
         {
           "faceIDPermission": "Allow $(PRODUCT_NAME) to access your Face ID biometric data."
@@ -68,9 +79,9 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "a970345b-c7bc-4048-9827-c4fd56dde0ec"
+        "projectId": "58e1d755-69dd-4d26-ba39-ddf6296d47d4"
       }
     },
-    "owner": "h7121999"
+    "owner": "nanglukomal"
   }
 }
