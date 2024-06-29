@@ -15,7 +15,9 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import { Appbar } from 'react-native-paper';
 import { FlatList } from 'react-native';
-import { REACT_NATIVE_USER_PROFILE_URL } from '../../api/context/auth';
+import { REACT_NATIVE_BASE_URL, REACT_NATIVE_USER_PROFILE_URL } from '../../api/context/auth';
+import { LogBox } from 'react-native';
+import axios from 'axios';
 // import { theme_color } from '../../../config';
 
 
@@ -27,10 +29,22 @@ const LeftContent2 = props => <Avatar.Icon {...props} icon="package-variant-clos
 const AccountTab = () => {
   const navigation = useNavigation()
   const [auth_user, setAuth_user] = useState([]);
+  const [propertydata, setPropertyData] = useState([]);
+
+  // Ignore specific warnings
+  LogBox.ignoreLogs([
+    'Warning: ...', // Can use a specific warning message or a regex
+    'Deprecation warning: ...',
+  ]);
+
+  // Ignore all warnings
+  LogBox.ignoreAllLogs();
+
 
   useEffect(() => {
     get_user_list()
-  })
+    get_property_list()
+  }, [])
 
   const get_user_list = async () => {
     try {
@@ -43,8 +57,27 @@ const AccountTab = () => {
           "Authorization": `Bearer ${parsedAuthUserData?.access_token}`
         },
       });
-      console.log("userrr.......", response)
-      setUserData(response?.data?.userdata);
+      // console.log("userrr.......", response)
+      // setUserData(response?.data?.userdata);
+    } catch (error) {
+      console.log("Error fetching dealers:", error);
+    }
+  }
+
+
+  const get_property_list = async () => {
+    try {
+      const AuthUserData = await AsyncStorage.getItem('auth_user');
+      const parsedAuthUserData = JSON.parse(AuthUserData);
+      const response = await axios.get(`${REACT_NATIVE_BASE_URL}my/properties/663359baa2c58cc38c023a32`, {
+        headers: {
+          "Accept": 'application/json',
+          'content-type': 'application/json',
+          "Authorization": `Bearer ${parsedAuthUserData?.access_token}`
+        },
+      });
+      console.log("prop. data......", response?.data)
+      setPropertyData(response?.data);
     } catch (error) {
       console.log("Error fetching dealers:", error);
     }
@@ -154,6 +187,9 @@ const AccountTab = () => {
   }
 
 
+  const handleAddProperty = () => {
+    navigation.navigate("AddProperty")
+  }
 
 
   return (
@@ -221,13 +257,21 @@ const AccountTab = () => {
 
         <View style={styles.body}>
           <View style={styles.section2}>
-            <Text style={styles.sectionTitle}>Properties</Text>
+            <View style={{ display: "flex", flexDirection: "row" }}>
+              <Text style={styles.sectionTitle}>Properties</Text>
+              <TouchableOpacity style={styles.propbutton}>
+                <Text style={styles.propbuttonText} onPress={() => {
+                  handleAddProperty()
+                }}>Add</Text>
+              </TouchableOpacity>
+
+            </View>
             {/* <View style={styles.container2}> */}
             <FlatList
               style={styles.list}
               data={posts}
               keyExtractor={item => {
-                return item.id
+                return item._id
               }}
               ItemSeparatorComponent={() => {
                 return <View style={styles.separator} />
@@ -398,6 +442,20 @@ const styles = {
     fontSize: 16,
     color: '#999',
   },
+  propbutton: {
+    backgroundColor: "#0066b2",
+    borderRadius: 5,
+    padding: 4,
+    marginHorizontal: 15,
+    marginLeft: "52%",
+    width: 60,
+  },
+  propbuttonText: {
+    fontSize: 13,
+    color: '#fff',
+    textAlign: 'center',
+    padding: "4%"
+  },
   button: {
     backgroundColor: "#0066b2",
     borderRadius: 5,
@@ -405,9 +463,10 @@ const styles = {
     marginHorizontal: 15,
   },
   buttonText: {
-    fontSize: 16,
+    fontSize: 13,
     color: '#fff',
     textAlign: 'center',
+    padding: "1%"
   },
   friendCard: {
     width: 50,

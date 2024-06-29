@@ -19,7 +19,7 @@ import AuthContext from '../../api/context/Context';
 
 export default function CheckAuthCredentials(data) {
     const user_data = data.route?.params?.params
-    console.log("user......... here.", user_data)
+    // console.log("user......... here.", user_data)
     const navigation = useNavigation()
     const [user_location, setUserLocation] = useState('');
     const [reraNumber, setReraNumber] = useState('');
