@@ -91,7 +91,7 @@ export default Commission = ({ }) => {
 
           setDealer_data(modifiedUserdata);
         } else {
-          console.warn("No userdata found in response");
+          console.warn("No userdata found in response");m
         }
 
         setDealer_data(response?.data?.userdata);
@@ -102,7 +102,7 @@ export default Commission = ({ }) => {
           const formattedItems = uniqueUsers.map(user => ({
             label: user.name,
             value: user._id
-          }));
+          }))
 
           setItems(formattedItems);
           // console.log("Ddddd", uniqueUsers)
@@ -258,7 +258,7 @@ export default Commission = ({ }) => {
               style={styles.dropdown}
               dropDownContainerStyle={styles.dropdownContainer}
             />
-            {/* <Text style={{ marginRight: "75%" }}>message:</Text> */}
+            <Text style={{ marginRight: "75%" }}>message:</Text>
             {/* <TextInput style={styles.message_input} placeholder="message"
               editable
               multiline

@@ -8,53 +8,62 @@ import PhoneInput from "react-native-phone-number-input";
 import { ScrollView } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { REACT_NATIVE_BASE_URL, today } from '../../api/context/auth';
+import { REACT_NATIVE_BASE_URL, REACT_NATIVE_PROPERTY_URL, today } from '../../api/context/auth';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Button } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import { ALERT_TYPE, Toast, Dialog } from 'react-native-alert-notification';
-//import MapView from 'react-native-maps';
 
 
-const data = [
-    { label: 'Item 1', value: '1' },
-    { label: 'Item 2', value: '2' },
-    { label: 'Item 3', value: '3' },
-    { label: 'Item 4', value: '4' },
-    { label: 'Item 5', value: '5' },
-    { label: 'Item 6', value: '6' },
-    { label: 'Item 7', value: '7' },
-    { label: 'Item 8', value: '8' },
-];
-const AddProperty = (data) => {
-    
-    // const dd = params.route.params.data
-   
-    
+const editProperty = (data) => {
+    console.log("kkokkko", data?.route?.params?.data);
+
+    const editProfileDetails = {
+            property_name: data?.route?.params?.data ? data?.route?.params?.data?.property_name : "N/A",
+        // email: auth_user?.user ? auth_user?.user?.email : "N/A",
+        // rera_num: auth_user?.user ? auth_user?.user?.rera_number : "N/A",
+        // avatar: auth_user?.user ? auth_user?.user?.image : "N/A",
+        // user_city: auth_user?.user ? auth_user?.user?.user_city : "N/A",
+        // user_pincode: auth_user?.user ? auth_user?.user?.user_pincode : "N/A",
+        description: data?.route?.params?.data ? data?.route?.params?.data?.description : "N/A",
+        bathrooms: data?.route?.params?.data ? data?.route?.params?.data?.bathrooms : "N/A",
+        price: data?.route?.params?.data ? data?.route?.params?.data?.price : "N/A",
+        bedrooms: data?.route?.params?.data ? data?.route?.params?.data?.bedrooms : "N/A",
+        area_sqft: data?.route?.params?.data ? data?.route?.params?.data?.area_sqft : "N/A",
+        deal: data?.route?.params?.data ? data?.route?.params?.data?.deal : "N/A",    
+        parking: data?.route?.params?.data ? data?.route?.params?.data?.parking : "N/A",    
+        district: data?.route?.params?.data ? data?.route?.params?.data?.district : "N/A",  
+        photo: data?.route?.params?.data ? data?.route?.params?.data?.photo : "N/A",    
+        
+            
+    };
+ 
+
+
     const navigation = useNavigation();
     const [isPasswordShown, setIsPasswordShown] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
-    const [Area_sqft, setArea_sqft] = useState("");
-    const [Bedrooms, setBedrooms] = useState("");
+    const [Area_sqft, setArea_sqft] = useState(editProfileDetails.area_sqft);
+    const [bedrooms, setBedrooms] = useState(editProfileDetails.bedrooms);
     const [dealerContact, setDealerContact] = useState("");
-    const [Bathrooms, setBathrooms] = useState("");
+    const [Bathrooms, setBathrooms] = useState(editProfileDetails.bathrooms);
     const phoneInput = useRef(null);
     const [value1, setValue1] = useState("");
     const [formattedValue, setFormattedValue] = useState("");
     const [showForm, setShowForm] = useState(false);
-    const [name, setName] = useState("");
-    const [district, setDistrict] = useState("");
-    const [deal, setDeal] = useState("");
+    const [name, setName] = useState(editProfileDetails.property_name);     
+    const [district, setDistrict] = useState(editProfileDetails.district);
+    const [deal, setDeal] = useState(editProfileDetails.deal);
     const [type, setType] = useState("");
 
     const [location, setLocation] = useState("");
 
-    const [description, setdescription] = useState("");
-    const [parking, setParking] = useState("");
-    const [Default_Image, setDefault_Image] = useState("");
-    const [Price, setPrice] = useState("");
+    const [description, setdescription] = useState(editProfileDetails.description);
+    const [parking, setParking] = useState(editProfileDetails.parking);
+    const [Default_Image, setDefault_Image] = useState(editProfileDetails?.photo);
+    const [price, setPrice] = useState(editProfileDetails.price);
     const [Airconditioned, setAirconditioned] = useState("");
     const [Phone, setPhone] = useState("");
     const [Internet, setInternet] = useState("");
@@ -65,7 +74,7 @@ const AddProperty = (data) => {
     const [isFocus, setIsFocus] = useState(false);
     const [image, setImage] = useState(null);
     const [mimeType, setMimeType] = useState(null);
-    const [Dropvalue, setDropValue] = useState(null);
+    const [Dropvalue, setDropValue] = useState("");
     const [items, setItems] = useState([
         { label: 'House', value: 'house' },
         { label: 'Apartment', value: 'apartment' },
@@ -75,7 +84,7 @@ const AddProperty = (data) => {
 
     const [open, setOpen] = useState(false);
 
-    const [Dropvalue2, setDropValue2] = useState(null);
+    const [Dropvalue2, setDropValue2] = useState(editProfileDetails.deal);
     const [Dropvalue3, setDropValue3] = useState(null);
     const [Dropvalue4, setDropValue4] = useState(null);
     const [Dropvalue5, setDropValue5] = useState(null);
@@ -175,7 +184,7 @@ const AddProperty = (data) => {
 
     }];
     const [nameError, setNameError] = useState('');
-    const [PriceError, setPriceError] = useState('');
+    const [priceError, setPriceError] = useState('');
     const [DealTypeError, setDealTypeError] = useState('');
     const [BedroomError, setBedroomError] = useState('');
     const [AreqSqftError, setAreqSqftError] = useState('');
@@ -201,39 +210,49 @@ const AddProperty = (data) => {
             alert('Please select an image first');
             return;
         }
-        else if (Price.length < 0 || !/^\d+$/.test(Price)) {
-            setPriceError('Price must be a numeric value.');
+        else if (price.length < 0 || !/^\d+$/.test(price)) {
+            setPriceError('price must be a numeric value.');
         }
-        else if (Bedrooms.length < 0 || !/^\d+$/.test(Bedrooms)) {
-            setPriceError('Bedrooms must be a numeric value.');
+        else if (bedrooms.length < 0 || !/^\d+$/.test(bedrooms)) {
+            setPriceError('bedrooms must be a numeric value.');
         }
         else {
             // setError('');
         }
-
-        if (!mimeType) {
-            alert('Mime type is not defined');
-            return;
-        }
+        
+        
+        const formData = new FormData();
+      
 
         const fileExtension = mimeType.split('/')[1];
 
-        const formData = new FormData();
+        const file_extension2 = editProfileDetails.photo.split('.')[-1]
+        
+        print("File extension:", file_extension2)
         console.log("fileExtension", fileExtension)
+        
+        if (!mimeType) {
+            formData.append('photo', editProfileDetails?.photo);
+            alert('Mime type is not defined');
+             return;
+        }else{
+            alert('Mime type defined');
+            
+            formData.append('photo', {
+                uri: Default_Image,
+                type: mimeType,
+                name: `${name}.${fileExtension}`,
+            });
+        }
 
         const AuthUserData = await AsyncStorage.getItem('auth_user');
         const parsedAuthUserData = JSON.parse(AuthUserData);
 
-       
-        formData.append('photo', {
-            uri: Default_Image,
-            type: mimeType,
-            name: `${name}.${fileExtension}`,
-        });
+        
         formData.append('user_id', parsedAuthUserData?.user?._id);
         formData.append('dealer_contact', formattedValue);
         formData.append('location', data?.route?.params?.params);  // formData.append('location', JSON.stringify({ lat: 123, lng: 456 }));
-        formData.append('bedrooms', Bedrooms);
+        formData.append('bedrooms', bedrooms);
         formData.append('bathrooms', Bathrooms);
         formData.append('area_sqft', Area_sqft);
         formData.append('property_name', name);
@@ -246,12 +265,14 @@ const AddProperty = (data) => {
         formData.append('property_details', JSON.stringify(propertyDetails));
         formData.append('dealer', JSON.stringify(parsedAuthUserData?.user));
         formData.append('district', "");
-        formData.append('price', Price);
+        formData.append('price', price);
         formData.append('status', true);
         formData.append('prop_post_date', today);
         formData.append('pincode', "");
+        console.log('FormData gggggg', formData);
+        
         try {
-            await axios.post(`${REACT_NATIVE_BASE_URL}property/add`,
+            await axios.put(`${REACT_NATIVE_BASE_URL}property/${data?.route?.params?.data?._id}`,
                 formData
                 , {
                     headers: {
@@ -260,13 +281,13 @@ const AddProperty = (data) => {
                     },
                 })
                 .then(function (response) {
-                    // console.log('FormData:', formData);
-                    console.log("add property response - - -", response?.data);
+                    console.log('FormData:', formData);
+                    console.log("edit property response - - -", response?.data);
                     if (response) {
                         Dialog.show({
                             type: ALERT_TYPE.SUCCESS,
                             // title:  ``,
-                            textBody: 'Property added successfully',
+                            textBody: 'Property edit successfully',
                             button: 'close',
                         });
                     }
@@ -275,7 +296,7 @@ const AddProperty = (data) => {
                 })
 
                 .catch(function (error) {
-                    // console.log('FormData:', formData);
+                    console.log('FormData hhhhhhhhh', formData);
 
                     if (error.response) {
                         console.error("Response data:", error.response.data);
@@ -319,7 +340,7 @@ const AddProperty = (data) => {
                         marginVertical: 12,
                         color: "#000"
                     }}>
-                        Add Property
+                        Edit Property
                     </Text>
                 </View>
                 <ScrollView >
@@ -343,15 +364,16 @@ const AddProperty = (data) => {
                                 paddingLeft: 12
                             }}>
                                 <TextInput
+                                           value={name}
                                     placeholder=''
                                     placeholderTextColor={"#000"}
-                                    // keyboardType='email-address'
                                     style={{
                                         width: "100%"
                                     }}
                                     onChangeText={(text) => {
                                         setName(text);
-                                        if (text.length >= 3 && /^[a-zA-Z]+$/.test(text)) {
+
+                                        if (text.length >= 5 && /^[a-zA-Z]+$/.test(text)) {
                                             setNameError('');
                                         } else {
                                             setNameError('Name must be at least 5 alphabetical characters.');
@@ -361,6 +383,7 @@ const AddProperty = (data) => {
                                 />
 
                             </View>
+                            
                             {nameError ? <Text style={{ color: 'red', marginTop: 5, fontSize: 9, }}>{nameError}</Text> : null}
                         </View>
 
@@ -369,7 +392,7 @@ const AddProperty = (data) => {
                                 fontSize: 15,
                                 fontWeight: 400,
                                 marginVertical: 3
-                            }}>Price</Text>
+                            }}>price</Text>
 
                             <View style={{
                                 width: "100%",
@@ -383,9 +406,8 @@ const AddProperty = (data) => {
                                 paddingLeft: 22
                             }}>
                                 <TextInput
+                               value={price}
                                     placeholder=''
-                                    placeholderTextColor={"#000"}
-                                    // keyboardType='email-address'
                                     style={{
                                         width: "100%"
                                     }}
@@ -394,13 +416,13 @@ const AddProperty = (data) => {
                                         if (text.length > 0 && /^\d+$/.test(text)) {
                                             setPriceError('');
                                         } else {
-                                            setPriceError('Price must be a numeric value.');
+                                            setPriceError('price must be a numeric value.');
                                         }
                                     }}
                                 />
 
                             </View>
-                            {PriceError ? <Text style={{ color: 'red', marginTop: 5, fontSize: 9 }}>{PriceError}</Text> : null}
+                            {priceError ? <Text style={{ color: 'red', marginTop: 5, fontSize: 9 }}>{priceError}</Text> : null}
                         </View>
                     </View>
                     <View style={{ marginBottom: 12, }}>
@@ -422,8 +444,10 @@ const AddProperty = (data) => {
                                 paddingLeft: 12
                             }}> */}
                         <DropDownPicker
+                      
                             open={open2}
                             value={Dropvalue2}
+                            
                             items={items2}
                             setOpen={setOpen2}
                             setValue={setDropValue2}
@@ -456,6 +480,9 @@ const AddProperty = (data) => {
                                 paddingLeft: 12
                             }}>
                                 <TextInput
+                            
+                                           value={bedrooms}
+                                
                                     placeholder=''
                                     placeholderTextColor={"#000"}
                                     // keyboardType='email-address'
@@ -467,7 +494,7 @@ const AddProperty = (data) => {
                                         if (text.length > 0 && /^\d+$/.test(text)) {
                                             setBedroomError('');
                                         } else {
-                                            setBedroomError('Bedrooms must be a numeric value.');
+                                            setBedroomError('bedrooms must be a numeric value.');
                                         }
                                     }}
                                 />
@@ -493,8 +520,8 @@ const AddProperty = (data) => {
                                 paddingLeft: 22
                             }}>
                                 <TextInput
+                                value={Area_sqft}
                                     placeholder=''
-                                    placeholderTextColor={"#000"}
                                     // keyboardType='email-address'
                                     style={{
                                         width: "100%"
@@ -531,6 +558,7 @@ const AddProperty = (data) => {
                                 paddingLeft: 22
                             }}>
                                 <TextInput
+                                value={Bathrooms}
                                     placeholder=''
                                     placeholderTextColor={"#000"}
                                     // keyboardType='email-address'
@@ -606,6 +634,7 @@ const AddProperty = (data) => {
                             paddingLeft: 22
                         }}>
                             <TextInput
+                            value={parking}
                                 placeholder=''
                                 placeholderTextColor={"#000"}
                                 // keyboardType='email-address'
@@ -643,6 +672,7 @@ const AddProperty = (data) => {
 
                         }}>
                             <TextInput
+                            value={description}
                                 placeholder=''
                                 placeholderTextColor={"#000"}
                                 secureTextEntry={isPasswordShown}
@@ -661,7 +691,7 @@ const AddProperty = (data) => {
                         </View>
                         {DescriptionError ? <Text style={{ color: 'red', marginTop: 5, fontSize: 9 }}>{DescriptionError}</Text> : null}
                     </View>
-                    <View style={{ marginBottom: 12 }}>
+                 {/*   <View style={{ marginBottom: 12 }}>
                         <Text style={{
                             fontSize: 15,
                             fontWeight: 400,
@@ -696,7 +726,7 @@ const AddProperty = (data) => {
                             />
                         </View>
                     </View>
-
+*/}
                     <View style={{ display: "flex", flexDirection: "row" }}>
                         <View style={{ marginBottom: 12 }}>
                             <Text style={{
@@ -717,6 +747,7 @@ const AddProperty = (data) => {
                                 paddingLeft: 12
                             }}>
                                 <TextInput
+                                value={district}
                                     placeholder=''
                                     placeholderTextColor={"#000"}
                                     // keyboardType='email-address'
@@ -754,8 +785,17 @@ const AddProperty = (data) => {
                                 paddingLeft: 22
                             }}> */}
                             <View style={styles.container4}>
-                                <Button title="Pick an image" onPress={pickImage} />
-                                {Default_Image && <Image source={{ uri: Default_Image }} style={styles.image} />}
+                                <Button title="update image" onPress={pickImage} />
+                                {Default_Image && 
+                                // <Image source={{ uri: Default_Image }} style={styles.image} />
+                                <Image
+                                style={styles.cardImage}
+                                source={{ uri: Default_Image  === "N/A" ? 
+                                    'https://tse1.mm.bing.net/th?id=OIP.IEvuVH2kuKvCPcykUockWQHaFj&pid=Api&rs=1&c=1&qlt=95&w=134&h=100' : 
+                                    Default_Image !== "N/A" ? `${REACT_NATIVE_PROPERTY_URL}${Default_Image}` : 
+                                    'https://tse1.mm.bing.net/th?id=OIP.IEvuVH2kuKvCPcykUockWQHaFj&pid=Api&rs=1&c=1&qlt=95&w=134&h=100' }}
+                              />
+                                }
                             </View>
                             {/* </View> */}
                         </View>
@@ -795,7 +835,7 @@ const AddProperty = (data) => {
                     <TouchableOpacity onPress={() => {
                         navigation.navigate("Mapview")
                     }}>
-                        
+
                         <View style={{ marginBottom: 12 }} >
                             <Text style={{
                                 foentSize: 15,
@@ -1089,7 +1129,7 @@ const AddProperty = (data) => {
     )
 }
 
-export default AddProperty
+export default editProperty
 
 
 const styles = {
@@ -1105,6 +1145,11 @@ const styles = {
         width: "66%"
 
     },
+    cardImage: {
+        marginTop:"4%",
+        height: 100,
+        width: 130,
+      },
     dropdown: {
         backgroundColor: '#fff',
         borderColor: '#ddd',

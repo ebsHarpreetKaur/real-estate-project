@@ -201,7 +201,7 @@ export default ChatDetail = (item) => {
     }
 
     const renderItem = ({ item }) => {
-        console.log("eeeeeeeee", item?.message)
+        // console.log("eeeeeeeee", item?.message)
         if (item.sent === false) {
             return (
                 <View style={styles.eachMsg}>

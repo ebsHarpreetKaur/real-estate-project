@@ -30,6 +30,9 @@ import EditProfileView from '../screens/Components/EditProfile';
 import VideoConference from '../screens/Components/VideoConference'
 import Commission from '../screens/Components/Commission';
 import AddProperty from '../screens/Components/AddProperty';
+import Mapview from '../screens/Components/LocationMapview';
+import LocationMapview from '../screens/Components/LocationMapview';
+import editProperty from '../screens/Components/Editporp';
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -394,6 +397,10 @@ export default function AppNavigation() {
                             <Stack.Screen name="CheckAuthCredentials" component={CheckAuthCredentials} initialParams={{ user: state.userToken }} />
                             <Stack.Screen name="Commission" component={Commission} />
                             <Stack.Screen name="AddProperty" component={AddProperty} />
+                            <Stack.Screen name="Mapview" component={LocationMapview} />
+                            <Stack.Screen name="EditProp" component={editProperty} />
+                            
+                            
 
                         </>
 
